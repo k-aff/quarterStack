@@ -29,10 +29,6 @@
 
         public function handleRequest(){
 
-            // $request_body = file_get_contents('php://input');
-            // $data = json_decode($request_body,true);
-            // $hoop = Hoop::instance();
-            
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $reqbody = json_decode(file_get_contents('php://input'), true);
                 $type = $reqbody["type"];
@@ -41,16 +37,16 @@
                     return;
                 }
     
-                if ($type === "SignUp") {
+                if ($type === "signUp") {
                     $this->signUp();
                 }
-                if($type==="Login") 
+                if($type==="login") 
                 {
                     $this->login();
                 }
-                if($type==="GetAllTitles") 
+                if($type==="getAllTitles") 
                 {
-                    $this->getTitles();
+                    $this->getAllTitles();
                 }
 
 
@@ -66,7 +62,11 @@
         public function login(){
             
         }
-        public function getTitles()
+        public function getAllTitles()
+        {
+
+        }
+        public function setUserPref()
         {
 
         }
