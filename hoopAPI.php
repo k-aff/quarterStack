@@ -45,17 +45,24 @@
                     echo "Error: No Type";
                     return;
                 }
-    
-                if ($type === "signUp") {
+                else if ($type === "signUp") {
                     $this->signUp();
                 }
-                if($type==="login") 
+                else if($type==="login") 
                 {
                     $this->login();
                 }
-                if($type==="getAllTitles") 
+                else if($type==="getAllTitles") 
                 {
                     $this->getAllTitles($reqbody);
+                }
+                else if($type==="search") 
+                {
+                    $this->search($reqbody);
+                }
+                else if($type==="setViewPage") 
+                {
+                    $this->setViewPage($reqbody);
                 }
 
             }
@@ -82,9 +89,8 @@
         {
             // $email = $_SESSION['email']; //use id instead?  $id = $_SESSION['id']
 
-            $sqlcheckpref = "SELECT * FROM user_preferences WHERE user_id='$id'";
+            $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=1";
             $result = $this->con->query($sqlcheckpref);
-            $sqlReturnTitles = "SELECT * FROM title";
 
             if($result)
             {
@@ -96,82 +102,150 @@
 
                 //Assuming users set atleast one genre
                 if($type!==null)
-                    $sqlReturnTitles = $sqlReturnTitles. " WHERE type=". $type;
+                    $whereClause = " WHERE type=". "'". $type."'";
                 if($genre1!=null)
-                    $sqlReturnTitles = $sqlReturnTitles. " AND genre_id=". $genre1;
+                    $whereClause = $whereClause. " AND (genre_id=". $genre1;
                 if($genre2!=null)
-                    $sqlReturnTitles = $sqlReturnTitles. " OR genre_id=". $genre2;
+                    $whereClause = $whereClause. " OR genre_id=". $genre2;
                 if($genre3!=null)
-                    $sqlReturnTitles = $sqlReturnTitles. " OR genre_id=". $genre3;
+                    $whereClause = $whereClause. " OR genre_id=". $genre3;
+                
+                if($genre1!=null)
+                    $whereClause = $whereClause. ")";
+
+                echo $whereClause;
             }
             else
             {
                 echo "No preferences set";
             }
+            
+            $carousels = ["Movies", "Series", "Action", "Animation", "Sci-fi", "Horror", "Comedy", "Adventure", "Drama", "Preferences"];//add preferences;
+            $returnObject = array();
 
-            $result = $this->con->query($sqlReturnTitles);
+            foreach($carousels as $carousel){
 
-            if($result)
-            {
-                $titlesToRet = array();
-
-                //creating an associative array of what to return for each tuple returned from database
-
-                while($title = $result->fetch_assoc()){
-
-                    $genre_id = $title["genre_id"];
-                    $sql1 = "SELECT genre from genre WHERE genre_id='$genre_id'";
-                    $result1 = $this->con->query($sql1);
-                    $titleGenre = $result1->fetch_assoc();
-                    $genre = $titleGenre["genre"];
-
-                    $data = array();
-                    $data['title'] = $title["title"];
-                    $data['type'] = $title["type"];
-                    $data['age_cert'] = $title["age_cert"];
-                    $data['plot'] = $title["plot_summary"];
-                    $data['languages'] = (explode(', ', $title["language"]))[0];
-                    $data['release date'] = $title["release_date"];
-                    $data['genre'] = $genre;
-                    $data['producer'] = (explode(', ', $title["crew"]))[0];
-                    $data['cast'] = $title["cast"];
-                    $data['image'] = $title["image"];
-
-                    //obtaining additonal movie or series data 
-                    if($title["type"] == 'M')
-                    {
-                        $title_id = $title["title_id"];
-                        $sql2 = "SELECT runtime FROM movie WHERE title_id = '$title_id'";
-                        $result2 = $this->con->query($sql2);
-                        $titleRuntime = $result2->fetch_assoc();
-                        $data['runtime'] = $titleRuntime["runtime"];
-                    }
-                    else if($title["type"] == 'S'){ 
-
-                        $title_id = $title["title_id"];
-                        $sql2 = "SELECT * FROM tv_series WHERE title_id = '$title_id'";
-                        $result2 = $this->con->query($sql2);
-                        $titleEps = $result2->fetch_assoc();
-                        $data['number of seasons'] = $titleEps["no_of_seasons"];
-                        $data['total of episodes'] = $titleEps["no_of_episodes"];
-
-                    }
-
-                    $titlesToRet[] = $data;
+                if($carousel === 'Movies')
+                    $sqlReturnTitles ="SELECT * FROM title WHERE type='M' LIMIT 20";
+                else if($carousel === 'Series')
+                    $sqlReturnTitles ="SELECT * FROM title WHERE type='S' LIMIT 20";
+                else if(isset($pref) && $carousel === "Preferences"){
+                    $sqlReturnTitles ="SELECT * FROM title".$whereClause. "LIMIT 20" ;
+                    echo $sqlReturnTitles;
                 }
+                else
+                    $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') LIMIT 20" ;
 
-                //creating JSON response
-                echo json_encode(new Response("success", time(), $titlesToRet));
+                // echo $sqlReturnTitles;
+                $result = $this->con->query($sqlReturnTitles);
 
+                if($result)
+                {
+                    $titlesToRet = array();
+
+                    //creating an associative array of what to return for each tuple returned from database
+
+                    while($title = $result->fetch_assoc()){
+
+                        $data = array();
+                        $data['title'] = $title["title"];
+                        // $data['type'] = $title["type"];
+                        // $data['age_cert'] = $title["age_cert"];
+                        // $data['plot'] = $title["plot_summary"];
+                        // $data['languages'] = (explode(', ', $title["language"]))[0];
+                        // $data['release date'] = $title["release_date"];
+                        // $data['genre'] = $carousel;
+                        // $data['directors'] = (explode(', ', $title["crew"]))[0]; //Add more?
+                        // $data['cast'] = $title["cast"];
+                        $data['image'] = $title["image"];
+
+                        //obtaining additonal movie or series data 
+                        if($title["type"] == 'M')
+                        {
+                            $title_id = $title["title_id"];
+                            $sql2 = "SELECT runtime FROM movie WHERE title_id = '$title_id'";
+                            $result2 = $this->con->query($sql2);
+                            $titleRuntime = $result2->fetch_assoc();
+                            $data['runtime'] = $titleRuntime["runtime"];
+                        }
+                        else if($title["type"] == 'S'){ 
+
+                            $title_id = $title["title_id"];
+                            $sql2 = "SELECT * FROM tv_series WHERE title_id = '$title_id'";
+                            $result2 = $this->con->query($sql2);
+                            $titleEps = $result2->fetch_assoc();
+                            $data['number of seasons'] = $titleEps["no_of_seasons"];
+                            $data['total of episodes'] = $titleEps["no_of_episodes"];
+
+                        }
+
+                        $titlesToRet[] = $data;
+                    }
+                    $returnObject[$carousel] = $titlesToRet;
+
+                }
+                else{
+                    echo json_encode(new Response("failed", time(), "Error occured"));
+                }
             }
-            else{
-                echo json_encode(new Response("success", time(), "Error occured"));
-            }
+            echo json_encode(new Response("success", time(), $returnObject));
         }
 
         public function search()
         {
             
+        }
+
+        public function setViewPage($data)
+        {
+            $titleId = $data["titleId"];
+            //need to put the title in the url;
+
+            //get the record 
+            $sqlReturnInfo ="SELECT * FROM title WHERE title_id=$titleId" ;
+            echo $sqlReturnInfo;
+            $result = $this->con->query($sqlReturnInfo);
+
+            //check genre in genre table
+            $title = $result->fetch_assoc();
+            $genre_id = $title["genre_id"];
+            $sql1 = "SELECT genre from genre WHERE genre_id=$genre_id";
+            $result1 = $this->con->query($sql1);
+            $titleGenre = $result1->fetch_assoc();
+            $genre = $titleGenre["genre"];
+
+            $data = array();
+            $data['title'] = $title["title"];
+            $data['type'] = $title["type"];
+            $data['age_cert'] = $title["age_cert"];
+            $data['plot'] = $title["plot_summary"];
+            $data['languages'] = (explode(', ', $title["language"]))[0];
+            $data['release date'] = $title["release_date"];
+            $data['genre'] = $genre;
+            $data['directors'] = (explode(', ', $title["crew"]))[0]; //Add more?
+            $data['cast'] = $title["cast"];
+            $data['image'] = $title["image"];
+
+            //obtaining additonal movie or series data 
+            if($title["type"] == 'M')
+            {
+                $title_id = $title["title_id"];
+                $sql2 = "SELECT runtime FROM movie WHERE title_id = '$title_id'";
+                $result2 = $this->con->query($sql2);
+                $titleRuntime = $result2->fetch_assoc();
+                $data['runtime'] = $titleRuntime["runtime"];
+            }
+            else if($title["type"] == 'S'){ 
+
+                $title_id = $title["title_id"];
+                $sql2 = "SELECT * FROM tv_series WHERE title_id = '$title_id'";
+                $result2 = $this->con->query($sql2);
+                $titleEps = $result2->fetch_assoc();
+                $data['number of seasons'] = $titleEps["no_of_seasons"];
+                $data['total of episodes'] = $titleEps["no_of_episodes"];
+            }
+
+            echo json_encode(new Response("success", time(), $data));
         }
 
         
