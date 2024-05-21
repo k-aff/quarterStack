@@ -41,19 +41,21 @@
             {
                 $reqbody = json_decode(file_get_contents('php://input'), true);
                 $type = $reqbody["type"];
-                if (!isset($type)) {
+                if (!isset($type)) 
+                {
                     echo "Error: No Type";
                     return;
                 }
     
-                if ($type === "signUp") {
+                if ($type === "signUp") 
+                {
                     $this->signUp($reqbody);
                 }
-                if($type==="login") 
+                if ($type === "login") 
                 {
                     $this->login();
                 }
-                if($type==="getAllTitles") 
+                if ($type === "getAllTitles") 
                 {
                     $this->getAllTitles();
                 }
@@ -82,6 +84,8 @@
             $country_id = $jsonData["country_id"];
             //get card_no from data
             $card_no = $jsonData["card_no"]; 
+            //get expiry date from data
+            $expiry_date = $jsonData["expiry_date"];
 
             //check if name and surname are valid
             if (empty($fname) || empty($surname)) 
@@ -116,15 +120,12 @@
             $minDate = DateTime::createFromFormat('Y', '1900');
             $currentDate = new DateTime();
 
-            if ($dobDateTime && $dobDateTime->format('Y-m-d') === $dob) 
+            if (!$dobDateTime || $dobDateTime->format('Y-m-d') !== $dob || $dobDateTime <= $minDate || $dobDateTime >= $currentDate)
             {
-                if (!$dobDateTime || $dobDateTime->format('Y-m-d') !== $dob || $dobDateTime <= $minDate || $dobDateTime >= $currentDate)
-                {
-                    // some error message for invalid dob
-                    echo json_encode(new Response("error", time(), "invalid dob"));
-                    exit();
-                }
-            } 
+                // some error message for invalid dob
+                echo json_encode(new Response("error", time(), "invalid dob"));
+                exit();
+            }
 
             //check if gender is in [F, M, O, P]
             if (!preg_match('/^[FMOP]$/', $gender))
@@ -187,16 +188,57 @@
                 echo json_encode(new Response("error", time(), "invalid card_no"));
                 exit();      
             }
+
+            //check if expiry_date is bigger than current date
+            $expiryDateTime = DateTime::createFromFormat('Y-m-d', $expiry_date);
+            $currentDate = new DateTime();
+
+            if (!$expiryDateTime || $expiryDateTime <= $currentDate) 
+            {
+                    // some error message for invalid dob
+                    echo json_encode(new Response("error", time(), "invalid expiry_date"));
+                    exit();
+            } 
                 
             //insertUser
-            $sql = "INSERT INTO user (fname, surname, dob, gender, phone, email, password, active, country_id) VALUES (?,?,?,?,?,?,?,true,?)";
-            $stmt = $this->con->prepare($sql);
+            $sqlUser = "INSERT INTO user (fname, surname, dob, gender, phone, email, password, active, country_id) VALUES (?,?,?,?,?,?,?,true,?)";
+            $stmt = $this->con->prepare($sqlUser);
             if (!$stmt) 
             {
                 echo "Error: " . $this->con->error;
                 return;
             }
             $stmt->bind_param("sssssssi", $fname, $surname, $dob, $gender, $phone, $email, $hashedPassword, $country_id);
+            $stmt->execute();
+
+            $sqlGetID = "SELECT user_id FROM user WHERE email = ?";
+            $stmt = $this->con->prepare($sqlGetID);
+            if (!$stmt) 
+            {
+                echo "Error: " . $this->con->error;
+                return;
+            }
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows == 1) 
+            {
+                $user_id = $result->fetch_assoc()['user_id'];
+            } 
+            else 
+            {
+                echo json_encode(new Response("error", time(), "user_id not found"));
+            }
+
+            $sqlBilling = "INSERT INTO billing (user_id, card_no, expiry_date) VALUES (?,?,?)";
+            $stmt = $this->con->prepare($sqlBilling);
+            if (!$stmt) 
+            {
+                echo "Error: " . $this->con->error;
+                return;
+            }
+            $stmt->bind_param("iss", $user_id, $card_no, $expiry_date);
             $stmt->execute();
 
             // $data = [ "fname" => $fname, "surname" => $surname, "dob" => $dob, "gender" => $gender, "phone" => $phone, "email" => $email, "password" => $hashedPassword, "country_id" => $country_id, "card_no" => $card_no];  
