@@ -70,6 +70,10 @@
                 {
                     $this->getReview();
                 }
+                if ($type==="getMovies")
+                {
+                    $this->getMovies();
+                }
 
 
             }
@@ -224,6 +228,23 @@ public function setUserPref()
                     "title_id" => $pref["title_id"]
                 );
                 echo json_encode(new Response("success", time(), $user_rev));
+            }
+        }
+        
+        public function getMovies()
+        {
+            $hoop = Hoop::instance();
+            $sql = "SELECT * FROM movie INNER JOIN title ON movie.title_id = title.title_id";
+            $result = $this->con->query($sql);
+
+            if ($result && $result->num_rows > 0) {
+                $movies = array();
+                while ($row = $result->fetch_assoc()) {
+                    $movies[] = $row;
+                }
+                echo json_encode(new Response("success", time(), $movies));
+            } else {
+                echo json_encode(new Response("failure", time(), "no movies found"));
             }
         }
         
