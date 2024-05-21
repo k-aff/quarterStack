@@ -66,6 +66,10 @@
                 {
                     $this->setReview();
                 }
+                if ($type==="getReview")
+                {
+                    $this->getReview();
+                }
 
 
             }
@@ -201,6 +205,26 @@ public function setUserPref()
                 echo json_encode(new Response("success", time(), $user_pref));
             }
             
+        }
+        public function getReview()
+        {
+            $hoop = Hoop::instance();
+            $reqbody = json_decode(file_get_contents('php://input'), true);
+            $email = $reqbody["email"];
+            $id = $hoop->getUserIdByEmail($email);
+            $sqlcheckpref = "SELECT * FROM review WHERE user_id='$id'";
+            $result = $this->con->query($sqlcheckpref);
+            if ($result && $result->num_rows > 0) 
+            {
+                $pref = $result->fetch_assoc();
+                $user_rev = array(
+                    "date" => $pref["date_time"],
+                    "review" => $pref["review"],
+                    "rating" => $pref["rating"],
+                    "title_id" => $pref["title_id"]
+                );
+                echo json_encode(new Response("success", time(), $user_rev));
+            }
         }
         
         
