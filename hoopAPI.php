@@ -1,5 +1,5 @@
 <?php
-    echo "In Class!";
+    // echo "In Class!";
 
     class Hoop
     {
@@ -35,7 +35,7 @@
 
         public function handleRequest()
         {
-            echo "In handleRequest class"; 
+            // echo "In handleRequest class"; 
 
             if ($_SERVER["REQUEST_METHOD"] === "POST") 
             {
@@ -96,13 +96,13 @@
             $surname = stripslashes($surname);
             $fname = htmlspecialchars($fname);
             $surname = htmlspecialchars($surname);
-            if (strlen($fname) > 100 || !preg_match("/^[a-zA-Z-' ]*$/", $fname)) 
+            if (strlen($fname) > 100 || !preg_match("/^[a-zA-ZÀ-ÿ-' ]*$/u", $fname)) 
             {
                 //some error response for invald name
                 echo json_encode(new Response("error", time(), "invalid name"));
                 exit();
             }
-            if (strlen($surname) > 100 || !preg_match("/^[a-zA-Z-' ]*$/", $surname)) 
+            if (strlen($surname) > 100 || !preg_match("/^[a-zA-ZÀ-ÿ-' ]*$/u", $surname)) 
             {
                 //some error response for invald surname
                 echo json_encode(new Response("error", time(), "invalid surname"));
@@ -188,24 +188,20 @@
                 exit();      
             }
                 
-            //insertUser($fname, $surname, $email, $hashedPassword, $api_key);
-            
-            $data = [ "fname" => $fname, "surname" => $surname, "dob" => $dob, "gender" => $gender, "phone" => $phone, "email" => $email, "password" => $hashedPassword, "country_id" => $country_id, "card_no" => $card_no];  
-            echo json_encode(new Response("success", time(), $data));
-            
-            // $response = [ "status" => "success",
-            //               "timestamp" => round(microtime(true) * 1000),
-            //               "data" => [ "fname" => $fname, 
-            //                           "surname" => $surname,
-            //                           "dob" => $dob, 
-            //                           "gender" => $gender, 
-            //                           "phone" => $phone, 
-            //                           "email" => $email, 
-            //                           "password" => $hashedPassword,
-            //                           "country_id" => $country_id,
-            //                           "card_no" => $card_no] ];
-            // $jsonResponse = json_encode($response, JSON_PRETTY_PRINT);
-            // echo $jsonResponse;
+            //insertUser
+            $sql = "INSERT INTO user (fname, surname, dob, gender, phone, email, password, active, country_id) VALUES (?,?,?,?,?,?,?,true,?)";
+            $stmt = $this->con->prepare($sql);
+            if (!$stmt) 
+            {
+                echo "Error: " . $this->con->error;
+                return;
+            }
+            $stmt->bind_param("sssssssi", $fname, $surname, $dob, $gender, $phone, $email, $hashedPassword, $country_id);
+            $stmt->execute();
+
+            // $data = [ "fname" => $fname, "surname" => $surname, "dob" => $dob, "gender" => $gender, "phone" => $phone, "email" => $email, "password" => $hashedPassword, "country_id" => $country_id, "card_no" => $card_no];  
+            echo json_encode(new Response("success", time(), "user added to database"));
+
         }
 
         public function login()
