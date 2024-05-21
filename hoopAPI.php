@@ -3,7 +3,7 @@
 
     class Hoop
     {
-
+        protected $con;
         public static function instance() 
         {
             static $instance = null; 
@@ -37,32 +37,31 @@
         {
             echo "In handleRequest class"; 
 
-            $request_body = file_get_contents('php://input');
-            $data = json_decode($request_body,true);
-            $hoop = Hoop::instance();
-            
-            if($_SERVER["REQUEST_METHOD"] === "POST") //== or ===
+            if ($_SERVER["REQUEST_METHOD"] === "POST") 
             {
-                echo "Received request";
-                if (!isset($data["type"])) 
-                {
-                        errorResponse("type is not signUp");
-                        exit();
+                $reqbody = json_decode(file_get_contents('php://input'), true);
+                $type = $reqbody["type"];
+                if (!isset($type)) {
+                    echo "Error: No Type";
+                    return;
                 }
-                $type = $data["type"];
-                if ($type === "signUp")
-                    signUp($data);
-            }
-        }
+    
+                if ($type === "signUp") {
+                    $this->signUp();
+                }
+                if($type==="login") 
+                {
+                    $this->login();
+                }
+                if($type==="getAllTitles") 
+                {
+                    $this->getAllTitles();
+                }
 
-        function errorResponse($message)
-        {
-            $response = [ "status" => "error",
-                        "timestamp" => round(microtime(true) * 1000),
-                        "data" => $message];
-            $jsonResponse = json_encode($response);
-            echo $jsonResponse;
+            }
+            
         }
+        
 
         public function signUp($jsonData)
         {
@@ -279,4 +278,19 @@
     }
 
     $hoop = Hoop::instance();
+
+class Response{
+
+    public $status;
+    public $timestamp;
+    public $data;
+
+
+    function __construct($status, $timestamp, $data)
+    {
+        $this->status = $status;
+        $this->timestamp = $timestamp;
+        $this->data = $data;
+    }
+}
 ?>
