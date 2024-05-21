@@ -47,7 +47,7 @@
                 }
     
                 if ($type === "signUp") {
-                    $this->signUp();
+                    $this->signUp($reqbody);
                 }
                 if($type==="login") 
                 {
@@ -62,13 +62,11 @@
             
         }
         
-
         public function signUp($jsonData)
         {
-            echo "In signUp function"; 
             //get all json data
             //get name and surname 
-            $fname = $jsonData["name"];
+            $fname = $jsonData["fname"];
             $surname = $jsonData["surname"];
             //get dob from data
             $dob = $jsonData["dob"];
@@ -89,7 +87,7 @@
             if (empty($fname) || empty($surname)) 
             {
                 //some error response
-                errorResponse("empty name or surname");
+                echo json_encode(new Response("error", time(), "empty name or surname"));
                 exit();
             }
             $fname = trim($fname);
@@ -101,13 +99,13 @@
             if (strlen($fname) > 100 || !preg_match("/^[a-zA-Z-' ]*$/", $fname)) 
             {
                 //some error response for invald name
-                errorResponse("invalid name");
+                echo json_encode(new Response("error", time(), "invalid name"));
                 exit();
             }
             if (strlen($surname) > 100 || !preg_match("/^[a-zA-Z-' ]*$/", $surname)) 
             {
                 //some error response for invald surname
-                errorResponse("imvalid surname");
+                echo json_encode(new Response("error", time(), "invalid surname"));
                 exit();
             }
             ucwords($fname);
@@ -123,7 +121,7 @@
                 if (!$dobDateTime || $dobDateTime->format('Y-m-d') !== $dob || $dobDateTime <= $minDate || $dobDateTime >= $currentDate)
                 {
                     // some error message for invalid dob
-                    errorResponse("invalid dob");
+                    echo json_encode(new Response("error", time(), "invalid dob"));
                     exit();
                 }
             } 
@@ -131,14 +129,14 @@
             //check if gender is in [F, M, O, P]
             if (!preg_match('/^[FMOP]$/', $gender))
             {
-                errorResponse("gender not in F, M, O, P");
+                echo json_encode(new Response("error", time(), "gender not in F, M, O, P"));
                 exit();
             }
 
             //check if phone number is all numbers and smaller than 16 digits
             if (strlen($phone) > 16 || !preg_match('/^\d+$/', $phone))
             {
-                errorResponse("phone number is not all digits");
+                echo json_encode(new Response("error", time(), "phone number is not all digits"));
                 exit();   
             }
 
@@ -146,16 +144,32 @@
             $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
             if (!preg_match($pattern, $email)) 
             {
-                errorResponse("invalid email address");
+                echo json_encode(new Response("error", time(), "invalid email address"));
                 exit();
             }
 
             //check if email is unique
+            $sql = "SELECT COUNT(*) FROM user WHERE email = ?";
+            $stmt = $this->con->prepare($sql);
+            if (!$stmt) 
+            {
+                echo "Error: " . $this->con->error;
+                return;
+            }
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $count = $result->fetch_assoc()['COUNT(*)'];
+            if ($count > 0) 
+            {
+                echo json_encode(new Response("error", time(),"email already in use"));
+                exit(); 
+            }
 
             //check if password is valid
             if (!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{8,}$/", $password)) 
             {
-                errorResponse("invalid password");
+                echo json_encode(new Response("error", time(), "invalid password"));
                 exit();
             }
             $hashedPassword = hash('sha256', $password);
@@ -163,32 +177,35 @@
             //check if country_id in 0-259
             if (!is_numeric($country_id) || $country_id < 0 || $country_id > 259) 
             {
-                errorResponse("invalid country_id");
+                echo json_encode(new Response("error", time(), "invalid country_id"));
                 exit();
             }
 
             //check if card_no is shorter than 25 characters
             if (strlen($card_no) > 25 || !ctype_digit($card_no)) 
             {
-                errorResponse("invalid card_no");
+                echo json_encode(new Response("error", time(), "invalid card_no"));
                 exit();      
             }
                 
             //insertUser($fname, $surname, $email, $hashedPassword, $api_key);
-                
-            $response = [ "status" => "success",
-                          "timestamp" => round(microtime(true) * 1000),
-                          "data" => [ "fname" => $fname, 
-                                      "surname" => $surname,
-                                      "dob" => $dob, 
-                                      "gender" => $gender, 
-                                      "phone" => $phone, 
-                                      "email" => $email, 
-                                      "password" => $hashedPassword,
-                                      "country_id" => $country_id,
-                                      "card_no" => $card_no] ];
-            $jsonResponse = json_encode($response, JSON_PRETTY_PRINT);
-            echo $jsonResponse;
+            
+            $data = [ "fname" => $fname, "surname" => $surname, "dob" => $dob, "gender" => $gender, "phone" => $phone, "email" => $email, "password" => $hashedPassword, "country_id" => $country_id, "card_no" => $card_no];  
+            echo json_encode(new Response("success", time(), $data));
+            
+            // $response = [ "status" => "success",
+            //               "timestamp" => round(microtime(true) * 1000),
+            //               "data" => [ "fname" => $fname, 
+            //                           "surname" => $surname,
+            //                           "dob" => $dob, 
+            //                           "gender" => $gender, 
+            //                           "phone" => $phone, 
+            //                           "email" => $email, 
+            //                           "password" => $hashedPassword,
+            //                           "country_id" => $country_id,
+            //                           "card_no" => $card_no] ];
+            // $jsonResponse = json_encode($response, JSON_PRETTY_PRINT);
+            // echo $jsonResponse;
         }
 
         public function login()
@@ -278,19 +295,21 @@
     }
 
     $hoop = Hoop::instance();
+    $hoop->handleRequest(); 
 
-class Response{
-
-    public $status;
-    public $timestamp;
-    public $data;
-
-
-    function __construct($status, $timestamp, $data)
+    class Response
     {
-        $this->status = $status;
-        $this->timestamp = $timestamp;
-        $this->data = $data;
+
+        public $status;
+        public $timestamp;
+        public $data;
+
+
+        function __construct($status, $timestamp, $data)
+        {
+            $this->status = $status;
+            $this->timestamp = $timestamp;
+            $this->data = $data;
+        }
     }
-}
 ?>
