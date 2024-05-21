@@ -22,7 +22,7 @@
             else
             {
                 $this->con = $con;
-                echo "Connected!";
+                //echo "Connected!";
             }
 
             return $con;
@@ -58,6 +58,14 @@
                 {
                     $this->setUserPref();
                 }
+                if ($type==="getUserPref")
+                {
+                    $this->getUserPref();
+                }
+                if ($type==="setReview")
+                {
+                    $this->setReview();
+                }
 
 
             }
@@ -75,37 +83,37 @@
             
         }
 
-    // public function setUserPref()
-    // {
-    //     $hoop = Hoop::instance();
-    //     $reqbody = json_decode(file_get_contents('php://input'), true);
+    public function setReview()
+    {
+        $hoop = Hoop::instance();
+        $reqbody = json_decode(file_get_contents('php://input'), true);
 
-    //     $email = $reqbody["email"];
-    //     $user_id = $hoop->getUserIdByEmail($email);
+        $email = $reqbody["email"];
+        $user_id = $hoop->getUserIdByEmail($email);
 
-    //     if (!$user_id) {
-    //         echo "Error: User not found";
-    //         return;
-    //     }
+        if (!$user_id) {
+            echo "Error: User not found";
+            return;
+        }
 
-    //     $type = $reqbody["titleType"] ?? null;
-    //     $genre1 = $reqbody["genre1"] ?? null;
-    //     $genre2 = $reqbody["genre2"] ?? null;
-    //     $genre3 = $reqbody["genre3"] ?? null;
+        $title_id = $reqbody["title_id"];
+        $rating = $reqbody["rating"];
+        $review = $reqbody["review"] ?? null;
+        $date_time = date('Y-m-d');
 
-    //     $stmt = $hoop->con->prepare("INSERT INTO user_preference (user_id, type, genre_id_1, genre_id_2, genre_id_3) VALUES (?, ?, ?, ?,?)");
-    //     $stmt->bind_param("issss",$user_id, $type, $genre1, $genre2,$genre3);
-    //     $stmt->execute();
+        $stmt = $hoop->con->prepare("INSERT INTO review (user_id, title_id, date_time, review, rating) VALUES (?, ?, ?, ?,?)");
+        $stmt->bind_param("issss",$user_id, $title_id, $date_time, $review,$rating);
+        $stmt->execute();
 
-    //     if ($stmt->affected_rows > 0) {
-    //         echo "Preferences added successfully";
-    //     } else {
-    //         echo "Error: Preferences not added";
-    //     }
-    //     echo $genre3;
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(new Response("success", time(), "Review added successfully"));
+        } else {
+            echo json_encode(new Response("success", time(), "Review not added "));
+        }
+
         
-    // }
-    public function setUserPref()
+    }
+public function setUserPref()
 {
     $hoop = Hoop::instance();
     $reqbody = json_decode(file_get_contents('php://input'), true);
@@ -164,6 +172,37 @@
         {
             
         }
+        public function getUserPref()
+        {
+            $hoop = Hoop::instance();
+            $reqbody = json_decode(file_get_contents('php://input'), true);
+            $email = $reqbody["email"];
+            $id = $hoop->getUserIdByEmail($email);
+            $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
+            $result = $this->con->query($sqlcheckpref);
+         
+            // if($result)
+            // {
+            //     $pref = $result->fetch_assoc();
+            //     $type = $pref["type"];
+            //     $genre1 = $pref["genre_id_1"];
+            //     $genre2 = $pref["genre_id_2"];
+            //     $genre3 = $pref["genre_id_3"];}
+            if ($result && $result->num_rows > 0) 
+            {
+                $pref = $result->fetch_assoc();
+                $user_pref = array(
+                    "type" => $pref["type"],
+                    "genre_id_1" => $pref["genre_id_1"],
+                    "genre_id_2" => $pref["genre_id_2"],
+                    "genre_id_3" => $pref["genre_id_3"]
+                );
+                //echo json_encode($user_pref);
+                echo json_encode(new Response("success", time(), $user_pref));
+            }
+            
+        }
+        
         
 
         
