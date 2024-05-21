@@ -37,25 +37,87 @@
         {
 
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
                 $reqbody = json_decode(file_get_contents('php://input'), true);
+
                 $type = $reqbody["type"];
+
                 if (!isset($type)) {
-                    echo "Error: No Type";
+                    echo json_encode(new Response("Error", time(), "No type specified"))
                     return;
                 }
     
                 if ($type === "signUp") {
-                    $this->signUp();
+                    $this->signUp(&reqbody);
                 }
-                if($type==="login") 
+                else if($type==="login") 
                 {
-                    $this->login();
+                    $this->login(&reqbody);
                 }
-                if($type==="getAllTitles") 
+                else if($type==="getAllTitles") 
                 {
-                    $this->getAllTitles();
+                    $this->getAllTitles(&reqbody);
                 }
-
+                else if($type==="search") 
+                {
+                    $this->search($reqbody);
+                }
+                else if($type==="getMovies") 
+                {
+                    $this->getMovies($reqbody);
+                }
+                else if($type==="getSeries") 
+                {
+                    $this->getSeries($reqbody);
+                }
+                else if($type==="getWatchHistory") 
+                {
+                    $this->getWatchHistory($reqbody);
+                }
+                else if($type==="getWatchList") 
+                {
+                    $this->getWatchList($reqbody);
+                }
+                else if($type==="getUser") 
+                {
+                    $this->getUser($reqbody);
+                }
+                else if($type==="updateUser") 
+                {
+                    $this->updateUser($reqbody);
+                }
+                else if($type==="updatePassword") 
+                {
+                    $this->updatePassword($reqbody);
+                }
+                else if($type==="deleteUser") 
+                {
+                    $this->deleteUser($reqbody);
+                }
+                else if($type==="getUserPref") 
+                {
+                    $this->getUserPref($reqbody);
+                }
+                else if($type==="setUserPref") 
+                {
+                    $this->setUserPref($reqbody);
+                }
+                else if($type==="setViewPage") 
+                {
+                    $this->setViewPage($reqbody);
+                }
+                else if($type==="getReview") 
+                {
+                    $this->getReview($reqbody);
+                }
+                else if($type==="setReview") 
+                {
+                    $this->setReview($reqbody);
+                }
+                else if($type==="logout") 
+                {
+                    $this->logout($reqbody);
+                }
 
             }
             
@@ -91,6 +153,7 @@
     }
 
     $hoop = Hoop::instance();
+    $hoop->handleRequest();
 
 class Response{
 
