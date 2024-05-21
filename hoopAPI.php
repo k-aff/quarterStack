@@ -149,35 +149,9 @@
 
                         $data = array();
                         $data['title'] = $title["title"];
-                        // $data['type'] = $title["type"];
-                        // $data['age_cert'] = $title["age_cert"];
-                        // $data['plot'] = $title["plot_summary"];
-                        // $data['languages'] = (explode(', ', $title["language"]))[0];
-                        // $data['release date'] = $title["release_date"];
-                        // $data['genre'] = $carousel;
-                        // $data['directors'] = (explode(', ', $title["crew"]))[0]; //Add more?
-                        // $data['cast'] = $title["cast"];
                         $data['image'] = $title["image"];
 
                         //obtaining additonal movie or series data 
-                        if($title["type"] == 'M')
-                        {
-                            $title_id = $title["title_id"];
-                            $sql2 = "SELECT runtime FROM movie WHERE title_id = '$title_id'";
-                            $result2 = $this->con->query($sql2);
-                            $titleRuntime = $result2->fetch_assoc();
-                            $data['runtime'] = $titleRuntime["runtime"];
-                        }
-                        else if($title["type"] == 'S'){ 
-
-                            $title_id = $title["title_id"];
-                            $sql2 = "SELECT * FROM tv_series WHERE title_id = '$title_id'";
-                            $result2 = $this->con->query($sql2);
-                            $titleEps = $result2->fetch_assoc();
-                            $data['number of seasons'] = $titleEps["no_of_seasons"];
-                            $data['total of episodes'] = $titleEps["no_of_episodes"];
-
-                        }
 
                         $titlesToRet[] = $data;
                     }
