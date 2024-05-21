@@ -75,36 +75,76 @@
             
         }
 
-        public function setUserPref()
-    {
-        $hoop = Hoop::instance();
-        $reqbody = json_decode(file_get_contents('php://input'), true);
+    // public function setUserPref()
+    // {
+    //     $hoop = Hoop::instance();
+    //     $reqbody = json_decode(file_get_contents('php://input'), true);
 
-        $email = $reqbody["email"];
-        $user_id = $hoop->getUserIdByEmail($email);
+    //     $email = $reqbody["email"];
+    //     $user_id = $hoop->getUserIdByEmail($email);
 
-        if (!$user_id) {
-            echo "Error: User not found";
-            return;
-        }
+    //     if (!$user_id) {
+    //         echo "Error: User not found";
+    //         return;
+    //     }
 
-        $type = $reqbody["titleType"] ?? null;
-        $genre1 = $reqbody["genre1"] ?? null;
-        $genre2 = $reqbody["genre2"] ?? null;
-        $genre3 = $reqbody["genre3"] ?? null;
+    //     $type = $reqbody["titleType"] ?? null;
+    //     $genre1 = $reqbody["genre1"] ?? null;
+    //     $genre2 = $reqbody["genre2"] ?? null;
+    //     $genre3 = $reqbody["genre3"] ?? null;
 
-        $stmt = $hoop->con->prepare("INSERT INTO user_preference (user_id, type, genre_id_1, genre_id_2, genre_id_3) VALUES (?, ?, ?, ?,?)");
-        $stmt->bind_param("issss",$user_id, $type, $genre1, $genre2,$genre3);
-        $stmt->execute();
+    //     $stmt = $hoop->con->prepare("INSERT INTO user_preference (user_id, type, genre_id_1, genre_id_2, genre_id_3) VALUES (?, ?, ?, ?,?)");
+    //     $stmt->bind_param("issss",$user_id, $type, $genre1, $genre2,$genre3);
+    //     $stmt->execute();
 
-        if ($stmt->affected_rows > 0) {
-            echo "Preferences added successfully";
-        } else {
-            echo "Error: Preferences not added";
-        }
-        echo $genre3;
+    //     if ($stmt->affected_rows > 0) {
+    //         echo "Preferences added successfully";
+    //     } else {
+    //         echo "Error: Preferences not added";
+    //     }
+    //     echo $genre3;
         
+    // }
+    public function setUserPref()
+{
+    $hoop = Hoop::instance();
+    $reqbody = json_decode(file_get_contents('php://input'), true);
+
+    $email = $reqbody["email"];
+    $user_id = $hoop->getUserIdByEmail($email);
+
+    if (!$user_id) {
+        echo "Error: User not found";
+        return;
     }
+
+    $type = $reqbody["titleType"] ?? null;
+    $genre1 = $reqbody["genre1"] ?? null;
+    $genre2 = $reqbody["genre2"] ?? null;
+    $genre3 = $reqbody["genre3"] ?? null;
+
+    // Check if the user already has a preference record
+    $stmt = $hoop->con->prepare("SELECT pref_id FROM user_preference WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $pref_id = $result->num_rows > 0 ? $result->fetch_assoc()["pref_id"] : null;
+
+    // Update the existing record or insert a new one
+    if ($pref_id) {
+        $stmt = $hoop->con->prepare("UPDATE user_preference SET type = ?, genre_id_1 = ?, genre_id_2 = ?, genre_id_3 = ? WHERE pref_id = ?");
+        $stmt->bind_param("ssssi", $type, $genre1, $genre2, $genre3, $pref_id);
+        $stmt->execute();
+        //echo "Preferences updated successfully";
+        echo json_encode(new Response("success", time(), "Preferences updated successfully"));
+    } else {
+        $stmt = $hoop->con->prepare("INSERT INTO user_preference (user_id, type, genre_id_1, genre_id_2, genre_id_3) VALUES (?, ?, ?, ?,?)");
+        $stmt->bind_param("issss", $user_id, $type, $genre1, $genre2, $genre3);
+        $stmt->execute();
+        //echo "Preferences added successfully";
+        echo json_encode(new Response("success", time(), "Preferences added successfully"));
+    }
+}
 
     private function getUserIdByEmail($email)
     {
