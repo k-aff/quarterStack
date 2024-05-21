@@ -1,5 +1,5 @@
 <?php
-    echo "In Class!";
+    //echo "In Class!";
 
     class Hoop
     {
@@ -35,7 +35,6 @@
 
         public function handleRequest()
         {
-
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $reqbody = json_decode(file_get_contents('php://input'), true);
                 $type = $reqbody["type"];
@@ -55,6 +54,10 @@
                 {
                     $this->getAllTitles();
                 }
+                if ($type==="setUserPref")
+                {
+                    $this->setUserPref();
+                }
 
 
             }
@@ -73,11 +76,46 @@
         }
 
         public function setUserPref()
-        {
+    {
+        $hoop = Hoop::instance();
+        $reqbody = json_decode(file_get_contents('php://input'), true);
 
+        $email = $reqbody["email"];
+        $user_id = $hoop->getUserIdByEmail($email);
+
+        if (!$user_id) {
+            echo "Error: User not found";
+            return;
         }
 
-        public function getAllTitle()
+        $type = $reqbody["titleType"] ?? null;
+        $genre1 = $reqbody["genre1"] ?? null;
+        $genre2 = $reqbody["genre2"] ?? null;
+        $genre3 = $reqbody["genre3"] ?? null;
+
+        $stmt = $hoop->con->prepare("INSERT INTO user_preference (user_id, type, genre_id_1, genre_id_2, genre_id_3) VALUES (?, ?, ?, ?,?)");
+        $stmt->bind_param("issss",$user_id, $type, $genre1, $genre2,$genre3);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo "Preferences added successfully";
+        } else {
+            echo "Error: Preferences not added";
+        }
+        echo $genre3;
+        
+    }
+
+    private function getUserIdByEmail($email)
+    {
+        $stmt = $this->con->prepare("SELECT user_id FROM user WHERE email=?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->num_rows > 0 ? $result->fetch_assoc()["user_id"] : null;
+    }
+
+        public function getAllTitles()
         {
 
         }
@@ -86,11 +124,13 @@
         {
             
         }
+        
 
         
     }
 
     $hoop = Hoop::instance();
+    $hoop->handleRequest();
 
 class Response{
 
