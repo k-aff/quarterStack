@@ -74,6 +74,10 @@
                 {
                     $this->getMovies();
                 }
+                if ($type==="getSeries")
+                {
+                    $this->getSeries();
+                }
 
 
             }
@@ -245,6 +249,23 @@ public function setUserPref()
                 echo json_encode(new Response("success", time(), $movies));
             } else {
                 echo json_encode(new Response("failure", time(), "no movies found"));
+            }
+        }
+
+        public function getSeries()
+        {
+            $hoop = Hoop::instance();
+            $sql = "SELECT * FROM tv_series INNER JOIN title ON tv_series.title_id = title.title_id";
+            $result = $this->con->query($sql);
+
+            if ($result && $result->num_rows > 0) {
+                $series = array();
+                while ($row = $result->fetch_assoc()) {
+                    $series[] = $row;
+                }
+                echo json_encode(new Response("success", time(), $series));
+            } else {
+                echo json_encode(new Response("failure", time(), "no TV series found"));
             }
         }
         
