@@ -33,50 +33,7 @@
             mysqli_close($this->con);
         }
 
-        public function handleRequest()
-        {
-            if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                $reqbody = json_decode(file_get_contents('php://input'), true);
-                $type = $reqbody["type"];
-                if (!isset($type)) {
-                    echo "Error: No Type";
-                    return;
-                }
-                if ($type==="setUserPref")
-                {
-                    $this->setUserPref();
-                }
-                if ($type==="getUserPref")
-                {
-                    $this->getUserPref();
-                }
-                if ($type==="setReview")
-                {
-                    $this->setReview();
-                }
-                if ($type==="getReview")
-                {
-                    $this->getReview();
-                }
-                if ($type==="getMovies")
-                {
-                    $this->getMovies();
-                }
-                if ($type==="getSeries")
-                {
-                    $this->getSeries();
-                }
-                if ($type==="getUser")
-                {
-                    $this->getUser();
-                }
-
-
-            }
-            
-        }
-        
-
+       
     public function setReview()
     {
         $hoop = Hoop::instance();
