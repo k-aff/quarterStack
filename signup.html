@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome">
+            <h1>Create an Account</h1>
+        </div>
+        <div class="signup-container">
+            <div class="signup-box">
+                <h2>Sign up</h2>
+                <form action="#">
+                    <div class="input-group">
+                        <label for="Fullname">Full Name:</label>
+                        <input type="text" id="fullname" name="fullname" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="Surname">Surname:</label>
+                        <input type="text" id="Surname" name="Surname" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="dob">Date of Birth:</label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="card-number">Card number:</label>
+                        <input type="text" id="card-number" name="card-number" required>
+                    </div>                    
+                    <div class="input-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" placeholder="8 char, upperCase, lowerCase, specialChar" name="password" required>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+                <p><a href="login.html">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
