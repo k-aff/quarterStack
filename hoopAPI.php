@@ -135,7 +135,7 @@ class Hoop
         print_r($request_body);
         $email = $request_body["email"];
         $password = $request_body["password"];
-        //hash password
+
         //check if email exits in db
         $loginQuery = "SELECT user_id FROM user
         WHERE email = ?";
@@ -166,11 +166,25 @@ class Hoop
             ];
             return json_encode(new Response("Error", time(), $data));
         } else {
-
+            //hash passed in password
+            $hashpass = hash('SHA 256', $password);
             //verify the password if email exsists
-            // if (password_verify($password, $user['password'])) {
-            if ($password === "varchar") {
+            //check if email exits in db
+            $loginQuery = "SELECT password FROM user
+        WHERE password = ?";
 
+            if (!$statement = $this->con->prepare($loginQuery)) {
+                die('Prepair failed');
+            }
+
+            $statement->bind_param('s', $hashpass);
+            $statement->execute();
+
+            $statement->bind_result($password);
+
+            if ($statement->fetch()) {
+                $statement->close();
+                
                 $data = [
                     "message" => "User logged in",
                     "user_id" => $user_id
@@ -200,7 +214,7 @@ class Hoop
                 // Password is incorrect
                 $data = [
                     "message" => "Invalid credentials",
-                    "user_id" => null
+
                 ];
                 return json_encode(new Response("Error", time(), $data));
             }
