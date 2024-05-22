@@ -1,7 +1,6 @@
 <?php
     // echo "In Class!";
 
-
     class Hoop
     {
         protected $con;
@@ -36,29 +35,31 @@
 
         public function handleRequest()
         {
-            // echo "In handleRequest class"; 
 
-            if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            if ($_SERVER["REQUEST_METHOD"] === "POST") 
+            {
 
                 $reqbody = json_decode(file_get_contents('php://input'), true);
 
                 $type = $reqbody["type"];
 
-                if (!isset($type)) {
+                if (!isset($type)) 
+                {
                     echo json_encode(new Response("Error", time(), "No type specified"))
                     return;
                 }
     
-                if ($type === "signUp") {
-                    $this->signUp(&reqbody);
+                if ($type === "signUp") 
+                {
+                    $this->signUp($reqbody);
                 }
                 else if($type==="login") 
                 {
-                    $this->login(&reqbody);
+                    $this->login($reqbody);
                 }
                 else if($type==="getAllTitles") 
                 {
-                    $this->getAllTitles(&reqbody);
+                    $this->getAllTitles($reqbody);
                 }
                 else if($type==="search") 
                 {
@@ -126,7 +127,7 @@
         }
         
 
-        public function signUp()
+        public function signUp($jsonData)
         {
             //get all json data
             //get name and surname 
@@ -310,7 +311,7 @@
 
         }
 
-        public function updateUser()
+        public function updateUser($jsonData)
         {
             //get all json data
             //get phone from data
@@ -414,7 +415,7 @@
             
         }
 
-        public function deleteUser()
+        public function deleteUser($jsonData)
         {
             $sql = "DELETE FROM user WHERE id = ?";
             $stmt = $this->con->prepare($sql);
@@ -433,7 +434,7 @@
 
         }
 
-        public function updatePassword()
+        public function updatePassword($jsonData)
         {
             //get all json data
             //get phone from data
@@ -484,7 +485,7 @@
 
         }
 
-        public function search()
+        public function search($jsonData)
         {
             //get all json data
             //get phone from data
