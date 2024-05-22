@@ -1,5 +1,5 @@
 <?php
-    //echo "In Class!";
+    // echo "In Class!";
 
     class Hoop
     {
@@ -33,6 +33,13 @@
             mysqli_close($this->con);
         }
 
+        public function handleRequest()
+        {
+
+            if ($_SERVER["REQUEST_METHOD"] === "POST") 
+            {
+
+                $reqbody = json_decode(file_get_contents('php://input'), true);
        
     public function setReview()
     {
@@ -212,25 +219,28 @@ public function setUserPref()
 
         public function getUser()
         {
-            $hoop = Hoop::instance();
-            $reqbody = json_decode(file_get_contents('php://input'), true);
 
-            $email = $reqbody["email"];
-            $user_id = $hoop->getUserIdByEmail($email);
-            $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id";
-            $result = $this->con->query($sql);
-            if ($result && $result->num_rows > 0)
-            {
-                $user=$result->fetch_assoc();
-                echo json_encode(new Response("success", time(), $user));
-            }
-            else
-            {
-                echo json_encode(new Response("failure", time(), "user not found"));
-            }
         }
-        
-        
+
+        public function login()
+        {
+            
+        }
+
+        public function setUserPref()
+        {
+
+        }
+
+        public function getAllTitle()
+        {
+
+        }
+
+        public function search()
+        {
+            
+        }
 
         
     }
@@ -238,18 +248,19 @@ public function setUserPref()
     $hoop = Hoop::instance();
     $hoop->handleRequest();
 
-class Response{
-
-    public $status;
-    public $timestamp;
-    public $data;
-
-
-    function __construct($status, $timestamp, $data)
+    class Response
     {
-        $this->status = $status;
-        $this->timestamp = $timestamp;
-        $this->data = $data;
+
+        public $status;
+        public $timestamp;
+        public $data;
+
+
+        function __construct($status, $timestamp, $data)
+        {
+            $this->status = $status;
+            $this->timestamp = $timestamp;
+            $this->data = $data;
+        }
     }
-}
 ?>
