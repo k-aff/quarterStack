@@ -403,10 +403,10 @@ class Hoop
     }
  
 
-    public function setReview()
+    public function setReview($reqbody)
     {
         $hoop = Hoop::instance();
-        $reqbody = json_decode(file_get_contents('php://input'), true);
+        //$reqbody = json_decode(file_get_contents('php://input'), true);
 
         $email = $reqbody["email"];
         $user_id = $hoop->getUserIdByEmail($email);
@@ -433,10 +433,10 @@ class Hoop
 
         
     }
-public function setUserPref()
+public function setUserPref($reqbody)
 {
     $hoop = Hoop::instance();
-    $reqbody = json_decode(file_get_contents('php://input'), true);
+    //$reqbody = json_decode(file_get_contents('php://input'), true);
 
     $email = $reqbody["email"];
     $user_id = $hoop->getUserIdByEmail($email);
@@ -483,12 +483,31 @@ public function setUserPref()
         $result = $stmt->get_result();
         return $result->num_rows > 0 ? $result->fetch_assoc()["user_id"] : null;
     }
+    public function getUser($reqbody)
+    {
+        $hoop = Hoop::instance();
+        //$reqbody = json_decode(file_get_contents('php://input'), true);
+
+        $email = $reqbody["email"];
+        $user_id = $hoop->getUserIdByEmail($email);
+        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id";
+        $result = $this->con->query($sql);
+        if ($result && $result->num_rows > 0)
+        {
+            $user=$result->fetch_assoc();
+            echo json_encode(new Response("success", time(), $user));
+        }
+        else
+        {
+            echo json_encode(new Response("failure", time(), "user not found"));
+        }
+    }
 
 
-        public function getUserPref()
+        public function getUserPref($reqbody)
         {
             $hoop = Hoop::instance();
-            $reqbody = json_decode(file_get_contents('php://input'), true);
+            //$reqbody = json_decode(file_get_contents('php://input'), true);
             $email = $reqbody["email"];
             $id = $hoop->getUserIdByEmail($email);
             $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
@@ -519,10 +538,10 @@ public function setUserPref()
             }
             
         }
-        public function getReview()
+        public function getReview($reqbody)
         {
             $hoop = Hoop::instance();
-            $reqbody = json_decode(file_get_contents('php://input'), true);
+            //$reqbody = json_decode(file_get_contents('php://input'), true);
             $title_id = $reqbody["title_id"];
             // $id = $hoop->getUserIdByEmail($email);
             $sqlcheckpref = "SELECT * FROM review WHERE title_id='$title_id'";
@@ -545,7 +564,7 @@ public function setUserPref()
 
         }
         
-        public function getMovies()
+        public function getMovies($reqbody)
         {
             $hoop = Hoop::instance();
             $sql = "SELECT title,image  FROM movie INNER JOIN title ON movie.title_id = title.title_id";
@@ -562,6 +581,22 @@ public function setUserPref()
             }
         }
 
+        public function getSeries($reqbody)
+        {
+            $hoop = Hoop::instance();
+            $sql = "SELECT title,image FROM tv_series INNER JOIN title ON tv_series.title_id = title.title_id";
+            $result = $this->con->query($sql);
+
+            if ($result && $result->num_rows > 0) {
+                $series = array();
+                while ($row = $result->fetch_assoc()) {
+                    $series[] = $row;
+                }
+                echo json_encode(new Response("success", time(), $series));
+            } else {
+                echo json_encode(new Response("failure", time(), "no TV series found"));
+            }
+        }
     public function updatePassword($jsonData)
     {
         //get all json data
