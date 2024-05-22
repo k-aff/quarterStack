@@ -208,8 +208,8 @@ class Hoop
     }
     public function setWatchHistory($request_body)
     {
-
-        $title_id = $request_body["title_id"];
+        
+        $titleID = $request_body["title_id"];
         $user_id = $request_body["user_id"];
         //check if the title is already in the watch hist table
         $historyQuery = "SELECT title_id FROM watch_history
@@ -232,12 +232,26 @@ class Hoop
             return json_encode(new Response("Error", time(), $data));
         } else {
             //insert title into watchHistory
+
+            $historyQuery = "SELECT title_id FROM title
+            WHERE title_id = ?";
+
+            if (!$statement = $this->con->prepare($historyQuery)) {
+                die('Prepair failed');
+            }
+            $statement->bind_param('s', $titleID);
+            $statement->execute();
+            $statement->bind_result($titleID);
+            $hist_id = $statement->fetch();
+            $statement->close();
+
+
             $stmt = $this->con->prepare("INSERT INTO watch_history (title_id,user_id) VALUES (?,?)");
             if ($stmt === false) {
                 die("Prepare failed: " . $this->con->error);
             }
 
-            $stmt->bind_param("ss", $title_id, $user_id);
+            $stmt->bind_param("ss", $titleID, $user_id);
 
             // Execute the statement
             if ($stmt->execute() === false) {
@@ -278,10 +292,87 @@ class Hoop
 
     public function setWatchList($request_body)
     {
+        $titleID = $request_body["title_id"];
+        $user_id = $request_body["user_id"];
+        //check if the title is already in the watch hist table
+        $historyQuery = "SELECT title_id FROM watch_list
+        WHERE user_id = ?";
+
+
+        if (!$statement = $this->con->prepare($historyQuery)) {
+            die('Prepair failed');
+        }
+        $statement->bind_param('s', $user_id);
+        $statement->execute();
+        $statement->bind_result($title_id);
+        $hist_id = $statement->fetch();
+        $statement->close();
+        if ($hist_id) {
+
+            $data = [
+                "message" => "Title already in Watch History",
+            ];
+            return json_encode(new Response("Error", time(), $data));
+        } else {
+            //insert title into watchHistory
+
+            $historyQuery = "SELECT title_id FROM title
+            WHERE title_id = ?";
+
+            if (!$statement = $this->con->prepare($historyQuery)) {
+                die('Prepair failed');
+            }
+            $statement->bind_param('s', $titleID);
+            $statement->execute();
+            $statement->bind_result($titleID);
+            $hist_id = $statement->fetch();
+            $statement->close();
+
+
+            $stmt = $this->con->prepare("INSERT INTO watch_list (title_id,user_id) VALUES (?,?)");
+            if ($stmt === false) {
+                die("Prepare failed: " . $this->con->error);
+            }
+
+            $stmt->bind_param("ss", $titleID, $user_id);
+
+            // Execute the statement
+            if ($stmt->execute() === false) {
+                die("Execute failed: " . $stmt->error);
+            } else {
+                echo "Watch List inserted successfully.";
+            }
+            $stmt->close();
+        }
     }
 
     public function getWatchList($request_body)
     {
+        $user_id = $request_body["user_id"];
+        $histQuery = "SELECT title_id FROM watch_list
+        WHERE user_id = $user_id";
+
+
+        if (!$statement = $this->con->prepare($histQuery)) {
+            die('Prepair failed');
+        }
+        $statement->bind_param('s', $user_id);
+        $statement->execute();
+        $statement->bind_result($title_id);
+        $hist_titles = [];
+        while ($statement->fetch()) {
+            $hist_titles[] = $title_id;
+        }
+
+        $statement->close();
+
+        //carousel
+        $data = [];
+        for ($i = 0; $i < sizeof($hist_titles); $i++) {
+            $data[] = $hist_titles[$i];
+        }
+
+
     }
 }
 $hoop = Hoop::instance();
