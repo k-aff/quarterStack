@@ -1,5 +1,5 @@
 <?php
-    // echo "In Class!";
+    //echo "In Class!";
 
     class Hoop
     {
@@ -35,12 +35,48 @@
 
         public function handleRequest()
         {
-
-            if ($_SERVER["REQUEST_METHOD"] === "POST") 
-            {
-
+            if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $reqbody = json_decode(file_get_contents('php://input'), true);
-       
+                $type = $reqbody["type"];
+                if (!isset($type)) {
+                    echo "Error: No Type";
+                    return;
+                }
+                if ($type==="setUserPref")
+                {
+                    $this->setUserPref();
+                }
+                if ($type==="getUserPref")
+                {
+                    $this->getUserPref();
+                }
+                if ($type==="setReview")
+                {
+                    $this->setReview();
+                }
+                if ($type==="getReview")
+                {
+                    $this->getReview();
+                }
+                if ($type==="getMovies")
+                {
+                    $this->getMovies();
+                }
+                if ($type==="getSeries")
+                {
+                    $this->getSeries();
+                }
+                if ($type==="getUser")
+                {
+                    $this->getUser();
+                }
+
+
+            }
+            
+        }
+        
+
     public function setReview()
     {
         $hoop = Hoop::instance();
@@ -219,48 +255,40 @@ public function setUserPref()
 
         public function getUser()
         {
+            $hoop = Hoop::instance();
+            $reqbody = json_decode(file_get_contents('php://input'), true);
 
-        }
-
-        public function login()
-        {
-            
-        }
-
-        public function setUserPref()
-        {
-
-        }
-
-        public function getAllTitle()
-        {
-
-        }
-
-        public function search()
-        {
-            
-        }
-
-        
+            $email = $reqbody["email"];
+            $user_id = $hoop->getUserIdByEmail($email);
+            $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id";
+            $result = $this->con->query($sql);
+            if ($result && $result->num_rows > 0)
+            {
+                $user=$result->fetch_assoc();
+                echo json_encode(new Response("success", time(), $user));
+            }
+            else
+            {
+                echo json_encode(new Response("failure", time(), "user not found"));
+            }
+        }  
     }
 
     $hoop = Hoop::instance();
     $hoop->handleRequest();
 
-    class Response
+class Response{
+
+    public $status;
+    public $timestamp;
+    public $data;
+
+
+    function __construct($status, $timestamp, $data)
     {
-
-        public $status;
-        public $timestamp;
-        public $data;
-
-
-        function __construct($status, $timestamp, $data)
-        {
-            $this->status = $status;
-            $this->timestamp = $timestamp;
-            $this->data = $data;
-        }
+        $this->status = $status;
+        $this->timestamp = $timestamp;
+        $this->data = $data;
     }
+}
 ?>
