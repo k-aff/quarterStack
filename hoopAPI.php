@@ -208,7 +208,7 @@ class Hoop
     }
     public function setWatchHistory($request_body)
     {
-        
+
         $titleID = $request_body["title_id"];
         $user_id = $request_body["user_id"];
         //check if the title is already in the watch hist table
@@ -288,6 +288,8 @@ class Hoop
         for ($i = 0; $i < sizeof($hist_titles); $i++) {
             $data[] = $hist_titles[$i];
         }
+
+        return json_encode(new Response("Success", time(), $data));
     }
 
     public function setWatchList($request_body)
@@ -373,6 +375,7 @@ class Hoop
         }
 
 
+        return json_encode(new Response("Success", time(), $data));
     }
 }
 $hoop = Hoop::instance();
