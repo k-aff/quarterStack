@@ -36,7 +36,8 @@
         public function handleRequest()
         {
 
-            if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            if ($_SERVER["REQUEST_METHOD"] === "POST") 
+            {
 
                 $reqbody = json_decode(file_get_contents('php://input'), true);
 
@@ -47,7 +48,8 @@
                     return;
                 }
     
-                if ($type === "signUp") {
+                if ($type === "signUp") 
+                {
                     $this->signUp($reqbody);
                 }
                 else if($type==="login") 
