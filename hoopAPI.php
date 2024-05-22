@@ -125,7 +125,7 @@ class Hoop
 
             }
         }
-    }
+    
 
 
     public function signUp($jsonData)
