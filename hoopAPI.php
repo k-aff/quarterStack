@@ -43,20 +43,20 @@
                 $type = $reqbody["type"];
 
                 if (!isset($type)) {
-                    echo json_encode(new Response("Error", time(), "No type specified"))
+                    echo json_encode(new Response("Error", time(), "No type specified"));
                     return;
                 }
     
                 if ($type === "signUp") {
-                    $this->signUp(&reqbody);
+                    $this->signUp($reqbody);
                 }
                 else if($type==="login") 
                 {
-                    $this->login(&reqbody);
+                    $this->login($reqbody);
                 }
                 else if($type==="getAllTitles") 
                 {
-                    $this->getAllTitles(&reqbody);
+                    $this->getAllTitles($reqbody);
                 }
                 else if($type==="search") 
                 {
