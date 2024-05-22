@@ -31,17 +31,17 @@ font-size: 24px;
 .navlogov
 {
     font-size: 24px;
-    color: rgb(0, 0, 0); /* Black color */
+    color: rgb(0, 0, 0); 
     transform: rotate(270deg);
 }
 
 .login-link {
-    margin-left: auto; /* Move the login button to the right */
+    margin-left: auto; 
 }
 
 .login-button {
-    background-color: purple; /* Purple color */
-    color: #ffffff; /* White text color */
+    background-color: purple; 
+    color: #ffffff;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -49,7 +49,7 @@ font-size: 24px;
 }
 
 .login-button:hover {
-    background-color: #a84fa8; /* Darker purple on hover */
+    background-color: #a84fa8; 
 }
 body{
     background-image: url("../img/unnamed.png");
@@ -159,10 +159,10 @@ ul {
         transition: 0.5s;}
 
         .social-icons a:hover::after {
-            /* Display the title attribute as content */
+          
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
-            color:purple; /* White text color */
+            background-color: rgba(0, 0, 0, 0.8); 
+            color:purple;
             padding: 5px;
             border-radius: 5px;
             font-size: 14px;
