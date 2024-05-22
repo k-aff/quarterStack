@@ -42,18 +42,6 @@
                     echo "Error: No Type";
                     return;
                 }
-    
-                else if ($type === "signUp") {
-                    $this->signUp();
-                }
-                if($type==="login") 
-                {
-                    $this->login();
-                }
-                if($type==="getAllTitles") 
-                {
-                    $this->getAllTitles();
-                }
                 if ($type==="setUserPref")
                 {
                     $this->setUserPref();
@@ -88,16 +76,6 @@
             
         }
         
-
-        public function signUp()
-        {
-
-        }
-
-        public function login()
-        {
-            
-        }
 
     public function setReview()
     {
@@ -180,10 +158,7 @@ public function setUserPref()
         return $result->num_rows > 0 ? $result->fetch_assoc()["user_id"] : null;
     }
 
-        public function getAllTitles()
-        {
 
-        }
         public function getUserPref()
         {
             $hoop = Hoop::instance();
