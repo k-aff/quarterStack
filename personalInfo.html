@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details</title>
+    <link rel="stylesheet" href="css/personalInfo.css">
+    <script src="js/personalInfo.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a href="#"><img src="img/logo1.png" alt="Logo"></a>
+    
+    <nav>
+        <ul class="nav-links">
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="movies.html">Movies</a></li>
+            <li><a href="series.html">TV Shows</a></li>
+            <li><a href="watchlist.html">WatchList</a></li>
+            <li><a href="watchHistory.html">WatchHistory</a></li>
+        </ul>
+        <div class="Logout_icon">
+            <a href="welcome.html"><i class="fa fa-sign-out"></i></a>
+            <a class="active" href="personalInfo.html"><i class="fa fa-user"></i></a>
+        </div>
+    </nav>
+</div>
+</header>
+
+<div id="userInfo" class="account-container personal-info">
+    <h1>Personal Information</h1>
+    <form id="accountDetailsForm" onsubmit="updateDetails(event)">
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" required>
+        </div>
+        <div class="form-group">
+            <label for="accountNumber">Card Number</label>
+            <input type="text" id="accountNumber" name="accountNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="expiry_">Expiry Date</label>
+            <input type="date" id="expiry_" name="expiry" required>
+        </div>
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" value="" readonly>
+        </div>
+        <div class="form-group">
+            <label for="surname">Surname</label>
+             <input type="text" id="surname" name="surname" value="" readonly>
+        </div>
+        <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="F">Female</option>
+                <option value="M">Male</option>
+                <option value="P">Prefer not to say</option>
+                <option value="O">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone_number" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <br>
+        <br>
+        <button type="submit">Update Details</button>
+        
+        <br>
+        <br>
+        <button type="button" onclick="openDiv()">Change Password</button>
+    </form>
+
+    <br>
+    <button type="button" onclick="window.location.href='userPreferences.html'">Edit User Preferences</button>
+    <br>
+    <br>
+    <button onclick="openDeleteConfirmationModel()">Delete Account</button>
+
+</div>
+
+<div id="deleteConfirmationModel" class="model" style="display: none;">
+    <div class="model-content">
+        <h2>Are you sure you want to delete your account?</h2>
+        <button id="confirmDeleteButton">Yes</button>
+        <button onclick="closeDeleteConfirmationModel()">Cancel</button>
+    </div>
+</div>
+
+
+<div id="changePassword" class="changing" style="display: none;">
+    <div class="model-content">
+        <span class="close" onclick="closeDiv()"></span>
+        <h1>Change Password</h1>
+        <form id="passwordChangeForm" onsubmit="changePassword(event)">
+            <div class="form-group">
+                <label for="oldPassword">Old Password</label>
+                <input type="password" id="oldPassword" name="oldPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" placeholder="8 characters, 1 uppercase, 1 lowercase, and a special character" required>
+            </div>
+            <br>
+            <br>
+            <button type="submit">Change Password</button>
+            <br>
+        <br>
+            <button type="button" onclick="closeDiv()">Back</button>
+        
+        </form>
+       
+        
+    </div>
+</div>
+
+</body>
+</html>
