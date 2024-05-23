@@ -566,7 +566,7 @@ public function setUserPref($reqbody)
         
         public function getMovies($reqbody)
         {
-            $hoop = Hoop::instance();
+            //$hoop = Hoop::instance();
             $sql = "SELECT title,image  FROM movie INNER JOIN title ON movie.title_id = title.title_id";
             $result = $this->con->query($sql);
 
@@ -583,7 +583,7 @@ public function setUserPref($reqbody)
 
         public function getSeries($reqbody)
         {
-            $hoop = Hoop::instance();
+            //$hoop = Hoop::instance();
             $sql = "SELECT title,image FROM tv_series INNER JOIN title ON tv_series.title_id = title.title_id";
             $result = $this->con->query($sql);
 
