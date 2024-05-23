@@ -638,7 +638,7 @@ class Hoop
             ];
         }
 
-        return json_encode(new Response("Success", time(), $watch_hist2));
+        echo json_encode(new Response("Success", time(), $watch_hist2));
     }
 
     public function setWatchList($request_body)
