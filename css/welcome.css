@@ -1,0 +1,335 @@
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+
+}
+html{
+    height: 100%;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin-right: 2opx;
+   
+    padding: 10px;
+   
+}
+.navlogo
+{
+color: rgb(0, 0, 0);
+font-size: 24px;
+
+}
+.buttonlog
+{
+    text-align: center;
+}
+.navlogov
+{
+    font-size: 24px;
+    color: rgb(0, 0, 0); /* Black color */
+    transform: rotate(270deg);
+}
+
+.login-link {
+    margin-left: auto; /* Move the login button to the right */
+}
+
+.login-button {
+    background-color: purple; /* Purple color */
+    color: #ffffff; /* White text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #a84fa8; /* Darker purple on hover */
+}
+body{
+    background-image: url("../img/unnamed.png");
+
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: white;
+   display: flex;
+    min-height:100px;
+   flex-direction: column;
+   text-align: center;
+
+   border: 2px solid rgba(97, 85, 85, 0.1);
+   backdrop-filter: blur(2px);
+}
+
+
+footer{
+    margin-top: auto;
+background-color:#762971;
+margin-top:46%;
+
+
+}
+
+
+.footerContainer{
+    width:100%;
+    padding: 70px 30px 20px;
+    margin-bottom: -22px;
+    margin-top: -40px;
+    
+}
+
+header {
+   font-family: sans-serif;
+   margin-top: -10px;
+   font-size: 100px;
+    color: rgba(255, 255, 255,0.9);
+    text-align: center;
+    padding: 20px 0;
+}
+
+
+.cta
+{
+    background-color: rgba(0,0,0,0.9);
+    
+   
+  font-family: inherit;
+
+font-size: 20px;
+}
+
+.features,.intro {
+    margin-bottom: 10px;
+    margin-top:20px;
+    padding: 30px 40px;
+    background-color: rgba(0,0,0,0.9);
+    font-size: 20px;
+  text-align: left;
+    color:#fff;
+    border-radius: 20px;
+   margin-left:30px;
+   margin-right: 35px;;
+ 
+}
+.content {
+    margin-bottom: 10px;
+    margin-top: -50px;
+    padding: 30px 40px;
+    background-color: rgba(0,0,0,0.9);
+    font-size: 20px;
+
+    color:#fff;
+ 
+}
+
+h2 {
+    color: rgb(255, 255, 255);
+    font-size: 35px;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+ 
+  .social-icons {
+    display:flex;
+    justify-content: center;
+  }
+  .social-icons  a{
+    text-decoration: none;
+    padding:5px;
+    background-color:white ;
+    margin:10px;
+    border-radius:50% ;
+  }
+  .social-icons  a i{
+    font-size: 20px;
+    color:black;
+    opacity: 0.9;}
+
+    .social-icons  a:hover {
+        background-color: #111;
+        transition: 0.5s;}
+
+        .social-icons a:hover::after {
+            /* Display the title attribute as content */
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+            color:purple; /* White text color */
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+           
+        }
+    
+
+    .social-icons  a:hover i{
+        color: white;
+        transition: 0.5s;
+    }
+
+    .footernav
+    {
+
+    margin: 30px 0;
+    margin-bottom: 2px;
+    }
+
+  .footernav ul {
+display:flex;
+justify-content: center;
+list-style-type: none;
+
+  }
+  .footernav ul li a{
+
+    color:white;
+    margin:20px;
+    text-decoration: none;
+    font-size: 1.3em;
+    opacity: 0.7;
+    transition: 0.5s;
+  }
+
+  .footernav ul li a:hover{
+    color:rgb(253, 232, 253);
+    opacity:1;
+}
+
+.footerContainer p{
+    text-align: center;
+    font-size: large;
+}
+
+    .footerBottom
+    {
+        margin-top: 10px;
+     
+        background-color: black;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .footerBottom p{
+        color:white;
+
+    }
+
+.streamingServices
+{
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 400;
+    margin:0px 5px;
+}
+  
+.pricing{
+    text-align: center;
+    background-color: rgba(0,0,0,0.9);
+    margin-bottom: -500px;
+}
+
+
+
+
+
+.toggleContainer {
+    position: relative;
+    left:600px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: fit-content;
+    border: 3px solid #343434;
+    border-radius: 20px;
+    background: #3f3e3e;
+    font-weight: bold;
+   color: white;
+    cursor: pointer;
+  }
+  .toggleContainer::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0%;
+    border-radius:20px;
+    background: purple;
+    transition: all 0.3s;
+  }
+  .toggleCheckbox:checked + .toggleContainer::before {
+     left: 50%;
+  }
+  .toggleContainer div {
+    padding: 6px;
+    text-align: center;
+    z-index: 1;
+  }
+  .toggleCheckbox {
+    display: none;
+   
+    
+  }
+ 
+  .toggleCheckbox:checked + .toggleContainer div:first-child{
+    color: white;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox:checked + .toggleContainer div:last-child{
+    color: white;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox + .toggleContainer div:first-child{
+    color:white;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox + .toggleContainer div:last-child{
+     color: white;
+    transition: color 0.3s;
+  }
+
+.subscription-plans annual-plans{
+    display: flex;
+}
+.subscription-plans annual-plans
+ {
+    display: flex;
+}
+
+.plan {
+    flex: 1;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.plan-input {
+    display: none;
+}
+
+.plan-label {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+
+
+.plan-input:checked + .plan-label + .plan-details {
+    display: block;
+}
