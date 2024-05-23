@@ -45,87 +45,55 @@ class Hoop
 
             $type = $reqbody["type"];
 
-                if (!isset($type)) 
-                {
-                    echo json_encode(new Response("Error", time(), "No type specified"));
-                    return;
-                }
-                if ($type === "signUp") 
-                {
-                    $this->signUp($reqbody);
-                }
-                else if($type==="login") 
-                {
-                    $this->login($reqbody);
-                }
-                else if($type==="getAllTitles") 
-                {
-                    $this->getAllTitles($reqbody);
-                }
-                else if($type==="search") 
-                {
-                    $this->search($reqbody);
-                }
-                else if($type==="getMovies") 
-                {
-                    $this->getMovies($reqbody);
-                }
-                else if($type==="getSeries") 
-                {
-                    $this->getSeries($reqbody);
-                }
-                else if($type==="getWatchHistory") 
-                {
-                    $this->getWatchHistory($reqbody);
-                }
-                else if($type==="getWatchList") 
-                {
-                    $this->getWatchList($reqbody);
-                }
-                else if($type==="getUser") 
-                {
-                    $this->getUser($reqbody);
-                }
-                else if($type==="updateUser") 
-                {
-                    $this->updateUser($reqbody);
-                }
-                else if($type==="updatePassword") 
-                {
-                    $this->updatePassword($reqbody);
-                }
-                else if($type==="deleteUser") 
-                {
-                    $this->deleteUser($reqbody);
-                }
-                else if($type==="getUserPref") 
-                {
-                    $this->getUserPref($reqbody);
-                }
-                else if($type==="setUserPref") 
-                {
-                    $this->setUserPref($reqbody);
-                }
-                else if($type==="setViewPage") 
-                {
-                    $this->setViewPage($reqbody);
-                }
-                else if($type==="getReview") 
-                {
-                    $this->getReview($reqbody);
-                }
-                else if($type==="setReview") 
-                {
-                    $this->setReview($reqbody);
-                }
-                else if($type==="logout") 
-                {
-                    $this->logout($reqbody);
-                }
-
+            if (!isset($type)) {
+                echo json_encode(new Response("Error", time(), "No type specified"));
             }
+
+            // if ($type === "signUp") {
+            //     $this->signUp($reqbody);
+            // } else if ($type === "login") {
+            //     $this->login($reqbody);
+            // } else if ($type === "getAllTitles") {
+            //     $this->getAllTitles($reqbody);
+            // } else if ($type === "search") {
+            //     $this->search($reqbody);
+            // } else if ($type === "getMovies") {
+            //     $this->getMovies($reqbody);
+            // } else if ($type === "getSeries") {
+            //     $this->getSeries($reqbody);
+            // } 
+            else if ($type === "setWatchHistory") {
+                $this->setWatchHistory($reqbody);
+            } else if ($type === "getWatchHistory") {
+                $this->getWatchHistory($reqbody);
+            } else if ($type === "getWatchList") {
+                $this->getWatchList($reqbody);
+            } else if ($type === "setWatchList") {
+                $this->setWatchList($reqbody);
+            }
+            //else if ($type === "getUser") {
+            //     $this->getUser($reqbody);
+            // } else if ($type === "updateUser") {
+            //     $this->updateUser($reqbody);
+            // } else if ($type === "updatePassword") {
+            //     $this->updatePassword($reqbody);
+            // } else if ($type === "deleteUser") {
+            //     $this->deleteUser($reqbody);
+            // } else if ($type === "getUserPref") {
+            //     $this->getUserPref($reqbody);
+            // } else if ($type === "setUserPref") {
+            //     $this->setUserPref($reqbody);
+            // } else if ($type === "setViewPage") {
+            //     $this->setViewPage($reqbody);
+            // } else if ($type === "getReview") {
+            //     $this->getReview($reqbody);
+            // } else if ($type === "setReview") {
+            //     $this->setReview($reqbody);
+            // } else if ($type === "logout") {
+            //     $this->logout($reqbody);
+            // }
         }
-    
+    }
 
 
     public function signUp($jsonData)
@@ -666,10 +634,10 @@ public function setUserPref($reqbody)
         if (isset($_SESSION["user_id"]))
             session_destroy();
     }
-    
+
     public function login($request_body) //by retha
     {
-        print_r($request_body);
+
         $email = $request_body["email"];
         $password = $request_body["password"];
 
@@ -678,7 +646,7 @@ public function setUserPref($reqbody)
         WHERE email = ?";
 
         if (!$statement = $this->con->prepare($loginQuery)) {
-            die('Prepair failed');
+            die('Prepare failed');
         }
 
         $statement->bind_param('s', $email);
@@ -699,14 +667,13 @@ public function setUserPref($reqbody)
         if ($user === false) {
             $data = [
                 "message" => "User not found",
-                "user_id" => null
             ];
             return json_encode(new Response("Error", time(), $data));
         } else {
             //hash passed in password
-            $hashpass = hash('SHA 256', $password);
+            $hashpass = hash('sha256', $password);
             //verify the password if email exsists
-            //check if email exits in db
+
             $loginQuery = "SELECT password FROM user
         WHERE password = ?";
 
@@ -740,11 +707,12 @@ public function setUserPref($reqbody)
                 $stmt->bind_param('ii', $act, $userID);
                 $stmt->execute();
                 $stmt->close();
-                //unset
-                session_start();
-                $_SESSION["user_id"];
 
-                // {"status":"Success","timestamp":1716362405,"data":{"message":"User logged in","user_id":26}}
+
+                //start session
+                session_start();
+                $_SESSION["user_id"] = $userID;
+
 
                 echo json_encode(new Response("Success", time(), $data));
             } else {
@@ -764,37 +732,24 @@ public function setUserPref($reqbody)
         $user_id = $request_body["user_id"];
         //check if the title is already in the watch hist table
         $historyQuery = "SELECT title_id FROM watch_history
-        WHERE user_id = ?";
+        WHERE user_id = ? AND title_id =?";
 
 
         if (!$statement = $this->con->prepare($historyQuery)) {
-            die('Prepair failed');
+            die('Prepair failed:' . $this->con->error);
         }
-        $statement->bind_param('s', $user_id);
+        $statement->bind_param('ss', $user_id, $titleID);
         $statement->execute();
-        $statement->bind_result($title_id);
-        $hist_id = $statement->fetch();
-        $statement->close();
-        if ($hist_id) {
+        $statement->store_result();
 
+        if ($statement->num_rows > 0) {
+            // check if titlle already in table
             $data = [
                 "message" => "Title already in Watch History",
             ];
-            return json_encode(new Response("Error", time(), $data));
+            echo json_encode(new Response("Error", time(), $data));
         } else {
             //insert title into watchHistory
-
-            $historyQuery = "SELECT title_id FROM title
-            WHERE title_id = ?";
-
-            if (!$statement = $this->con->prepare($historyQuery)) {
-                die('Prepair failed');
-            }
-            $statement->bind_param('s', $titleID);
-            $statement->execute();
-            $statement->bind_result($titleID);
-            $hist_id = $statement->fetch();
-            $statement->close();
 
 
             $stmt = $this->con->prepare("INSERT INTO watch_history (title_id,user_id) VALUES (?,?)");
@@ -808,78 +763,104 @@ public function setUserPref($reqbody)
             if ($stmt->execute() === false) {
                 die("Execute failed: " . $stmt->error);
             } else {
-                echo "Watch History inserted successfully.";
+                $data = [
+                    "message" => "Title inserted into watch history successfully",
+                ];
+                echo json_encode(new Response("Success", time(), $data));
             }
             $stmt->close();
         }
+        $statement->close();
     }
 
     public function getWatchHistory($request_body)
     {
         $user_id = $request_body["user_id"];
-        $histQuery = "SELECT title_id FROM watch_history
-        WHERE user_id = $user_id";
+        //join
+        $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
 
+                  FROM watch_history wh
+                  JOIN title t ON wh.title_id = t.title_id
+                  WHERE wh.user_id = ?";
 
         if (!$statement = $this->con->prepare($histQuery)) {
-            die('Prepair failed');
+            die('Prepare failed' . $this->con->error);
         }
+
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id);
-        $hist_titles = [];
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+
+        $watch_hist = [];
         while ($statement->fetch()) {
-            $hist_titles[] = $title_id;
+
+            //form resonse body
+            $watch_hist[] = [
+                "title" => $title,
+                "title_id" => $title_id,
+                "image" => $image,
+                "genre_id" => $genre_id,
+                "age_cert" => $age_cert
+
+            ];
         }
 
         $statement->close();
 
-        //carousel
-        $data = [];
-        for ($i = 0; $i < sizeof($hist_titles); $i++) {
-            $data[] = $hist_titles[$i];
+        $watch_hist2 = [];
+        foreach ($watch_hist as $item) {
+            //get genre from genre table for each row
+
+            if (!$stmt = $this->con->prepare("SELECT genre FROM genre WHERE genre_id = ?")) {
+                die('Genre Prepare failed' . $this->con->error);
+            }
+
+            $stmt->bind_param('i', $item['genre_id']);
+            $stmt->execute();
+            $stmt->bind_result($genreString);
+            $stmt->fetch();
+
+            $stmt->close();
+
+
+            //update response body
+            $watch_list2[] = [
+                "title" => $item['title'],
+                "title_id" => $item['title_id'],
+                "image" => $item['image'],
+                "genre" => $genreString,
+                "age_cert" => $item['age_cert']
+
+            ];
         }
 
-        return json_encode(new Response("Success", time(), $data));
+        echo json_encode(new Response("Success", time(), $watch_hist2));
     }
 
     public function setWatchList($request_body)
     {
         $titleID = $request_body["title_id"];
         $user_id = $request_body["user_id"];
-        //check if the title is already in the watch hist table
-        $historyQuery = "SELECT title_id FROM watch_list
-        WHERE user_id = ?";
+        //check if the title is already in the watch list table
+        $listQuery = "SELECT title_id FROM watch_list
+        WHERE user_id = ? AND title_id = ?";
 
 
-        if (!$statement = $this->con->prepare($historyQuery)) {
-            die('Prepair failed');
+        if (!$statement = $this->con->prepare($listQuery)) {
+            die('Prepair failed:' . $this->con->error);
         }
-        $statement->bind_param('s', $user_id);
+        $statement->bind_param('ss', $user_id, $titleID);
         $statement->execute();
-        $statement->bind_result($title_id);
-        $hist_id = $statement->fetch();
-        $statement->close();
-        if ($hist_id) {
+        $statement->store_result();
 
+        if ($statement->num_rows > 0) {
+            // check if titlle already in table
             $data = [
-                "message" => "Title already in Watch History",
+                "message" => "Title already in Watch List",
             ];
-            return json_encode(new Response("Error", time(), $data));
+            echo json_encode(new Response("Error", time(), $data));
         } else {
-            //insert title into watchHistory
-
-            $historyQuery = "SELECT title_id FROM title
-            WHERE title_id = ?";
-
-            if (!$statement = $this->con->prepare($historyQuery)) {
-                die('Prepair failed');
-            }
-            $statement->bind_param('s', $titleID);
-            $statement->execute();
-            $statement->bind_result($titleID);
-            $hist_id = $statement->fetch();
-            $statement->close();
+            //insert title into watchList
 
 
             $stmt = $this->con->prepare("INSERT INTO watch_list (title_id,user_id) VALUES (?,?)");
@@ -893,40 +874,77 @@ public function setUserPref($reqbody)
             if ($stmt->execute() === false) {
                 die("Execute failed: " . $stmt->error);
             } else {
-                echo "Watch List inserted successfully.";
+                $data = [
+                    "message" => "Title inserted into watch list successfully",
+                ];
+                echo json_encode(new Response("Success", time(), $data));
             }
             $stmt->close();
         }
+        $statement->close();
     }
 
     public function getWatchList($request_body)
     {
         $user_id = $request_body["user_id"];
-        $histQuery = "SELECT title_id FROM watch_list
-        WHERE user_id = $user_id";
+        //join
+        $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
 
+                  FROM watch_list wl
+                  JOIN title t ON wl.title_id = t.title_id
+                  WHERE wl.user_id = ?";
 
-        if (!$statement = $this->con->prepare($histQuery)) {
-            die('Prepair failed');
+        if (!$statement = $this->con->prepare($listQuery)) {
+            die('Prepare failed' . $this->con->error);
         }
+
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id);
-        $hist_titles = [];
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+
+        $watch_list = [];
         while ($statement->fetch()) {
-            $hist_titles[] = $title_id;
+
+            //form resonse body
+            $watch_list[] = [
+                "title" => $title,
+                "title_id" => $title_id,
+                "image" => $image,
+                "genre_id" => $genre_id,
+                "age_cert" => $age_cert
+
+            ];
         }
 
         $statement->close();
+        $watch_list2 = [];
+        foreach ($watch_list as $item) {
+            //get genre from genre table for each row
 
-        //carousel
-        $data = [];
-        for ($i = 0; $i < sizeof($hist_titles); $i++) {
-            $data[] = $hist_titles[$i];
+            if (!$stmt = $this->con->prepare("SELECT genre FROM genre WHERE genre_id = ?")) {
+                die('Genre Prepare failed' . $this->con->error);
+            }
+
+            $stmt->bind_param('i', $item['genre_id']);
+            $stmt->execute();
+            $stmt->bind_result($genreString);
+            $stmt->fetch();
+
+            $stmt->close();
+
+
+            //update response body
+            $watch_list2[] = [
+                "title" => $item['title'],
+                "title_id" => $item['title_id'],
+                "image" => $item['image'],
+                "genre" => $genreString,
+                "age_cert" => $item['age_cert']
+
+            ];
         }
 
-
-        return json_encode(new Response("Success", time(), $data));
+        echo json_encode(new Response("Success", time(), $watch_list2));
     }
 
 
