@@ -36,8 +36,6 @@ class Hoop
 
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
-        $hoop = Hoop::instance();
-
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -49,19 +47,19 @@ class Hoop
                 echo json_encode(new Response("Error", time(), "No type specified"));
             }
 
-            // if ($type === "signUp") {
-            //     $this->signUp($reqbody);
-            // } else if ($type === "login") {
-            //     $this->login($reqbody);
-            // } else if ($type === "getAllTitles") {
-            //     $this->getAllTitles($reqbody);
-            // } else if ($type === "search") {
-            //     $this->search($reqbody);
-            // } else if ($type === "getMovies") {
-            //     $this->getMovies($reqbody);
-            // } else if ($type === "getSeries") {
-            //     $this->getSeries($reqbody);
-            // } 
+            if ($type === "signUp") {
+                $this->signUp($reqbody);
+            } else if ($type === "login") {
+                $this->login($reqbody);
+            } else if ($type === "getAllTitles") {
+                $this->getAllTitles($reqbody);
+            } else if ($type === "search") {
+                $this->search($reqbody);
+            } else if ($type === "getMovies") {
+                $this->getMovies($reqbody);
+            } else if ($type === "getSeries") {
+                $this->getSeries($reqbody);
+            } 
             else if ($type === "setWatchHistory") {
                 $this->setWatchHistory($reqbody);
             } else if ($type === "getWatchHistory") {
@@ -71,27 +69,27 @@ class Hoop
             } else if ($type === "setWatchList") {
                 $this->setWatchList($reqbody);
             }
-            //else if ($type === "getUser") {
-            //     $this->getUser($reqbody);
-            // } else if ($type === "updateUser") {
-            //     $this->updateUser($reqbody);
-            // } else if ($type === "updatePassword") {
-            //     $this->updatePassword($reqbody);
-            // } else if ($type === "deleteUser") {
-            //     $this->deleteUser($reqbody);
-            // } else if ($type === "getUserPref") {
-            //     $this->getUserPref($reqbody);
-            // } else if ($type === "setUserPref") {
-            //     $this->setUserPref($reqbody);
-            // } else if ($type === "setViewPage") {
-            //     $this->setViewPage($reqbody);
-            // } else if ($type === "getReview") {
-            //     $this->getReview($reqbody);
-            // } else if ($type === "setReview") {
-            //     $this->setReview($reqbody);
-            // } else if ($type === "logout") {
-            //     $this->logout($reqbody);
-            // }
+            else if ($type === "getUser") {
+                $this->getUser($reqbody);
+            } else if ($type === "updateUser") {
+                $this->updateUser($reqbody);
+            } else if ($type === "updatePassword") {
+                $this->updatePassword($reqbody);
+            } else if ($type === "deleteUser") {
+                $this->deleteUser($reqbody);
+            } else if ($type === "getUserPref") {
+                $this->getUserPref($reqbody);
+            } else if ($type === "setUserPref") {
+                $this->setUserPref($reqbody);
+            } else if ($type === "setViewPage") {
+                $this->setViewPage($reqbody);
+            } else if ($type === "getReview") {
+                $this->getReview($reqbody);
+            } else if ($type === "setReview") {
+                $this->setReview($reqbody);
+            } else if ($type === "logout") { 
+                $this->logout($reqbody);
+            }
         }
     }
 
