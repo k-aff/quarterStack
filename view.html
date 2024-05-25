@@ -7,6 +7,7 @@
     
     <title>movie information</title>
     <link rel="stylesheet" href="css/view.css">
+    <script src="js/view.js"></script>
 </head>
 <header>
     <div class="logo">
@@ -26,12 +27,12 @@
 </div>
 </header>
 
-<body>
+<body onload="onLoad()">
     <div class="movie-background" style="background-image: url('img/unnamed.png');">
         
-            <div class="movie-details">
+            <div class="movie-details" id="detailsContainer">
 
-                <img src="img/mg_salone_poster_1400x2100.jpg" alt="Movie Poster" class="movie-poster-small">
+                <!-- <img src="img/mg_salone_poster_1400x2100.jpg" alt="Movie Poster" class="movie-poster-small">
                 <h1>Title Name</h1>
                 <div class="details-section">
                     <p>Plot Summary:</p>
@@ -42,7 +43,8 @@
                     <p>Country:</p>
                     <p>Production:</p>
                     <a href="Reviews.html" class="reviews-link">View Reviews</a>
-                </div>
+                </div> -->
+
                 <button class="watch-button"><i class="fa fa-play"></i> Play</button>
                 <button class="watch-button"><i class="fa fa-plus"></i> add</button>
             </div>

@@ -1,5 +1,8 @@
 <?php
-echo "In Class!";
+
+header("Content-Type: application/json");
+header("Content-Type: application/x-www-form-urlencoded");
+
 
 class Hoop
 {
@@ -20,7 +23,7 @@ class Hoop
             die("Connection failed: " . $this->con->connect_error);
         } else {
             $this->con = $this->con;
-            echo "Connected!";
+            // echo "Connected!";
         }
 
         return $this->con;
@@ -973,12 +976,6 @@ public function setUserPref($reqbody)
             
             if($genre1!=null)
                 $whereClause = $whereClause. ")";
-
-            echo $whereClause;
-        }
-        else
-        {
-            echo "No preferences set";
         }
         
         $carousels = ["Movies", "Series", "Action", "Animation", "Sci-fi", "Horror", "Comedy", "Adventure", "Drama", "Preferences"];//add preferences;
@@ -992,7 +989,6 @@ public function setUserPref($reqbody)
                 $sqlReturnTitles ="SELECT * FROM title WHERE type='S' LIMIT 20";
             else if(isset($pref) && $carousel === "Preferences"){
                 $sqlReturnTitles ="SELECT * FROM title".$whereClause. "LIMIT 20" ;
-                echo $sqlReturnTitles;
             }
             else
                 $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') LIMIT 20" ;
@@ -1009,8 +1005,11 @@ public function setUserPref($reqbody)
                 while($title = $result->fetch_assoc()){
 
                     $data = array();
+                    $data['id'] = $title["title_id"];
                     $data['title'] = $title["title"];
                     $data['image'] = $title["image"];
+                    $data['type'] = $title["type"];
+                    $data['plot'] = $title["plot_summary"];
 
                     //obtaining additonal movie or series data 
 
@@ -1033,7 +1032,7 @@ public function setUserPref($reqbody)
 
         //get the record 
         $sqlReturnInfo ="SELECT * FROM title WHERE title_id=$titleId" ;
-        echo $sqlReturnInfo;
+        // echo $sqlReturnInfo;
         $result = $this->con->query($sqlReturnInfo);
 
         //check genre in genre table
@@ -1045,6 +1044,7 @@ public function setUserPref($reqbody)
         $genre = $titleGenre["genre"];
 
         $data = array();
+        $data['id'] = $title["title_id"];
         $data['title'] = $title["title"];
         $data['type'] = $title["type"];
         $data['age_cert'] = $title["age_cert"];
