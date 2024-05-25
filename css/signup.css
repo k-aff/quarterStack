@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background: url('img/bg1.png') no-repeat center center fixed;
+    background: url('../img/bg1.png') no-repeat center center fixed;
     background-size: cover;
 }
 
@@ -71,8 +71,25 @@ body {
     border: 2px solid #cb6ce6;
     border-radius: 30px;
     background-color: rgba(57, 14, 57, 0.8);
-    color: white;
-    
+    color: white; 
+    font-size: 12px;
+}
+
+.input-group select {
+    width: 65%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #cb6ce6;
+    border-radius: 30px;
+    background-color: rgba(57, 14, 57, 0.8);
+    color: white; 
+}
+
+#gender {
+    border: 2px solid #cb6ce6;
+    background-color: #390e39;
+    color: #fff;
+    font-size: 12px;
 }
 
 button {
@@ -109,11 +126,4 @@ button:hover {
 
 .signup-box p a:hover {
     color: #a52ba5; /* Change color on hover */
-}
-
-#gender{
-    border: 2px solid #cb6ce6;
-    background-color: #390e39;
-    color: #fff;
-    font-size: 15px;
 }
