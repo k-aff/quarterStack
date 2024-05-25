@@ -45,7 +45,7 @@
 
                 if (!isset($type)) 
                 {
-                    echo json_encode(new Response("Error", time(), "No type specified"))
+                    echo json_encode(new Response("Error", time(), "No type specified"));
                     return;
                 }
     
