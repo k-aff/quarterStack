@@ -1,0 +1,113 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url('img/bg1.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+}
+
+.welcome {
+    flex: 1;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: Montserrat, sans-serif;
+    font-size: 50px;
+    padding-left: 60px;
+}
+
+.login-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 70px;
+}
+
+.login-box {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    width: 70%;
+    height: 30%;
+    border-radius: 90px;
+    border: 2px solid #cb6ce6;
+    position: relative;
+    margin: auto; /* Center horizontally */
+    text-align: center; /* Center text within the div */
+}
+
+.login-box h2 {
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    color: white;
+    margin-bottom: 5px;
+
+    display: inline-block; /* Display labels as blocks to allow alignment */
+    width: 80px; /* Set a fixed width for the labels */
+    text-align: right; /* Align text within labels to the right */
+    margin-right: 10px; /* Add some space between label and input */
+
+}
+
+.input-group input {
+    width: 60%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #cb6ce6;
+    border-radius: 30px;
+    background-color: rgba(57, 14, 57, 0.8);
+    color: white;
+    
+}
+
+button {
+    width: 30%;
+    padding: 10px;
+    border: none;
+    border-radius: 30px;
+    background-color: rgba(95, 8, 119, 0.8);
+    color: white;
+    cursor: pointer;
+    
+    margin-top: 20px; /* Add some space between the button and the sign-up link */
+    display: block; /* Change display to block for left alignment */
+    margin-right: auto; /* Align login button to the left */
+    margin-left: 120px; /* Reset margin-left */
+}
+
+button:hover {
+    background-color: #a52ba5;
+}
+
+.login-box p {
+    position: absolute;
+    bottom: 30px;
+    left: 170px;
+    right: 0;
+    text-align: center;
+}
+
+.login-box p a {
+    color: #cb6ce6; 
+    text-decoration: none;
+}
+
+.login-box p a:hover {
+    color: #a52ba5; /* Change color on hover */
+}
