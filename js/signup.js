@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (signUpReturn.status == "error")
                     alert(signUpReturn.data); 
                 else 
-                    window.location.href = "homepage.html";
+                    window.location.href = "userPreferences.html";
             }
         }
         req.open("POST", "http://localhost/quarterStack/hoopAPI.php", false); 
