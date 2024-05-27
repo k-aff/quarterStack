@@ -1,5 +1,7 @@
 <?php
-echo "In Class!";
+
+header("Content-Type: application/json");
+header("Content-Type: application/x-www-form-urlencoded");
 
 class Hoop
 {
@@ -18,7 +20,7 @@ class Hoop
             die("Connection failed: " . $this->con->connect_error);
         } else {
             $this->con = $this->con;
-            echo "Connected!";
+            // echo "Connected!";
         }
 
         return $this->con;
@@ -141,7 +143,7 @@ class Hoop
 
         if (!$dobDateTime || $dobDateTime->format('Y-m-d') !== $dob || $dobDateTime <= $minDate || $dobDateTime >= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid dob"));
+            echo json_encode(new Response("error", time(), "Invalid date of birth"));
             exit();
         }
 
@@ -176,7 +178,7 @@ class Hoop
         $result = $stmt->get_result();
         $count = $result->fetch_assoc()['COUNT(*)'];
         if ($count > 0) {
-            echo json_encode(new Response("error", time(), "email already in use"));
+            echo json_encode(new Response("error", time(), "email already in use "));
             exit();
         }
 
@@ -205,7 +207,7 @@ class Hoop
 
         if (!$expiryDateTime || $expiryDateTime <= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid expiry_date"));
+            echo json_encode(new Response("error", time(), "Invalid expiry date"));
             exit();
         }
 
@@ -315,7 +317,7 @@ class Hoop
 
         if (!$expiryDateTime || $expiryDateTime <= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid expiry_date"));
+            echo json_encode(new Response("error", time(), "Invalid expiry date"));
             exit();
         }
 
@@ -1089,3 +1091,5 @@ class Response
         $this->data = $data;
     }
 }
+
+?>

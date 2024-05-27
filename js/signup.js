@@ -12,11 +12,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const surname = document.getElementById('surname').value;
         const dob = document.getElementById('dob').value;
         const gender = document.getElementById('gender').value;
-        const country = document.getElementById('country').value;
+        let sCountry = document.getElementById('country').value;
+        const country = parseInt(sCountry); 
         const phone = document.getElementById('phone').value;
         const cardNumber = document.getElementById('card-number').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const expiry = document.getElementById('expiry').value;
 
         // Check if the full name and surname is valid
         const namePattern = /^[a-zA-ZÀ-ÿ-' ]*$/u; //consists of letters, accented letters, dashes, single quotes, and spaces
@@ -57,36 +59,51 @@ document.addEventListener("DOMContentLoaded", function() {
             return; 
         }
 
-        console.log('Full Name:', fname);
-        console.log('Surname:', surname);
-        console.log('Date of Birth:', dob);
-        console.log('Gender:', gender);
-        console.log('Country:', country);
-        console.log('Phone:', phone);
-        console.log('Card Number:', cardNumber);
-        console.log('Email:', email);
-        console.log('Password:', password);
+        // console.log('Full Name:', fname);
+        // console.log('Surname:', surname);
+        // console.log('Date of Birth:', dob);
+        // console.log('Gender:', gender);
+        // console.log('Country:', country);
+        // console.log('Phone:', phone);
+        // console.log('Card Number:', cardNumber);
+        // console.log('Email:', email);
+        // console.log('Password:', password);
+        // console.log('Expiry Date:', expiry);
 
-        // var req = new XMLHttpRequest();  
-        // req.onreadystatechange = function()
-        // {
-        //     if(req.readyState == 4 && req.status == 200)
-        //     {
-        //         console.log("user added to database!");
-        //     }
-        // }
-        // req.open("POST", "http://localhost/quarterStack/hoopAPI.php", false); 
-        // req.setRequestHeader("Content-Type", "application/json");
 
-        // const request = 
-        // {
-        //     "type" : "signUp",
-        //     "apikey" : storedApiKey,
-        //     "limit": 40,
-        //     "return":["id", "title", "price", "bedrooms", "bathrooms", "parking_spaces", "location", "description", "amenities", "type"]
-        // };
+        var req = new XMLHttpRequest();  
+        req.onreadystatechange = function()
+        {
+            if(req.readyState == 4 && req.status == 200)
+            {
+                var signUpReturn = JSON.parse(req.responseText);
+                console.log(signUpReturn);
 
-        // req.send(JSON.stringify(request));        
+                if (signUpReturn.status == "error")
+                    alert(signUpReturn.data); 
+                else 
+                    window.location.href = "homepage.html";
+            }
+        }
+        req.open("POST", "http://localhost/quarterStack/hoopAPI.php", false); 
+        req.setRequestHeader("Content-Type", "application/json");
+
+        const request = 
+        {
+            "type": "signUp",
+            "fname" : fname,
+            "surname": surname,
+            "dob": dob,
+            "gender": gender,
+            "phone" : phone,
+            "email":  email,
+            "password":  password,       
+            "country_id": country,
+            "card_no": cardNumber,
+            "expiry_date": expiry
+        };
+
+        req.send(JSON.stringify(request));        
 
     });
 });
