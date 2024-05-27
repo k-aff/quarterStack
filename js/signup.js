@@ -67,5 +67,26 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('Email:', email);
         console.log('Password:', password);
 
+        // var req = new XMLHttpRequest();  
+        // req.onreadystatechange = function()
+        // {
+        //     if(req.readyState == 4 && req.status == 200)
+        //     {
+        //         console.log("user added to database!");
+        //     }
+        // }
+        // req.open("POST", "http://localhost/quarterStack/hoopAPI.php", false); 
+        // req.setRequestHeader("Content-Type", "application/json");
+
+        // const request = 
+        // {
+        //     "type" : "signUp",
+        //     "apikey" : storedApiKey,
+        //     "limit": 40,
+        //     "return":["id", "title", "price", "bedrooms", "bathrooms", "parking_spaces", "location", "description", "amenities", "type"]
+        // };
+
+        // req.send(JSON.stringify(request));        
+
     });
 });
