@@ -53,8 +53,7 @@ class Hoop
                 $this->getMovies($reqbody);
             } else if ($type === "getSeries") {
                 $this->getSeries($reqbody);
-            } 
-            else if ($type === "setWatchHistory") {
+            } else if ($type === "setWatchHistory") {
                 $this->setWatchHistory($reqbody);
             } else if ($type === "getWatchHistory") {
                 $this->getWatchHistory($reqbody);
@@ -62,8 +61,7 @@ class Hoop
                 $this->getWatchList($reqbody);
             } else if ($type === "setWatchList") {
                 $this->setWatchList($reqbody);
-            }
-            else if ($type === "getUser") {
+            }else if ($type === "getUser") {
                 $this->getUser($reqbody);
             } else if ($type === "updateUser") {
                 $this->updateUser($reqbody);

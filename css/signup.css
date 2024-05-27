@@ -95,6 +95,11 @@ body {
     font-size: 12px;
 }
 
+.input-group input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+}
+
 button {
     width: 30%;
     padding: 10px;
