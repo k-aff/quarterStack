@@ -3,7 +3,6 @@
 header("Content-Type: application/json");
 header("Content-Type: application/x-www-form-urlencoded");
 
-
 class Hoop
 {
 
@@ -953,7 +952,7 @@ public function setUserPref($reqbody)
     {
         // $email = $_SESSION['email']; //use id instead?  $id = $_SESSION['id']
 
-        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=1";
+        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=20";
         $result = $this->con->query($sqlcheckpref);
 
         if($result)

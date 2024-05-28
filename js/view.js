@@ -84,7 +84,6 @@ function onLoad(){
         detailsCont.insertBefore(title, detailsCont.firstChild)
         detailsCont.insertBefore(image, detailsCont.firstChild)
         
-
       }
 
     }

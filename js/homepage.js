@@ -81,7 +81,7 @@ function onLoad(){
       console.log(hoopTitles);
 
       for(const category in hoopTitles.data){
-
+        
         let titles = document.getElementById(`${category}`+ "Container");
         titles.innerHTML=null;
   
@@ -89,12 +89,14 @@ function onLoad(){
 
         const itemsArray = hoopTitles.data[category];
 
-        // if(itemsArray.length==0)
-        // {
-        //   var message = document.createElement("h3");
-        //   message = "Nothing Available yet"
-        //   titles.appendChild(message)
-        // }
+        if(itemsArray.length==0)
+        {
+          var message = document.createElement("h4");
+          message.style.color = '#cb6ce6'
+          message.style.marginLeft = '20px'
+          message.innerHTML = "Nothing Available yet"
+          titles.appendChild(message)
+        }
   
         for(let i=0; i<itemsArray.length;i++){
 
@@ -108,20 +110,28 @@ function onLoad(){
           card.setAttribute("data-title", itemsArray[i].title);
           card.setAttribute("data-genre", itemsArray[i].type); // Add genre if available
           card.setAttribute("data-description", itemsArray[i].plot); // Add description if available
+          let view = document.getElementById('view');
+    
 
-          // card.addEventListener('click', () => {
-          //   modalTitle.textContent = card.getAttribute('data-title');
-          //   modalDescription.textContent = card.getAttribute('data-description');
-          //   modal.style.display = 'block';
-          // });
+          card.addEventListener('click', () => {
+            modalTitle.textContent = card.getAttribute('data-title');
+            modalDescription.textContent = card.getAttribute('data-description');
+            cardUrl = card.getAttribute('data-url')
+            modal.style.display = 'block';
+          });
 
-          card.addEventListener('dblclick', () => {
+          view.addEventListener('click', () => {
             window.location.href = `view.html?titleId=${itemsArray[i].id}`;
           });
 
           closeButton.addEventListener('click', () => {
             modal.style.display = 'none';
           });
+
+          window.addEventListener('click',(event) => {
+            if(event.target === modal)
+              modal.style.display = 'none'
+          })
 
           // Create img element
           var image = document.createElement("img");
