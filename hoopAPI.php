@@ -7,16 +7,14 @@ class Hoop
 {
 
     protected $con;
-    public static function instance()
-    {
+    public static function instance() {
         static $instance = null;
         if ($instance === null)
             $instance = new Hoop();
         return $instance;
     }
 
-    private function __construct()
-    {
+    private function __construct() {
         $this->con = new mysqli("wheatley.cs.up.ac.za", "u23535793", "XSJE56JRFVO4MIIHAMP4QGSUX7M32JED", "u23535793_HOOP");
         if ($this->con->connect_error) {
             die("Connection failed: " . $this->con->connect_error);
@@ -28,16 +26,11 @@ class Hoop
         return $this->con;
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         mysqli_close($this->con);
     }
 
-    public function handleRequest()
-    {
-
-        $request_body = file_get_contents('php://input');
-        $data = json_decode($request_body, true);
+    public function handleRequest() {
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -47,6 +40,7 @@ class Hoop
 
             if (!isset($type)) {
                 echo json_encode(new Response("Error", time(), "No type specified"));
+                exit();
             }
 
             if ($type === "signUp") {
@@ -61,8 +55,7 @@ class Hoop
                 $this->getMovies($reqbody);
             } else if ($type === "getSeries") {
                 $this->getSeries($reqbody);
-            } 
-            else if ($type === "setWatchHistory") {
+            } else if ($type === "setWatchHistory") {
                 $this->setWatchHistory($reqbody);
             } else if ($type === "getWatchHistory") {
                 $this->getWatchHistory($reqbody);
@@ -70,8 +63,7 @@ class Hoop
                 $this->getWatchList($reqbody);
             } else if ($type === "setWatchList") {
                 $this->setWatchList($reqbody);
-            }
-            else if ($type === "getUser") {
+            }else if ($type === "getUser") {
                 $this->getUser($reqbody);
             } else if ($type === "updateUser") {
                 $this->updateUser($reqbody);
@@ -151,7 +143,7 @@ class Hoop
 
         if (!$dobDateTime || $dobDateTime->format('Y-m-d') !== $dob || $dobDateTime <= $minDate || $dobDateTime >= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid dob"));
+            echo json_encode(new Response("error", time(), "Invalid date of birth"));
             exit();
         }
 
@@ -186,7 +178,7 @@ class Hoop
         $result = $stmt->get_result();
         $count = $result->fetch_assoc()['COUNT(*)'];
         if ($count > 0) {
-            echo json_encode(new Response("error", time(), "email already in use"));
+            echo json_encode(new Response("error", time(), "email already in use "));
             exit();
         }
 
@@ -215,7 +207,7 @@ class Hoop
 
         if (!$expiryDateTime || $expiryDateTime <= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid expiry_date"));
+            echo json_encode(new Response("error", time(), "Invalid expiry date"));
             exit();
         }
 
@@ -325,7 +317,7 @@ class Hoop
 
         if (!$expiryDateTime || $expiryDateTime <= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid expiry_date"));
+            echo json_encode(new Response("error", time(), "Invalid expiry date"));
             exit();
         }
 
@@ -1096,3 +1088,5 @@ class Response
         $this->data = $data;
     }
 }
+
+?>
