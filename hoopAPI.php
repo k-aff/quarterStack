@@ -1,5 +1,5 @@
 <?php
-echo "In Class!";
+//echo "In Class!";
 
 class Hoop
 {
@@ -20,7 +20,7 @@ class Hoop
             die("Connection failed: " . $this->con->connect_error);
         } else {
             $this->con = $this->con;
-            echo "Connected!";
+            //echo "Connected!";
         }
 
         return $this->con;
@@ -455,6 +455,7 @@ public function setUserPref($reqbody)
         //$reqbody = json_decode(file_get_contents('php://input'), true);
 
         $email = $reqbody["email"];
+        //echo($email);
         $user_id = $hoop->getUserIdByEmail($email);
         $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id";
         $result = $this->con->query($sql);
@@ -467,6 +468,7 @@ public function setUserPref($reqbody)
         {
             echo json_encode(new Response("failure", time(), "user not found"));
         }
+        //echo ($email);
     }
 
 
