@@ -20,7 +20,7 @@ class Hoop
             die("Connection failed: " . $this->con->connect_error);
         } else {
             $this->con = $this->con;
-            echo "Connected";
+            // echo "Connected";
         }
 
         return $this->con;
