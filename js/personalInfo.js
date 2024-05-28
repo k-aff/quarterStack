@@ -52,7 +52,6 @@ function populateForm(user) {
   const countrySelect = document.getElementById('country');
   const cardNumberInput = document.getElementById('accountNumber');
   const expiryInput = document.getElementById('expiry_');
-  
   // Set the input values
   fullNameInput.value = user.fname;
   surnameInput.value = user.surname;
@@ -60,7 +59,7 @@ function populateForm(user) {
   genderSelect.value = user.gender;
   phoneInput.value = user.phone;
   emailInput.value = user.email;
-  countrySelect.value = user.country_id;
+  countrySelect.value = user.name;
   cardNumberInput.value = user.card_no;
   expiryInput.value = user.expiry_date;
   

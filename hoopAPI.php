@@ -457,7 +457,7 @@ public function setUserPref($reqbody)
         $email = $reqbody["email"];
         //echo($email);
         $user_id = $hoop->getUserIdByEmail($email);
-        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id";
+        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
         $result = $this->con->query($sql);
         if ($result && $result->num_rows > 0)
         {
@@ -523,7 +523,8 @@ public function setUserPref($reqbody)
                     "rating" => $pref["rating"],
                     "user_id" => $pref["user_id"]
                 );
-                echo json_encode(new Response("success", time(), $user_rev));
+                $review[] = $user_rev;
+                echo json_encode(new Response("success", time(), $review));
             }
             else
             {
