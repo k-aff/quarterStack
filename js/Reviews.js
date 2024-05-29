@@ -1,7 +1,7 @@
 // Get the review model element
 const myQuery= window.location.search;
 const Params= new URLSearchParams(myQuery);
-const id= Params.get(title_id);
+const id= Params.get('titleId');
 
 const reviewModel = document.getElementById("reviewModel");
 // Function to open the review model
@@ -30,7 +30,7 @@ function submitReview(event) {
   
   
   // Send a POST request to the API to submit the review
-  fetch("http://localhost/Practical5_quarterStack/quarterStack-1/hoopAPI.php", {
+  fetch("http://localhost/quarterStack/hoopAPI.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -66,7 +66,7 @@ function fetchMovieReviews() {
     };
   
     // Send a GET request to the API to fetch the movie reviews
-    fetch("http://localhost/Practical5_quarterStack/quarterStack-1/hoopAPI.php", {
+    fetch("http://localhost/quarterStack/hoopAPI.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

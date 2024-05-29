@@ -983,14 +983,14 @@ public function setUserPref($reqbody)
         foreach($carousels as $carousel){
 
             if($carousel === 'Movies')
-                $sqlReturnTitles ="SELECT * FROM title WHERE type='M' LIMIT 20";
+                $sqlReturnTitles ="SELECT * FROM title WHERE type='M' ORDER BY title ASC LIMIT 20";
             else if($carousel === 'Series')
-                $sqlReturnTitles ="SELECT * FROM title WHERE type='S' LIMIT 20";
+                $sqlReturnTitles ="SELECT * FROM title WHERE type='S' ORDER BY title ASC LIMIT 20";
             else if(isset($pref) && $carousel === "Preferences"){
-                $sqlReturnTitles ="SELECT * FROM title".$whereClause. "LIMIT 20" ;
+                $sqlReturnTitles ="SELECT * FROM title".$whereClause. " ORDER BY title ASC LIMIT 20" ;
             }
             else
-                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') LIMIT 20" ;
+                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY title ASC LIMIT 20" ;
 
             // echo $sqlReturnTitles;
             $result = $this->con->query($sqlReturnTitles);
@@ -1027,7 +1027,6 @@ public function setUserPref($reqbody)
     public function setViewPage($data)
     {
         $titleId = $data["titleId"];
-        //need to put the title in the url;
 
         //get the record 
         $sqlReturnInfo ="SELECT * FROM title WHERE title_id=$titleId" ;
@@ -1051,7 +1050,7 @@ public function setUserPref($reqbody)
         $data['languages'] = (explode(', ', $title["language"]))[0];
         $data['release date'] = $title["release_date"];
         $data['genre'] = $genre;
-        $data['directors'] = (explode(', ', $title["crew"]))[0]; //Add more?
+        $data['directors'] = (explode(', ', $title["crew"])); //Add more?
         $data['cast'] = $title["cast"];
         $data['image'] = $title["image"];
 
@@ -1061,8 +1060,10 @@ public function setUserPref($reqbody)
             $title_id = $title["title_id"];
             $sql2 = "SELECT runtime FROM movie WHERE title_id = '$title_id'";
             $result2 = $this->con->query($sql2);
-            $titleRuntime = $result2->fetch_assoc();
-            $data['runtime'] = $titleRuntime["runtime"];
+            if ($result2) {
+                $titleRuntime = $result2->fetch_assoc();
+                $data['runtime'] = $titleRuntime["runtime"];
+            }
         }
         else if($title["type"] == 'S'){ 
 
@@ -1070,8 +1071,15 @@ public function setUserPref($reqbody)
             $sql2 = "SELECT * FROM tv_series WHERE title_id = '$title_id'";
             $result2 = $this->con->query($sql2);
             $titleEps = $result2->fetch_assoc();
-            $data['number of seasons'] = $titleEps["no_of_seasons"];
-            $data['total of episodes'] = $titleEps["no_of_episodes"];
+            if ($titleEps) {
+                
+                $data['number of seasons'] = $titleEps["no_of_seasons"];
+                $data['total of episodes'] = $titleEps["no_of_episodes"];
+            }
+            else {
+                $data['number of seasons'] = 'N/A';
+                $data['total of episodes'] = 'N/A';
+            }
         }
 
         echo json_encode(new Response("success", time(), $data));
