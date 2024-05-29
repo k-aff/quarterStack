@@ -76,47 +76,8 @@ nav ul li a.active, nav ul li a:hover {
     display: block;
 }
 
-.search-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-}
-
-.search-bar input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 300px;
-}
-
-.search-bar .search-button {
-    padding: 10px 20px;
-    background-color: #390e39;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 10px;
-    border-radius: 4px;
-}
-
-.filter-container {
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-}
-
-#genre-filter {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.clear-search-button {
+    display: none;
 }
 
 .category {
@@ -194,34 +155,39 @@ body, html {
 .search-container {
     width: 100%;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
-    padding: 20px 0; 
+    padding: 20px 0;
 }
 
 .search-button {
     width: 100px;
     padding: 5px;
-    border-radius: 30px;
-    cursor: pointer;
-    margin-left: 0px;
+    border-radius: 10px;
+    cursor: pointer;  
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
     font-size: 20px;
+    margin-right: 10px;
 }
 
 .search-bar input {
     width: 400px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid #cb6ce6;
     background-color: #390e39;
     color: #fff;
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: 20px;
 }
 
+.filter-container {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
 
 #genre-filter {
     margin-right: 10px;
@@ -230,6 +196,8 @@ body, html {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 #filter-button {
@@ -239,7 +207,16 @@ body, html {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    width: 80px; 
+    cursor: pointer;
 }
+
+#filter-button:hover, .search-button:hover {
+    background-color: #a52ba5;
+}
+
+
 
 /*USER ICON*/
 .dropdown {
