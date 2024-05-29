@@ -952,7 +952,7 @@ public function setUserPref($reqbody)
     {
         // $email = $_SESSION['email']; //use id instead?  $id = $_SESSION['id']
 
-        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=1";
+        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=20";
         $result = $this->con->query($sqlcheckpref);
 
         if($result)
@@ -975,12 +975,6 @@ public function setUserPref($reqbody)
             
             if($genre1!=null)
                 $whereClause = $whereClause. ")";
-
-            echo $whereClause;
-        }
-        else
-        {
-            echo "No preferences set";
         }
         
         $carousels = ["Movies", "Series", "Action", "Animation", "Sci-fi", "Horror", "Comedy", "Adventure", "Drama", "Preferences"];//add preferences;
@@ -994,7 +988,6 @@ public function setUserPref($reqbody)
                 $sqlReturnTitles ="SELECT * FROM title WHERE type='S' LIMIT 20";
             else if(isset($pref) && $carousel === "Preferences"){
                 $sqlReturnTitles ="SELECT * FROM title".$whereClause. "LIMIT 20" ;
-                echo $sqlReturnTitles;
             }
             else
                 $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') LIMIT 20" ;
@@ -1011,8 +1004,11 @@ public function setUserPref($reqbody)
                 while($title = $result->fetch_assoc()){
 
                     $data = array();
+                    $data['id'] = $title["title_id"];
                     $data['title'] = $title["title"];
                     $data['image'] = $title["image"];
+                    $data['type'] = $title["type"];
+                    $data['plot'] = $title["plot_summary"];
 
                     //obtaining additonal movie or series data 
 
