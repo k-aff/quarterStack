@@ -93,6 +93,42 @@
 //-------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------//
 
+// MY JS CODE FOR HOME PAGE FILTER & SEARCH 
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('filter-button').addEventListener('click', function() {
+      const filter = document.getElementById('genre-filter').value;
+      console.log(filter);
+
+      if (filter === "Action") {
+        document.getElementById('ActionH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Animation") {
+        document.getElementById('AnimationH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Sci-Fi") {
+        document.getElementById('SciFiH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Horror") {
+        document.getElementById('HorrorH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Comedy") {
+        document.getElementById('ComedyH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Adventure") {
+        document.getElementById('AdventureH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Drama") {
+        document.getElementById('DramaH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else {
+
+      }
+  });
+});
+
+//-------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------//
+
 // KARABO'S JS CODE FOR HOME PAGE - 29/05 @ 8:47
 document.addEventListener('DOMContentLoaded', () => {
 
