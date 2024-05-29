@@ -7,37 +7,30 @@ class Hoop
 {
 
     protected $con;
-    public static function instance()
-    {
+    public static function instance() {
         static $instance = null;
         if ($instance === null)
             $instance = new Hoop();
         return $instance;
     }
 
-    private function __construct()
-    {
+    private function __construct() {
         $this->con = new mysqli("wheatley.cs.up.ac.za", "u23535793", "XSJE56JRFVO4MIIHAMP4QGSUX7M32JED", "u23535793_HOOP");
         if ($this->con->connect_error) {
             die("Connection failed: " . $this->con->connect_error);
         } else {
             $this->con = $this->con;
-            // echo "Connected!";
+            //echo "Connected!";
         }
 
         return $this->con;
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         mysqli_close($this->con);
     }
 
-    public function handleRequest()
-    {
-
-        $request_body = file_get_contents('php://input');
-        $data = json_decode($request_body, true);
+    public function handleRequest() {
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -47,6 +40,7 @@ class Hoop
 
             if (!isset($type)) {
                 echo json_encode(new Response("Error", time(), "No type specified"));
+                exit();
             }
 
             if ($type === "signUp") {
@@ -61,8 +55,7 @@ class Hoop
                 $this->getMovies($reqbody);
             } else if ($type === "getSeries") {
                 $this->getSeries($reqbody);
-            } 
-            else if ($type === "setWatchHistory") {
+            } else if ($type === "setWatchHistory") {
                 $this->setWatchHistory($reqbody);
             } else if ($type === "getWatchHistory") {
                 $this->getWatchHistory($reqbody);
@@ -70,8 +63,7 @@ class Hoop
                 $this->getWatchList($reqbody);
             } else if ($type === "setWatchList") {
                 $this->setWatchList($reqbody);
-            }
-            else if ($type === "getUser") {
+            }else if ($type === "getUser") {
                 $this->getUser($reqbody);
             } else if ($type === "updateUser") {
                 $this->updateUser($reqbody);
@@ -151,7 +143,7 @@ class Hoop
 
         if (!$dobDateTime || $dobDateTime->format('Y-m-d') !== $dob || $dobDateTime <= $minDate || $dobDateTime >= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid dob"));
+            echo json_encode(new Response("error", time(), "Invalid date of birth"));
             exit();
         }
 
@@ -186,7 +178,7 @@ class Hoop
         $result = $stmt->get_result();
         $count = $result->fetch_assoc()['COUNT(*)'];
         if ($count > 0) {
-            echo json_encode(new Response("error", time(), "email already in use"));
+            echo json_encode(new Response("error", time(), "email already in use "));
             exit();
         }
 
@@ -215,7 +207,7 @@ class Hoop
 
         if (!$expiryDateTime || $expiryDateTime <= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid expiry_date"));
+            echo json_encode(new Response("error", time(), "Invalid expiry date"));
             exit();
         }
 
@@ -258,6 +250,7 @@ class Hoop
         echo json_encode(new Response("success", time(), "user added to database"));
         session_start();
         $_SESSION["user_id"] = $user_id;
+        $_SESSION["email"]= $email;
     }
 
     public function updateUser($jsonData)
@@ -325,7 +318,7 @@ class Hoop
 
         if (!$expiryDateTime || $expiryDateTime <= $currentDate) {
             // some error message for invalid dob
-            echo json_encode(new Response("error", time(), "invalid expiry_date"));
+            echo json_encode(new Response("error", time(), "Invalid expiry date"));
             exit();
         }
 
@@ -376,8 +369,10 @@ class Hoop
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-        $email = $reqbody["email"];
-        $user_id = $hoop->getUserIdByEmail($email);
+        // $email = $reqbody["email"];
+        $email= $_SESSION["email"];
+        // $user_id = $hoop->getUserIdByEmail($email);
+        $user_id= $_SESSION["user_id"];
 
         if (!$user_id) {
             echo "Error: User not found";
@@ -406,8 +401,9 @@ public function setUserPref($reqbody)
     $hoop = Hoop::instance();
     //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-    $email = $reqbody["email"];
-    $user_id = $hoop->getUserIdByEmail($email);
+    $email= $_SESSION["email"];
+    // $user_id = $hoop->getUserIdByEmail($email);
+    $user_id= $_SESSION["user_id"];
 
     if (!$user_id) {
         //echo "Error: User not found";
@@ -456,9 +452,10 @@ public function setUserPref($reqbody)
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-        $email = $reqbody["email"];
-        $user_id = $hoop->getUserIdByEmail($email);
-        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id";
+        $email= $_SESSION["email"];
+        // $user_id = $hoop->getUserIdByEmail($email);
+        $user_id= $_SESSION["user_id"];
+        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
         $result = $this->con->query($sql);
         if ($result && $result->num_rows > 0)
         {
@@ -469,6 +466,7 @@ public function setUserPref($reqbody)
         {
             echo json_encode(new Response("failure", time(), "user not found"));
         }
+        //echo ($email);
     }
 
 
@@ -476,8 +474,9 @@ public function setUserPref($reqbody)
         {
             $hoop = Hoop::instance();
             //$reqbody = json_decode(file_get_contents('php://input'), true);
-            $email = $reqbody["email"];
-            $id = $hoop->getUserIdByEmail($email);
+            $email= $_SESSION["email"];
+            // $user_id = $hoop->getUserIdByEmail($email);
+            $id= $_SESSION["user_id"];
             $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
             $result = $this->con->query($sqlcheckpref);
          
@@ -506,31 +505,31 @@ public function setUserPref($reqbody)
             }
             
         }
-        public function getReview($reqbody)
-        {
-            $hoop = Hoop::instance();
-            //$reqbody = json_decode(file_get_contents('php://input'), true);
-            $title_id = $reqbody["title_id"];
-            // $id = $hoop->getUserIdByEmail($email);
-            $sqlcheckpref = "SELECT * FROM review WHERE title_id='$title_id'";
-            $result = $this->con->query($sqlcheckpref);
-            if ($result && $result->num_rows > 0) 
-            {
-                $pref = $result->fetch_assoc();
+        
+    public function getReview($reqbody)
+    {
+        $hoop = Hoop::instance();
+        $title_id = $reqbody["title_id"];
+        $sqlcheckpref = "SELECT * FROM review INNER JOIN title ON review.title_id=title.title_id WHERE review.title_id='$title_id'";
+        $result = $this->con->query($sqlcheckpref);
+        $reviews = array();
+        if ($result && $result->num_rows > 0) {
+            while ($pref = $result->fetch_assoc()) {
                 $user_rev = array(
                     "date" => $pref["date_time"],
                     "review" => $pref["review"],
                     "rating" => $pref["rating"],
-                    "user_id" => $pref["user_id"]
+                    "user_id" => $pref["user_id"],
+                    "image" => $pref["image"]
                 );
-                echo json_encode(new Response("success", time(), $user_rev));
+                $reviews[] = $user_rev;
             }
-            else
-            {
-                echo json_encode(new Response("failure", time(), "title has no reviews"));
-            }
-
+            echo json_encode(new Response("success", time(), $reviews));
+        } else {
+            echo json_encode(new Response("failure", time(), "title has no reviews"));
         }
+        //return 
+    }
         
         public function getMovies($reqbody)
         {
@@ -712,6 +711,7 @@ public function setUserPref($reqbody)
                 //start session
                 session_start();
                 $_SESSION["user_id"] = $userID;
+                $_SESSION["email"]= $email;
 
 
                 echo json_encode(new Response("Success", time(), $data));
@@ -985,12 +985,12 @@ public function setUserPref($reqbody)
             if($carousel === 'Movies')
                 $sqlReturnTitles ="SELECT * FROM title WHERE type='M' ORDER BY title ASC LIMIT 20";
             else if($carousel === 'Series')
-                $sqlReturnTitles ="SELECT * FROM title WHERE type='S'  ORDER BY title ASC LIMIT 20";
+                $sqlReturnTitles ="SELECT * FROM title WHERE type='S' ORDER BY title ASC LIMIT 20";
             else if(isset($pref) && $carousel === "Preferences"){
                 $sqlReturnTitles ="SELECT * FROM title".$whereClause. " ORDER BY title ASC LIMIT 20" ;
             }
             else
-                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel')  ORDER BY title ASC LIMIT 20" ;
+                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY title ASC LIMIT 20" ;
 
             // echo $sqlReturnTitles;
             $result = $this->con->query($sqlReturnTitles);
@@ -1104,3 +1104,5 @@ class Response
         $this->data = $data;
     }
 }
+
+?>
