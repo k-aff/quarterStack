@@ -1070,7 +1070,7 @@ public function setUserPref($reqbody)
                 $sqlReturnTitles ="SELECT * FROM title".$whereClause. "LIMIT 20" ;
             }
             else
-                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') LIMIT 20" ;
+                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY RAND() LIMIT 20";
 
             // echo $sqlReturnTitles;
             $result = $this->con->query($sqlReturnTitles);
