@@ -76,33 +76,6 @@ nav ul li a.active, nav ul li a:hover {
     display: block;
 }
 
-.search-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.search-bar input {
-    
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 300px;
-}
-
-.filter-container {
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-}
-
-#genre-filter {
-   
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 .clear-search-button {
     display: none;
 }
@@ -228,6 +201,12 @@ header {
     color: #fff;
     margin-right: 5px;
     font-size: 20px;
+}
+
+.filter-container {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
 }
 
 #genre-filter {
