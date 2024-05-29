@@ -1,55 +1,131 @@
+// Get the review model element
+const myQuery= window.location.search;
+const Params= new URLSearchParams(myQuery);
+const id= Params.get('titleId');
+
+const reviewModel = document.getElementById("reviewModel");
+// Function to open the review model
 function openReviewModel() {
-    document.getElementById('reviewModel').style.display = 'flex';
+  reviewModel.style.display = "block";
 }
 
+// Function to close the review model
 function closeReviewModel() {
-    document.getElementById('reviewModel').style.display = 'none';
+  reviewModel.style.display = "none";
 }
+
+// Function to submit a review
 function submitReview(event) {
-    event.preventDefault();
+  event.preventDefault();
+
+  // Get the form data
+  const formData = new FormData(event.target);
+  const reqbody = {
+    type: "setReview",
+    //email: formData.get("username"),
+    review: formData.get("reviewText"),
+    rating: formData.get("rating"),
+    title_id: id // Replace with the actual movie ID!!!!!!!!
+  };
+  
+  
+  // Send a POST request to the API to submit the review
+  fetch("http://localhost/quarterStack/hoopAPI.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(reqbody)
+  })
+    .then(response => response.json())
+
     
-    const username = document.getElementById('username').value;
-    const reviewText = document.getElementById('reviewText').value;
-    const rating = document.querySelector('input[name="rating"]:checked').value;
+    .then(data => {
 
-    // Create a new review element
-    const review = document.createElement('div');
-    review.classList.add('review');
-
-    const usernameH3 = document.createElement('h3');
-    usernameH3.textContent = username;
-    review.appendChild(usernameH3);
-
-    const reviewTextP = document.createElement('p');
-    reviewTextP.classList.add('review-text');
-    reviewTextP.textContent = reviewText;
-    review.appendChild(reviewTextP);
-
-    const ratingDiv = document.createElement('div');
-    ratingDiv.classList.add('rating');
-    for (let i = 0; i < 5; i++) {
-        const star = document.createElement('span');
-        star.classList.add('fa', 'fa-star');
-        if (i < rating) {
-            star.classList.add('checked');
-        }
-        ratingDiv.appendChild(star);
-    }
-    review.appendChild(ratingDiv);
-
-    document.querySelector('.reviews-container').appendChild(review);
-
-    // Reset the form
-    document.getElementById('reviewForm').reset();
-
-    // Close the modal
-    closeReviewModel();
-}
-
-// Close the modal when clicking outside of it
-window.onclick = function(event) {
-    const model = document.getElementById('reviewModel');
-    if (event.target == model) {
+      if (data.status === "success") {
+        // Review submitted successfully
         closeReviewModel();
-    }
+        // Reload the page to show the new review
+        location.reload();
+      } else {
+        // Review submission failed
+        console.error(data.message);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }
+
+
+function fetchMovieReviews() {
+    //const tittle_id = '45';
+    const requestBody = {
+      title_id: 27,
+      type: "getReview"
+    };
+  
+    // Send a GET request to the API to fetch the movie reviews
+    fetch("http://localhost/quarterStack/hoopAPI.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    })
+     .then(response => response.json())
+     .then(data => {
+        console.log(data);
+        if (data.status === "success") {
+          // Render the movie reviews
+          const reviewsContainer = document.querySelector(".reviews-container");
+          reviewsContainer.innerHTML = "";
+          //console.log(data.data);
+          const movietitle = document.querySelector(".movie-title");
+          movietitle.textContent=data.data[0].title;
+          const movieImage = document.querySelector(".movie-image");
+          movieImage.src = data.data[0].image;
+          // Use a for loop instead of forEach
+          for (let i = 0; i < data.data.length; i++) {
+            const review = data.data[i];
+            const reviewElement = document.createElement("div");
+            reviewElement.classList.add("review");
+            reviewElement.innerHTML = `
+              <h3>${review.name}</h3>
+              <p class="review-text">${review.review}</p>
+              <div class="rating">
+                ${Array.from({ length: review.rating }, (_, i) => `<span class="fa fa-star checked"></span>`).join("")}
+                ${Array.from({ length: 5 - review.rating }, (_, i) => `<span class="fa fa-star"></span>`).join("")}
+              </div>
+            `;
+            reviewsContainer.appendChild(reviewElement);
+          }
+          // if(data.status==="failure")
+          // {
+          //   const movietitle = document.querySelector(".movie-title");
+          //   movietitle.textContent=data.data[0].title;
+          //   const movieImage = document.querySelector(".movie-image");
+          //   movieImage.src = data.data[0].image;
+          //   const reviewElement = document.createElement("div");
+          //   reviewElement.textContent="No reviews";
+          // }
+
+        } else {
+          const reviewsContainer = document.querySelector(".reviews-container");
+            const movietitle = document.querySelector(".movie-title");
+            movietitle.textContent=data.data[0].title;
+            const movieImage = document.querySelector(".movie-image");
+            movieImage.src = data.data[0].image;
+            const reviewElement = document.createElement("div");
+            reviewElement.classList.add("review");
+            reviewElement.innerHTML="<h3> No  Reviews </h3>";
+            reviewsContainer.appendChild(reviewElement);
+        }
+      })
+     .catch(error => {
+        console.error(error);
+      });
+  }
+
+// Call the fetchMovieReviews function when the page loads
+document.addEventListener("DOMContentLoaded", fetchMovieReviews);

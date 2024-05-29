@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background: url('img/bg1.png') no-repeat center center fixed;
+    background: url('../img/bg1.png') no-repeat center center fixed;
     background-size: cover;
 }
 
@@ -46,7 +46,9 @@ body {
     color: white;
     font-family: Montserrat, sans-serif;
     font-size: 24px;
+    position: relative; 
     margin-bottom: 20px;
+    margin-top: -15px;
 }
 
 .input-group {
@@ -57,7 +59,6 @@ body {
 .input-group label {
     color: white;
     margin-bottom: 5px;
-
     display: inline-block; /* Display labels as blocks to allow alignment */
     width: 80px; /* Set a fixed width for the labels */
     text-align: right; /* Align text within labels to the right */
@@ -65,14 +66,35 @@ body {
 }
 
 .input-group input {
-    width: 60%;
+    width: 65%;
     padding: 10px;
-    border-radius: 5px;
     border: 2px solid #cb6ce6;
     border-radius: 30px;
     background-color: rgba(57, 14, 57, 0.8);
-    color: white;
-    
+    color: white; 
+    font-size: 12px;
+}
+
+.input-group select {
+    width: 70%;
+    padding: 10px;
+    border: 2px solid #cb6ce6;
+    border-radius: 30px;
+    background-color: rgba(57, 14, 57, 0.8);
+    color: white; 
+}
+
+#gender, #country {
+    cursor: pointer;
+    border: 2px solid #cb6ce6;
+    background-color: #390e39;
+    color: #fff;
+    font-size: 12px;
+}
+
+.input-group input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
 }
 
 button {
@@ -83,7 +105,6 @@ button {
     background-color: rgba(95, 8, 119, 0.8);
     color: white;
     cursor: pointer;
-    
     margin-top: 20px; /* Add some space between the button and the sign-up link */
     display: block; /* Change display to block for left alignment */
     margin-right: auto; /* Align login button to the left */
@@ -111,9 +132,50 @@ button:hover {
     color: #a52ba5; /* Change color on hover */
 }
 
-#gender{
+#card-input-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#card-input-group label {
+    color: white;
+    margin-bottom: 5px;
+    width: 80px;
+    text-align: right;
+    margin-right: 10px;
+    display: inline-block; /* Display labels as blocks to allow alignment */
+    padding-right: 5px;
+}
+
+#card-input-group label[for="expiry"] {
+    color: white;
+    margin-bottom: 5px;
+    width: 50px;
+    text-align: right;
+    margin-right: 10px;
+    display: inline-block; /* Display labels as blocks to allow alignment */
+    padding-left: 2px;
+}
+
+#card-input-group input[id="card-number"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 30px;
     border: 2px solid #cb6ce6;
-    background-color: #390e39;
-    color: #fff;
-    font-size: 15px;
+    background-color: rgba(57, 14, 57, 0.8);
+    color: white;
+    font-size: 12px;
+    max-width: 28%;
+}
+
+#card-input-group input[id="expiry"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 30px;
+    border: 2px solid #cb6ce6;
+    background-color: rgba(57, 14, 57, 0.8);
+    color: white;
+    font-size: 12px;
+    max-width: 19%;
 }
