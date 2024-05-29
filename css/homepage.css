@@ -1,3 +1,9 @@
+*{
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -7,6 +13,10 @@ body, html {
     display: flex;
     flex-direction: column;
     
+}
+
+.hidden {
+    display: none;
 }
 
 header {
@@ -185,6 +195,14 @@ main {
 .category h2 {
     color: #cb6ce6;
     margin-bottom: 10px;
+}
+
+
+section.category {
+    width: calc(100% + 50px);
+    padding: 0; 
+    margin-left: -20px;
+    margin-right: -20px;
 }
 
 .carousel {
