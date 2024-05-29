@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
     req.send(JSON.stringify(request));   
   
   });
-  
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -124,8 +123,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const filter = document.getElementById('genre-filter').value;
       // console.log(filter);
-
-      if (filter === "Action") {
+      if (filter === "All") {
+        alert("Please select a genre to filter by.")
+        return; 
+      }
+      else if (filter === "Action") {
         document.getElementById('ActionH2').scrollIntoView({ behavior: 'smooth' });
       }
       else if (filter === "Animation") {
