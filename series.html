@@ -27,27 +27,30 @@
     </header>
     <div class="search-container">
         <div class="search-bar">
-            <input type="text" placeholder="Title or Genre">
+            <button class="clear-search-button" id="Clear-Search">Clear Search</button>
+            <input type="text" placeholder="Search by title" id="SearchText">
             <button class="search-button" id="Search">Search</button>
-           
         </div>
         <div class="filter-container">
             <select id="genre-filter">
-                <option value="all">All Genres</option>
-                <option value="action">Action</option>
-                <option value="comedy">Comedy</option>
-                <option value="animation">Animation</option>
-                <option value="adventure">Adventure</option>
-                <option value="crime">Crime</option>
-                <option value="documentary">Documentary</option>
-                <option value="drama">Drama</option>
-                <option value="family">Family</option>
-                <option value="reality">Reality</option>
-                <option value="romance">Romance</option>
-                <option value="sci-fi">Sci-Fi</option>
-             
+                <option value="All">All Genres</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Animation">Animation</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Crime">Crime</option>
+                <option value="Documentary">Documentary</option>
+                <option value="Drama">Drama</option>
+                <option value="Family">Family</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Horror">Horror</option>
+                <option value="Reality">Reality</option>
+                <option value="Romance">Romance</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Thriller">Thriller</option>
             </select>
             <button id="filter-button">Filter</button>
+            <button class="clear-search-button" id="Clear-Filter">Clear Filter</button>
         </div>
     </div>
     <main>
