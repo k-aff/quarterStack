@@ -90,8 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function setWatchList() {
-  console.log("Pressed add to Watchlist");
-  //make use of user ID or session id
+  
   const api = "hoopAPI.php";
 
   const requestData = {
@@ -101,15 +100,15 @@ function setWatchList() {
     },
     body: JSON.stringify({
       type: "setWatchList",
-      title_id: 1,
-      user_id: 4,
+      title_id: 170,
+      user_id: 8,
     }),
   };
 
-  console.log(requestData["body"]);
+  
 
   fetch(api, requestData)
-    .then((response) => response)
+    .then((response) => response.json())
     .then((data) => {
       console.log("Success:", data);
     })
@@ -118,3 +117,6 @@ function setWatchList() {
       // Handle error
     });
 }
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("add-watchlist").onclick = setWatchList;
+});

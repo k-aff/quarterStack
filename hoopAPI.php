@@ -366,7 +366,6 @@ class Hoop
             session_destroy();
     }
 
-
     public function setReview($reqbody)
     {
         $hoop = Hoop::instance();
@@ -461,7 +460,6 @@ class Hoop
             echo json_encode(new Response("failure", time(), "user not found"));
         }
     }
-
 
     public function getUserPref($reqbody)
     {
@@ -620,10 +618,19 @@ class Hoop
 
     public function login($request_body) //by retha
     {
+        // echo '<script>console.log("Your debug message here");</script>';
 
         $email = $request_body["email"];
         $password = $request_body["password"];
+        //isset as params
+        if ($email == " " && $password == " ") {
 
+            $data = [
+                "message" => "Email and Password not set",
+            ];
+            echo json_encode(new Response("Error", time(), $data));
+            return;
+        }
         //check if email exits in db
         $loginQuery = "SELECT user_id FROM user
         WHERE email = ?";
@@ -639,11 +646,16 @@ class Hoop
 
         // Fetch the result
         if ($statement->fetch()) {
-            echo 'User ID: ' . $user_id;
-        } else {
-            echo 'No user found with the given email.';
+            $user = $statement->fetch();
+        } else {          
+            $data = [
+                "message" => "No user found with the given email",
+            ];
+           
+            header("Content-Type: application/json");
+            echo json_encode(new Response("Error", time(), $data));
+            return;
         }
-        $user = $statement->fetch();
 
         $statement->close();
 
@@ -651,7 +663,9 @@ class Hoop
             $data = [
                 "message" => "User not found",
             ];
-            return json_encode(new Response("Error", time(), $data));
+            header("Content-Type: application/json");
+            echo json_encode(new Response("Error", time(), $data));
+            return;
         } else {
             //hash passed in password
             $hashpass = hash('sha256', $password);
@@ -696,15 +710,18 @@ class Hoop
                 session_start();
                 $_SESSION["user_id"] = $userID;
 
-
+                header("Content-Type: application/json");
                 echo json_encode(new Response("Success", time(), $data));
+                return;
             } else {
                 // Password is incorrect
                 $data = [
                     "message" => "Invalid credentials",
 
                 ];
-                return json_encode(new Response("Error", time(), $data));
+                header("Content-Type: application/json");
+                echo json_encode(new Response("Error", time(), $data));
+                return;
             }
         }
     }
@@ -822,6 +839,7 @@ class Hoop
 
     public function setWatchList($request_body)
     {
+        
         $titleID = $request_body["title_id"];
         $user_id = $request_body["user_id"];
         //check if the title is already in the watch list table
@@ -837,15 +855,15 @@ class Hoop
         $statement->store_result();
 
         if ($statement->num_rows > 0) {
+           
             // check if titlle already in table
             $data = [
                 "message" => "Title already in Watch List",
             ];
-            return json_encode(new Response("Error", time(), $data));
+            echo json_encode(new Response("Error", time(), $data));
+            return;
         } else {
             //insert title into watchList
-
-
             $stmt = $this->con->prepare("INSERT INTO watch_list (title_id,user_id) VALUES (?,?)");
             if ($stmt === false) {
                 die("Prepare failed: " . $this->con->error);
@@ -861,6 +879,7 @@ class Hoop
                     "message" => "Title inserted into watch list successfully",
                 ];
                 echo json_encode(new Response("Success", time(), $data));
+                return;
             }
             $stmt->close();
         }
