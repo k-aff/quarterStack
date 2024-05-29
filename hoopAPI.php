@@ -293,6 +293,7 @@ class Hoop
         echo json_encode(new Response("success", time(), "user added to database"));
         session_start();
         $_SESSION["user_id"] = $user_id;
+        $_SESSION["email"] = $email;
     }
 
     public function updateUser($jsonData)
@@ -705,7 +706,7 @@ public function setUserPref($reqbody)
         if ($email == " " && $password == " ") {
 
             $data = [
-                "message" => "Email and Password not set",
+                "message" => "Email and Password are empty",
             ];
             echo json_encode(new Response("Error", time(), $data));
             return;
@@ -803,6 +804,9 @@ public function setUserPref($reqbody)
                 return;
             }
         }
+        session_start();
+        $_SESSION["user_id"] = $user_id;
+        $_SESSION["email"] = $email;
     }
 
     public function setWatchHistory($request_body)
