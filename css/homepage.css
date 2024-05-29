@@ -30,39 +30,41 @@ header {
     padding: 20px 0; /* Adds some padding to position it nicely */
 }
 
-.search-button{
+.search-button {
     width: 100px;
     padding: 5px;
-    border-radius: 30px;
+    border-radius: 10px;
     cursor: pointer;  
-    margin-left: 0px;
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
     font-size: 20px;
-    
+    margin-right: 20px;
 }
 
 .search-bar input {
     width: 400px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid #cb6ce6;
     background-color: #390e39;
     color: #fff;
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: 20px;
 }
 
 /* Style for the genre filter dropdown */
 #genre-filter {
-    margin-right: 10px;
+    margin-right: 5px;
     padding: 5px;
     font-size: 20px;
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
 }
+
 #filter-button {
     margin-right: 10px;
     padding: 5px;
@@ -70,6 +72,13 @@ header {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    width: 80px; 
+    cursor: pointer;
+}
+
+#filter-button:hover, .search-button:hover {
+    background-color: #a52ba5;
 }
 
 /*USER ICON*/

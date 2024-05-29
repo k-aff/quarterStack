@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Home</title>
-    <link rel="stylesheet" href="homepage.css">
+    <title>HOOP - Home</title>
+    <link rel="stylesheet" href="css/homepage.css">
+    <script src="js/homepage.js"></script>
 </head>
-<body> 
+<body onload="onLoad()">
       <header>
         <div class="logo">
             <a href="#"><img src="img/logo1.png" alt="Logo"></a>
@@ -27,8 +28,8 @@
     </header>
     <div class="search-container">
         <div class="search-bar">
+            <input type="text" placeholder="Search by title or genre">
             <button class="search-button" id="Search">Search</button>
-            <input type="text" placeholder="Title or Genre">
         </div>
           <!--Filter mechanism-->
     <div class="filter-container">
@@ -45,59 +46,27 @@
             <option value="documentary">Documentary</option>
             <option value="reality">Reality</option>
             <option value="romance">Romance</option>
-            <option value="sci-FI">Sci-FI</option>
+            <option value="sci-fi">Sci-Fi</option>
             <!-- Add more genres as needed -->
         </select>
         <button id="filter-button">Filter</button>
     </div>
     </div>
   <main>
-    <!-- Content to be sorted and filtered -->
-  <!--  <div class="content" data-genre="action">Action Movie 1</div>--> 
-    <!-- <div class="content" data-genre="comedy">Comedy Movie 1</div>--> 
-    <!-- Add more content items with appropriate data attributes -->
+        <section class="category" id="tvshows">
+            <h2>Your preferences</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="PreferencesContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
         <section class="category" id="movies">
             <h2>Movies</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\Barbie.jpeg" alt="Movie 1">
-                        <div class="overlay">Barbie</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\Barbie.jpeg" alt="Movie 1">
-                        <div class="overlay">Barbie</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\Barbie.jpeg" alt="Movie 1">
-                        <div class="overlay">Barbie</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\wonka.jpeg" alt="Movie 1">
-                        <div class="overlay">Wonka</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\wonka.jpeg" alt="Movie 1">
-                        <div class="overlay">Wonka</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\wonka.jpeg" alt="Movie 1">
-                        <div class="overlay">Wonka</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\Aquaman.jpeg" alt="Movie 1">
-                        <div class="overlay">Aquaman</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\Aquaman.jpeg" alt="Movie 1">
-                        <div class="overlay">Aquaman</div>
-                    </div>
-                    <div class="card" data-title="Movie 1" data-genre="Action" data-description="Description of Movie 1">
-                        <img src="img\Aquaman.jpeg" alt="Movie 1">
-                        <div class="overlay">Aquaman</div>
-                    </div>
-                    <!-- Add more movie cards here -->
+                <div class="card-container" id="MoviesContainer">
                 </div>
                 <button class="carousel-btn right-btn">&gt;</button>
             </div>
@@ -107,50 +76,75 @@
             <h2>TV Shows</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\100.jpeg" alt="TV Show 1">
-                        <div class="overlay">The 100</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\100.jpeg" alt="TV Show 1">
-                        <div class="overlay">The 100</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\100.jpeg" alt="TV Show 1">
-                        <div class="overlay">The 100</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\Trolls.jpeg" alt="TV Show 1">
-                        <div class="overlay">Trolls</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\Trolls.jpeg" alt="TV Show 1">
-                        <div class="overlay">Trolls</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\Trolls.jpeg" alt="TV Show 1">
-                        <div class="overlay">Trolls</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\heartOfStone.jpeg" alt="TV Show 1">
-                        <div class="overlay">Heart of Stone</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\heartOfStone.jpeg" alt="TV Show 1">
-                        <div class="overlay">Heart of Stone</div>
-                    </div>
-                    <div class="card" data-title="TV Show 1" data-genre="Drama" data-description="Description of TV Show 1">
-                        <img src="img\heartOfStone.jpeg" alt="TV Show 1">
-                        <div class="overlay">Heart of Stone</div>
-                    </div>
-                    <!-- Add more tv show cards here -->
+                <div class="card-container" id="SeriesContainer">
                 </div>
                 <button class="carousel-btn right-btn">&gt;</button>
             </div>
         </section>
 
-        <!-- Add more sections for other genres similarly -->
+        <section class="category" id="tvshows">
+            <h2>Action</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container"  id="ActionContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
+        <section class="category" id="tvshows">
+            <h2>Animation</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="AnimationContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
+        <section class="category" id="tvshows">
+            <h2>Sci-fi</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="Sci-fiContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
+        <section class="category" id="tvshows">
+            <h2>Horror</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="HorrorContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
+        <section class="category" id="tvshows">
+            <h2>Comedy</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="ComedyContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
+        <section class="category" id="tvshows">
+            <h2>Adventure</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="AdventureContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
+        <section class="category" id="tvshows">
+            <h2>Drama</h2>
+            <div class="carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="DramaContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
     </main>
 
     <div id="modal" class="modal">
@@ -162,11 +156,11 @@
                 <button class="modal-button" id="watch-now">Watch Now</button>
                 <button class="modal-button" id="add-watchlist">Add to Watchlist</button>
                 <button class="modal-button" id="add-review">Add Review</button>
-                <button class="modal-button" id="View">View</button>
+                <button class="modal-button" id="view">View</button>
             </div>
         </div>
     </div>
 
-    <script src="homepage.js"></script>
+    <!-- <script src="js/homePage.js"></script> -->
 </body>
 </html>
