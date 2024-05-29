@@ -36,54 +36,141 @@ function onLoad(){
         details.classList.add("details-section")
 
         var plot = document.createElement("p")
-        plot.innerHTML = `Plot Summary: ${detailsArray.plot}`
-        
+        var headingP = document.createElement("span")
+
+        headingP.innerHTML = "Plot Summary"
+        headingP.style.fontSize = "18px"
+        headingP.style.fontWeight = "bold"
+
+        var plotText = document.createElement("span")
+        plotText.innerHTML = `: ${detailsArray.plot}`
+
+        plot.appendChild(headingP);
+        plot.appendChild(plotText);
+
+        if(detailsArray.type=='M'){
+
         var duration = document.createElement("p")
-        duration.innerHTML = `Duration: ${detailsArray.runtime} minutes`
+        var headingD = document.createElement("span")
+
+        headingD.innerHTML = "Duration "
+        headingD.style.fontSize = "18px"
+        headingD.style.fontWeight = "bold"
+
+        var durationText = document.createElement("span")
+        durationText.innerHTML = `: ${detailsArray.runtime} minutes`
+
+        duration.appendChild(headingD);
+        duration.appendChild(durationText);
+        }
+        else
+        {
+          var duration = document.createElement("p")
+          var headingD = document.createElement("span")
+
+          headingD.innerHTML = "Number of Seasons "
+          headingD.style.fontSize = "18px"
+          headingD.style.fontWeight = "bold"
+
+          var durationText = document.createElement("span")
+          durationText.innerHTML = `: ${detailsArray['number of seasons']}`
+
+          duration.appendChild(headingD);
+          duration.appendChild(durationText);
+        }
 
         var genre = document.createElement("p")
-        var heading = document.createElement("h2")
-        heading.innerHTML = "Genre"
-        // heading.style.fontSize = 20
-        // heading.style.fontWeight = 20
-        genre.innerHTML = heading.innerHTML + `: ${detailsArray.genre}`
+        var headingG = document.createElement("span")
+
+        headingG.innerHTML = "Genre "
+        headingG.style.fontSize = "18px"
+        headingG.style.fontWeight = "bold"
+
+        var genreText = document.createElement("span")
+        genreText.innerHTML = `: ${detailsArray.genre}`
+
+        genre.appendChild(headingG);
+        genre.appendChild(genreText);
 
         var actors = document.createElement("p")
-        actors.innerHTML = `Cast: ${detailsArray.cast}`
+        var headingA = document.createElement("span")
 
-        var director = document.createElement("p")
-        director.innerHTML = `Director: ${detailsArray.directors}`
+        headingA.innerHTML = "Cast "
+        headingA.style.fontSize = "18px"
+        headingA.style.fontWeight = "bold"
 
-        var reviews = document.createElement("a")
-        reviews.href = `Reviews.html?titleId=${detailsArray.id}`
+        var actorsText = document.createElement("span")
+        actorsText.innerHTML = `: ${detailsArray.cast}`
+
+        actors.appendChild(headingA);
+        actors.appendChild(actorsText);
+
+        var crew = document.createElement("p")
+        var headingC = document.createElement("span")
+
+        headingC.innerHTML = "Crew "
+        headingC.style.fontSize = "18px"
+        headingC.style.fontWeight = "bold"
+
+        var crewText = document.createElement("span")
+        crewText.innerHTML = `: ${detailsArray.directors}`
+
+        crew.appendChild(headingC);
+        crew.appendChild(crewText);
+
+        var reviews = document.createElement("button")
+        reviews.innerHTML = "Production "
+        reviews.onclick = function() {
+          window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
+        };
         reviews.innerHTML = "View Reviews"
-        reviews.classList.add("reviews-link")
+        reviews.classList.add("reviews-button")
+        reviews.style.textDecoration = "none"
 
         var production = document.createElement("p")
-        if(detailsArray.type=='M')
-            production.innerHTML = "Production: Movie"
-        else
-            production.innerHTML = "Production: Series"
+        if(detailsArray.type=='M'){
 
-        
+          var production = document.createElement("p")
+          var headingP = document.createElement("span")
+  
+          headingP.innerHTML = "Production "
+          headingP.style.fontSize = "18px"
+          headingP.style.fontWeight = "bold"
+  
+          var productionText = document.createElement("span")
+          productionText.innerHTML = ": Movie"
+  
+          production.appendChild(headingP);
+          production.appendChild(productionText);
 
-        // var plot = document.createElement("p")
-        // plot.innerHTML = `Plot Summary: ${detailsArray.plot}`
-        
+        }
+        else{
+          var production = document.createElement("p")
+          var headingP = document.createElement("span")
+  
+          headingP.innerHTML = "Production "
+          headingP.style.fontSize = "18px"
+          headingP.style.fontWeight = "bold"
+  
+          var productionText = document.createElement("span")
+          productionText.innerHTML = ": Series"
+  
+          production.appendChild(headingP);
+          production.appendChild(productionText);
+        }
 
         details.appendChild(plot)
         details.appendChild(duration)
         details.appendChild(genre)
         details.appendChild(actors)
-        details.appendChild(director)
+        details.appendChild(crew)
         details.appendChild(production)
         details.appendChild(reviews)
-        // details.appendChild(plot)
 
         detailsCont.insertBefore(details, detailsCont.firstChild)
         detailsCont.insertBefore(title, detailsCont.firstChild)
         detailsCont.insertBefore(image, detailsCont.firstChild)
-        
+
       }
 
     }
