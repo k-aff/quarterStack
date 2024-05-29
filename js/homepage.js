@@ -100,12 +100,12 @@ function setWatchList() {
     },
     body: JSON.stringify({
       type: "setWatchList",
-      title_id: 170,
-      user_id: 8,
+      title_id: 23,
+      user_id: 9
     }),
   };
-
-  
+  console.log(requestData["here"]);
+  console.log(requestData["body"]);
 
   fetch(api, requestData)
     .then((response) => response.json())

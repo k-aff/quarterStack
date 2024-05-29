@@ -25,32 +25,4 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCarousel();
 });
 
-function getWatchList() {
-  //get session id
-  console.loh("here 2");
-  //make use of user ID or session id
-  const api = "hoopAPI.php";
 
-  const requestData = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      type: "getWatchList",
-      //get session id
-      user_id: 8,
-    }),
-  };
-
-  fetch(api, requestData)
-    .then((response) => response.json)
-    .then((data) => {
-      console.log("Success:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      // Handle error
-    });
-}
-getWatchList();

@@ -652,7 +652,7 @@ class Hoop
                 "message" => "No user found with the given email",
             ];
            
-            header("Content-Type: application/json");
+            // header("Content-Type: application/json");
             echo json_encode(new Response("Error", time(), $data));
             return;
         }
@@ -663,7 +663,7 @@ class Hoop
             $data = [
                 "message" => "User not found",
             ];
-            header("Content-Type: application/json");
+            // header("Content-Type: application/json");
             echo json_encode(new Response("Error", time(), $data));
             return;
         } else {
@@ -710,7 +710,7 @@ class Hoop
                 session_start();
                 $_SESSION["user_id"] = $userID;
 
-                header("Content-Type: application/json");
+                // header("Content-Type: application/json");
                 echo json_encode(new Response("Success", time(), $data));
                 return;
             } else {
@@ -719,7 +719,7 @@ class Hoop
                     "message" => "Invalid credentials",
 
                 ];
-                header("Content-Type: application/json");
+                // header("Content-Type: application/json");
                 echo json_encode(new Response("Error", time(), $data));
                 return;
             }
