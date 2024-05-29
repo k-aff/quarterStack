@@ -7,7 +7,11 @@
     <title>HOOP - Home</title>
     <link rel="stylesheet" href="css/homepage.css">
     <script src="js/homepage.js"></script>
+    <title>HOOP - Home</title>
+    <link rel="stylesheet" href="css/homepage.css">
+    <script src="js/homepage.js"></script>
 </head>
+<body onload="onLoad()">
 <body onload="onLoad()">
       <header>
         <div class="logo">
@@ -18,17 +22,17 @@
                 <li><a class="active" href="homepage.html">Home</a></li>
                 <li><a  href="movies.html">Movies</a></li>
                 <li><a href="series.html">TV Shows</a></li>
-                <li><a href="watchlist.html">WatchList</a></li>
+                <li><a href="watchlist.html">Watch List</a></li>
                 <li><a href="watchHistory.html">Watch History</a></li>
             </ul>
             <div class="Logout_icon"><a href="welcome.html" onclick="logout()"><i class="fa fa-sign-out"></i></a>
-                <a href="Personal_info.html"></a><a><i class="fa fa-user"></i></a>   
+                <a href="Personal_info.html"><i class="fa fa-user"></i></a>   
             </div>
         </nav>
     </header>
     <div class="search-container">
         <div class="search-bar">
-            <input type="text" placeholder="Search by title">
+            <input type="text" placeholder="Search by title" id="SearchText">
             <button class="search-button" id="Search">Search</button>
         </div>
     <div class="filter-container">
@@ -53,8 +57,17 @@
     </div>
     </div>
   <main>
+        <section class="hidden" id="Search-Filter">
+            <h2 id="SearchFilterH2"></h2>
+            <div class="hidden" id="Search-Carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="SearchContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
         <section class="category" id="tvshows">
-            <h2>Your preferences</h2>
+            <h2>Your Preferences</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="PreferencesContainer"></div>
@@ -83,7 +96,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2>Action</h2>
+            <h2 id="ActionH2" >Action</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container"  id="ActionContainer"></div>
@@ -92,7 +105,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2>Animation</h2>
+            <h2 id="AnimationH2">Animation</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="AnimationContainer"></div>
@@ -101,7 +114,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2>Sci-fi</h2>
+            <h2 id="SciFiH2">Sci-Fi</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="Sci-fiContainer"></div>
@@ -110,7 +123,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2>Horror</h2>
+            <h2 id="HorrorH2">Horror</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="HorrorContainer"></div>
@@ -119,7 +132,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2>Comedy</h2>
+            <h2 id="ComedyH2">Comedy</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="ComedyContainer"></div>
@@ -128,7 +141,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2>Adventure</h2>
+            <h2 id="AdventureH2">Adventure</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="AdventureContainer"></div>
@@ -137,7 +150,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2>Drama</h2>
+            <h2 id="DramaH2">Drama</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="DramaContainer"></div>
@@ -159,5 +172,6 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>
