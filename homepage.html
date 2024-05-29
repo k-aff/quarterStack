@@ -21,8 +21,8 @@
                 <li><a href="watchlist.html">WatchList</a></li>
                 <li><a href="watchHistory.html">Watch History</a></li>
             </ul>
-            <div class="Logout_icon"><a href="welcomePage.html"><i class="fa fa-sign-out"></i></a>
-                <a href="Personal_info.html"><i class="fa fa-user"></i></a>   
+            <div class="Logout_icon"><a href="welcome.html"><i class="fa fa-sign-out"></i></a>
+                <a href="Personal_info.html" onclick="logout()"></a><a><i class="fa fa-user"></i></a>   
             </div>
         </nav>
     </header>
@@ -31,7 +31,6 @@
             <button class="search-button" id="Search">Search</button>
             <input type="text" placeholder="Title or Genre">
         </div>
-          <!--Filter mechanism-->
     <div class="filter-container">
         <select id="genre-filter">
             <option value="all">All Genres</option>
@@ -47,7 +46,6 @@
             <option value="reality">Reality</option>
             <option value="romance">Romance</option>
             <option value="sci-fi">Sci-Fi</option>
-            <!-- Add more genres as needed -->
         </select>
         <button id="filter-button">Filter</button>
     </div>
@@ -157,7 +155,7 @@
                 <button class="modal-button" id="watch-now">Watch Now</button>
                 <button class="modal-button" id="add-watchlist">Add to Watchlist</button>
                 <button class="modal-button" id="add-review">Add Review</button>
-                <button class="modal-button" id="view">View</button>
+                <button class="modal-button" id="view">View More</button>
             </div>
         </div>
     </div>
