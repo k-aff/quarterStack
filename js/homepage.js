@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }    
         }
     }
-    req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true); 
+    req.open("POST", "hoopAPI.php", true); 
     req.setRequestHeader("Content-Type", "application/json");
 
     const request = 
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }    
             }
         }
-        req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true); 
+        req.open("POST", "hoopAPI.php", true); 
         req.setRequestHeader("Content-Type", "application/json");
 
         const request = 
@@ -342,7 +342,7 @@ req.onerror = function() {
   console.error("Error loading API");
 };
 
-req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true);
+req.open("POST", "hoopAPI.php", true);
 req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 req.send(JSON.stringify(requestData));
 }
@@ -397,7 +397,7 @@ req.onerror = function() {
   console.error("Error loading API");
 };
 
-req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true);
+req.open("POST", "hoopAPI.php", true);
 req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 req.send(JSON.stringify(requestData));
 
