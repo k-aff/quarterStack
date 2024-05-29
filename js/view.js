@@ -119,7 +119,6 @@ function onLoad(){
         crew.appendChild(crewText);
 
         var reviews = document.createElement("button")
-        reviews.innerHTML = "Production "
         reviews.onclick = function() {
           window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
         };
