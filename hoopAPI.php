@@ -510,9 +510,10 @@ public function setUserPref($reqbody)
     {
         $hoop = Hoop::instance();
         $title_id = $reqbody["title_id"];
-        $sqlcheckpref = "SELECT * FROM review INNER JOIN title ON review.title_id=title.title_id WHERE review.title_id='$title_id'";
+        $sqlcheckpref = "SELECT * FROM review INNER JOIN title ON review.title_id=title.title_id INNER JOIN user ON review.user_id=user.user_id WHERE review.title_id='$title_id'";
         $result = $this->con->query($sqlcheckpref);
         $reviews = array();
+        
         if ($result && $result->num_rows > 0) {
             while ($pref = $result->fetch_assoc()) {
                 $user_rev = array(
@@ -520,13 +521,24 @@ public function setUserPref($reqbody)
                     "review" => $pref["review"],
                     "rating" => $pref["rating"],
                     "user_id" => $pref["user_id"],
-                    "image" => $pref["image"]
+                    "image" => $pref["image"],
+                    "title" => $pref["title"],
+                    "name" => $pref["fname"]
                 );
                 $reviews[] = $user_rev;
             }
             echo json_encode(new Response("success", time(), $reviews));
         } else {
-            echo json_encode(new Response("failure", time(), "title has no reviews"));
+            $sql="SELECT title,image FROM title WHERE title.title_id='$title_id' ";
+            $res=$this->con->query($sql);
+            while ($pref = $res->fetch_assoc()) {
+                $user_rev = array(
+                    "image" => $pref["image"],
+                    "title" => $pref["title"]
+                );
+                $reviews[] = $user_rev;
+            }
+            echo json_encode(new Response("failure", time(), $reviews));
         }
         //return 
     }
