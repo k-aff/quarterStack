@@ -83,10 +83,53 @@ class Hoop
                 $this->setReview($reqbody);
             } else if ($type === "logout") { 
                 $this->logout($reqbody);
+            } else if ($type === "filter") { 
+                $this->filter($reqbody);
             }
         }
     }
 
+    public function filter($jsonData)
+    {
+        //get all json data
+        $page = $jsonData["page"];
+        $filter = $jsonData["genre"];
+
+        if ($page === "home")
+            $sql = "SELECT * FROM title WHERE genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?) LIMIT 20";
+        else if ($page === "movie")
+            $sql = "SELECT * FROM title WHERE type ='M' AND genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+        else if ($page === "series")
+            $sql = "SELECT * FROM title WHERE type ='S' AND genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+
+        $stmt = $this->con->prepare($sql);
+        if (!$stmt) {
+            echo json_encode(new Response("error", time(), "SQL query preparation error: " . $this->con->error));
+            return;
+        }
+        $search = '%' . $filter . '%';
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $data = [];
+            $validReturnValues = ['title_id', 'title', 'crew', 'age_cert', 'cast', 'release_date', 'plot_summary', 'language', 'review_id', 'genre_id', 'image', 'type'];
+            while ($row = $result->fetch_assoc()) 
+            {
+                $title = [];
+                foreach ($validReturnValues as $value) 
+                {
+                    $title[$value] = $row[$value];
+                }
+                $data[] = $title;
+            }
+            echo json_encode(new Response("success", time(), $data));
+        }
+        else {
+            $data = "No results found for genre: '" . $filter . "'"; 
+            echo json_encode(new Response("error", time(), $data));
+        }
+    }
 
     public function signUp($jsonData)
     {
@@ -393,6 +436,7 @@ class Hoop
 
         
     }
+
 public function setUserPref($reqbody)
 {
     $hoop = Hoop::instance();
@@ -1040,11 +1084,11 @@ public function setUserPref($reqbody)
                 while($title = $result->fetch_assoc()){
 
                     $data = array();
-                    $data['id'] = $title["title_id"];
+                    $data['title_id'] = $title["title_id"];
                     $data['title'] = $title["title"];
                     $data['image'] = $title["image"];
                     $data['type'] = $title["type"];
-                    $data['plot'] = $title["plot_summary"];
+                    $data['plot_summary'] = $title["plot_summary"];
 
                     //obtaining additonal movie or series data 
 

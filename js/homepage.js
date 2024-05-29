@@ -1,5 +1,4 @@
 // MY JS CODE FOR HOME PAGE FILTER & SEARCH 
-
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('Search').addEventListener('click', function() {
     const searchText = document.getElementById('SearchText').value;
@@ -43,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
               for (let i = 0; i < titles.data.length; i++) {
                 const item = titles.data[i];
+                console.log(item); 
         
                 var card = document.createElement("div");
                 card.classList.add("card");
@@ -75,6 +75,26 @@ document.addEventListener('DOMContentLoaded', function() {
                   };
                 })(item));
               }
+              carouselButtons = document.querySelectorAll('.carousel');
+              carouselButtons.forEach(carousel => {
+                const leftBtn = carousel.querySelector('.left-btn');
+                const rightBtn = carousel.querySelector('.right-btn');
+                const cardContainer = carousel.querySelector('.card-container');
+          
+                leftBtn.addEventListener('click', () => {
+                    cardContainer.scrollBy({
+                        left: -200,
+                        behavior: 'smooth'
+                    });
+                });
+          
+                rightBtn.addEventListener('click', () => {
+                    cardContainer.scrollBy({
+                        left: 200,
+                        behavior: 'smooth'
+                    });
+                });
+              });
             }    
         }
     }
@@ -91,12 +111,20 @@ document.addEventListener('DOMContentLoaded', function() {
     req.send(JSON.stringify(request));   
   
   });
+  
 });
 
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('filter-button').addEventListener('click', function() {
+
+      const section = document.getElementById('Search-Filter');
+      const heading = document.getElementById('SearchFilterH2');
+      const carousel = document.getElementById('Search-Carousel');
+      section.className = 'hidden'; 
+      carousel.className = 'hidden'; 
+
       const filter = document.getElementById('genre-filter').value;
-      console.log(filter);
+      // console.log(filter);
 
       if (filter === "Action") {
         document.getElementById('ActionH2').scrollIntoView({ behavior: 'smooth' });
@@ -120,7 +148,100 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('DramaH2').scrollIntoView({ behavior: 'smooth' });
       }
       else {
+        var req = new XMLHttpRequest();  
+        req.onreadystatechange = function()
+        {
+            if(req.readyState == 4 && req.status == 200)
+            {
+                var titles = JSON.parse(req.responseText);
+                console.log(titles);
 
+                if (titles.status === "error")
+                {
+                  heading.className = 'category h2';
+                  heading.innerHTML = titles.data; 
+                  section.className = 'carousel';
+                  carousel.className = 'hidden'; 
+
+                } 
+                else
+                {
+                  section.className = 'category';
+                  heading.innerText = filter;
+                  heading.className = 'category h2';
+                  carousel.className = 'carousel';
+
+                  let container = document.getElementById('SearchContainer');
+                  container.innerHTML = null;
+
+                  for (let i = 0; i < titles.data.length; i++) {
+                    const item = titles.data[i];
+            
+                    var card = document.createElement("div");
+                    card.classList.add("card");
+                    card.setAttribute("data-title", item.title);
+                    card.setAttribute("data-genre", item.type);
+                    card.setAttribute("data-description", item.plot_summary);
+                    card.setAttribute("data-url", item.url);
+                    
+                    // Creating img element
+                    var image = document.createElement("img");
+                    image.src = item.image;
+                    image.alt = item.title + " Cover photo";
+                    image.style.height = '100%';
+                    image.style.width = '100%';
+                    image.style.objectFit = 'cover'; 
+            
+                    // Creating overlay div
+                    var overlay = document.createElement("div");
+                    overlay.classList.add("overlay");
+                    overlay.innerText = item.title;
+            
+            
+                    card.appendChild(image);
+                    card.appendChild(overlay);
+                    container.appendChild(card);
+            
+                    card.addEventListener('click', (function(item) {
+                      return function() {
+                        showModal(item);
+                      };
+                    })(item));
+                  }
+                  carouselButtons = document.querySelectorAll('.carousel');
+                  carouselButtons.forEach(carousel => {
+                    const leftBtn = carousel.querySelector('.left-btn');
+                    const rightBtn = carousel.querySelector('.right-btn');
+                    const cardContainer = carousel.querySelector('.card-container');
+              
+                    leftBtn.addEventListener('click', () => {
+                        cardContainer.scrollBy({
+                            left: -200,
+                            behavior: 'smooth'
+                        });
+                    });
+              
+                    rightBtn.addEventListener('click', () => {
+                        cardContainer.scrollBy({
+                            left: 200,
+                            behavior: 'smooth'
+                        });
+                    });
+                  });
+                }    
+            }
+        }
+        req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true); 
+        req.setRequestHeader("Content-Type", "application/json");
+
+        const request = 
+        {
+            "type": "filter",
+            "page" : "home",
+            "genre": filter
+        };
+
+        req.send(JSON.stringify(request));   
       }
   });
 });
@@ -137,9 +258,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   });
 
-  const carousels = document.querySelectorAll('.carousel');
+  carouselButtons = document.querySelectorAll('.carousel');
 
-  carousels.forEach(carousel => {
+  carouselButtons.forEach(carousel => {
       const leftBtn = carousel.querySelector('.left-btn');
       const rightBtn = carousel.querySelector('.right-btn');
       const cardContainer = carousel.querySelector('.card-container');
@@ -159,7 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 });
-
 
 function onLoad() {
 const req = new XMLHttpRequest();
@@ -239,7 +359,7 @@ const modalDescription = document.getElementById('modal-description');
 const closeButton = document.querySelector('.close-button');
 
 modalTitle.textContent = item.title;
-modalDescription.textContent = item.plot;
+modalDescription.textContent = item.plot_summary;
 modal.style.display = 'block';
 
 const closeModal = () => {
@@ -259,7 +379,7 @@ window.addEventListener('click', outsideClick);
 
 const view = document.getElementById('view');
 view.onclick = function() {
-  window.location.href = `view.html?titleId=${item.id}`;
+  window.location.href = `view.html?titleId=${item.title_id}`;
 };
 }
 
