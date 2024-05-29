@@ -647,11 +647,11 @@ class Hoop
         // Fetch the result
         if ($statement->fetch()) {
             $user = $statement->fetch();
-        } else {          
+        } else {
             $data = [
                 "message" => "No user found with the given email",
             ];
-           
+
             // header("Content-Type: application/json");
             echo json_encode(new Response("Error", time(), $data));
             return;
@@ -727,9 +727,10 @@ class Hoop
     }
     public function setWatchHistory($request_body)
     {
-
+        session_start();
+        
         $titleID = $request_body["title_id"];
-        $user_id = $request_body["user_id"];
+        $user_id = $_SESSION["user_id"];
         //check if the title is already in the watch hist table
         $historyQuery = "SELECT title_id FROM watch_history
         WHERE user_id = ? AND title_id =?";
@@ -775,7 +776,10 @@ class Hoop
 
     public function getWatchHistory($request_body)
     {
-        $user_id = $request_body["user_id"];
+        session_start();
+        
+        $titleID = $request_body["title_id"];
+        $user_id = $_SESSION["user_id"];
         //join
         $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
 
@@ -839,9 +843,11 @@ class Hoop
 
     public function setWatchList($request_body)
     {
+
+        session_start();
         
         $titleID = $request_body["title_id"];
-        $user_id = $request_body["user_id"];
+        $user_id = $_SESSION["user_id"];
         //check if the title is already in the watch list table
         $listQuery = "SELECT title_id FROM watch_list
         WHERE user_id = ? AND title_id = ?";
@@ -855,7 +861,7 @@ class Hoop
         $statement->store_result();
 
         if ($statement->num_rows > 0) {
-           
+
             // check if titlle already in table
             $data = [
                 "message" => "Title already in Watch List",
@@ -888,7 +894,11 @@ class Hoop
 
     public function getWatchList($request_body)
     {
-        $user_id = $request_body["user_id"];
+
+       session_start();
+        
+        $titleID = $request_body["title_id"];
+        $user_id = $_SESSION["user_id"];
         //join
         $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
 

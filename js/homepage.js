@@ -90,7 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function setWatchList() {
-  
+  const myQuery = window.location.search;
+  const Params = new URLSearchParams(myQuery);
+  const id = Params.get("titleId");
+
   const api = "hoopAPI.php";
 
   const requestData = {
@@ -100,8 +103,7 @@ function setWatchList() {
     },
     body: JSON.stringify({
       type: "setWatchList",
-      title_id: 23,
-      user_id: 9
+      title_id: id,
     }),
   };
   console.log(requestData["here"]);
@@ -119,4 +121,38 @@ function setWatchList() {
 }
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("add-watchlist").onclick = setWatchList;
+});
+
+
+function setWatchHistory() {
+  const myQuery = window.location.search;
+  const Params = new URLSearchParams(myQuery);
+  const id = Params.get("titleId");
+
+  const api = "hoopAPI.php";
+
+  const requestData = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      type: "setWatchHistory",
+      title_id: id
+    }),
+  };
+ 
+
+  fetch(api, requestData)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle error
+    });
+}
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("watch-now").onclick = setWatchHistory;
 });
