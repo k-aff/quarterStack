@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
-        window.location.href = 'homepage.html'; // Redirect to homepage after 5 seconds
-    }, 5000);
+        window.location.href = 'homepage.html'; // Redirect to homepage after 4 seconds
+    }, 4000); // Adjusted timeout to 4000 milliseconds (4 seconds)
 });
