@@ -7,7 +7,11 @@
     <title>HOOP - Home</title>
     <link rel="stylesheet" href="css/homepage.css">
     <script src="js/homepage.js"></script>
+    <title>HOOP - Home</title>
+    <link rel="stylesheet" href="css/homepage.css">
+    <script src="js/homepage.js"></script>
 </head>
+<body onload="onLoad()">
 <body onload="onLoad()">
       <header>
         <div class="logo">
@@ -18,20 +22,19 @@
                 <li><a class="active" href="homepage.html">Home</a></li>
                 <li><a  href="movies.html">Movies</a></li>
                 <li><a href="series.html">TV Shows</a></li>
-                <li><a href="watchlist.html">WatchList</a></li>
+                <li><a href="watchlist.html">Watch List</a></li>
                 <li><a href="watchHistory.html">Watch History</a></li>
             </ul>
-            <div class="Logout_icon"><a href="welcomePage.html"><i class="fa fa-sign-out"></i></a>
+            <div class="Logout_icon"><a href="welcome.html" onclick="logout()"><i class="fa fa-sign-out"></i></a>
                 <a href="Personal_info.html"><i class="fa fa-user"></i></a>   
             </div>
         </nav>
     </header>
     <div class="search-container">
         <div class="search-bar">
-            <input type="text" placeholder="Search by title">
+            <input type="text" placeholder="Search by title" id="SearchText">
             <button class="search-button" id="Search">Search</button>
         </div>
-          <!--Filter mechanism-->
     <div class="filter-container">
         <select id="genre-filter">
             <option value="All">All Genres</option>
@@ -54,8 +57,17 @@
     </div>
     </div>
   <main>
+        <section class="hidden" id="Search-Filter">
+            <h2 id="SearchFilterH2"></h2>
+            <div class="hidden" id="Search-Carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="SearchContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
         <section class="category" id="tvshows">
-            <h2>Your preferences</h2>
+            <h2>Your Preferences</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="PreferencesContainer"></div>
@@ -145,7 +157,6 @@
                 <button class="carousel-btn right-btn">&gt;</button>
             </div>
         </section>
-
     </main>
 
     <div id="modal" class="modal">
@@ -157,11 +168,10 @@
                 <button class="modal-button" id="watch-now">Watch Now</button>
                 <button class="modal-button" id="add-watchlist">Add to Watchlist</button>
                 <button class="modal-button" id="add-review">Add Review</button>
-                <button class="modal-button" id="view">View</button>
+                <button class="modal-button" id="view">View More</button>
             </div>
         </div>
     </div>
 
-    <!-- <script src="js/homePage.js"></script> -->
 </body>
 </html>

@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <title>movie information</title>
+    <title>HOOP - Movie Information</title>
     <link rel="stylesheet" href="css/view.css">
+    <script src="js/view.js"></script>
 </head>
 <header>
     <div class="logo">
@@ -26,27 +27,12 @@
 </div>
 </header>
 
-<body>
+<body onload="onLoad()">
     <div class="movie-background" style="background-image: url('img/unnamed.png');">
-        
-            <div class="movie-details">
-
-                <img src="img/mg_salone_poster_1400x2100.jpg" alt="Movie Poster" class="movie-poster-small">
-                <h1>Title Name</h1>
-                <div class="details-section">
-                    <p>Plot Summary:</p>
-                    <p>duration|year</p>
-                    <p>Genre:</p>
-                    <p>Actors:</p>
-                    <p>Director:</p>
-                    <p>Country:</p>
-                    <p>Production:</p>
-                    <a href="Reviews.html" class="reviews-link">View Reviews</a>
-                </div>
-                <button class="watch-button"><i class="fa fa-play"></i> Play</button>
-                <button class="watch-button"><i class="fa fa-plus"></i> add</button>
-            </div>
-        
+        <div class="movie-details" id="detailsContainer">
+            <button class="watch-button"><i class="fa fa-play"></i> Play</button>
+            <button class="add-button"><i class="fa fa-plus"></i> Add </button>
+        </div>
     </div>
-    </body>
-    </html>
+</body>
+</html>
