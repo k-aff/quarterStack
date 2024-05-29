@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
 body, html {
     margin: 0;
     padding: 0;
@@ -180,9 +185,22 @@ main {
     margin-bottom: 10px;
 }
 
+/* Section styling */
+section.category {
+    width: calc(100% + 40px); /* Ensure section takes full width */
+    padding: 0; /* Remove padding */
+   margin-left: -20px;
+   margin-right: -20px;
+}
 .carousel {
     display: flex;
     align-items: center;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    width: 100%; /* Ensure carousel takes full width */
+    position: relative;
+
 }
 
 .carousel-btn {
@@ -202,7 +220,7 @@ main {
     display: flex;
     gap: 20px;
     overflow: hidden;
-    width: calc(100% - 80px); /* Adjust width to account for button sizes */
+    width: calc(100% - 80px); 
 }
 
 .card {
