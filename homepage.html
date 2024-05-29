@@ -21,8 +21,8 @@
                 <li><a href="watchlist.html">WatchList</a></li>
                 <li><a href="watchHistory.html">Watch History</a></li>
             </ul>
-            <div class="Logout_icon"><a href="welcomePage.html"><i class="fa fa-sign-out"></i></a>
-                <a href="Personal_info.html"><i class="fa fa-user"></i></a>   
+            <div class="Logout_icon"><a href="welcome.html" onclick="logout()"><i class="fa fa-sign-out"></i></a>
+                <a href="Personal_info.html"></a><a><i class="fa fa-user"></i></a>   
             </div>
         </nav>
     </header>
@@ -31,7 +31,6 @@
             <input type="text" placeholder="Search by title">
             <button class="search-button" id="Search">Search</button>
         </div>
-          <!--Filter mechanism-->
     <div class="filter-container">
         <select id="genre-filter">
             <option value="All">All Genres</option>
@@ -84,7 +83,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2 id="ActionH2" >Action</h2>
+            <h2>Action</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container"  id="ActionContainer"></div>
@@ -93,7 +92,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2 id="AnimationH2">Animation</h2>
+            <h2>Animation</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="AnimationContainer"></div>
@@ -102,7 +101,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2 id="SciFiH2">Sci-Fi</h2>
+            <h2>Sci-fi</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="Sci-fiContainer"></div>
@@ -111,7 +110,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2 id="HorrorH2">Horror</h2>
+            <h2>Horror</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="HorrorContainer"></div>
@@ -120,7 +119,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2 id="ComedyH2">Comedy</h2>
+            <h2>Comedy</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="ComedyContainer"></div>
@@ -129,7 +128,7 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2 id="AdventureH2">Adventure</h2>
+            <h2>Adventure</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="AdventureContainer"></div>
@@ -138,14 +137,13 @@
         </section>
 
         <section class="category" id="tvshows">
-            <h2 id="DramaH2">Drama</h2>
+            <h2>Drama</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="DramaContainer"></div>
                 <button class="carousel-btn right-btn">&gt;</button>
             </div>
         </section>
-
     </main>
 
     <div id="modal" class="modal">
@@ -157,11 +155,9 @@
                 <button class="modal-button" id="watch-now">Watch Now</button>
                 <button class="modal-button" id="add-watchlist">Add to Watchlist</button>
                 <button class="modal-button" id="add-review">Add Review</button>
-                <button class="modal-button" id="view">View</button>
+                <button class="modal-button" id="view">View More</button>
             </div>
         </div>
     </div>
-
-    <!-- <script src="js/homePage.js"></script> -->
 </body>
 </html>
