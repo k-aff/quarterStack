@@ -93,7 +93,7 @@
 //-------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------//
 
-// KARABO'S JS CODE FOR HOME PAGE 
+// KARABO'S JS CODE FOR HOME PAGE - 29/05 @ 8:47
 document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('click', (event) => {
