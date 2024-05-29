@@ -751,8 +751,7 @@ public function setUserPref($reqbody)
             $hashpass = hash('sha256', $password);
             //verify the password if email exsists
 
-            $loginQuery = "SELECT password FROM user
-        WHERE password = ?";
+            $loginQuery = "SELECT password FROM user WHERE password = ?";
 
             if (!$statement = $this->con->prepare($loginQuery)) {
                 die('Prepair failed');
@@ -788,7 +787,8 @@ public function setUserPref($reqbody)
 
                 //start session
                 session_start();
-                $_SESSION["user_id"] = $userID;
+                $_SESSION["user_id"] = $user_id;
+                $_SESSION["email"] = $email;
 
                 header("Content-Type: application/json");
                 echo json_encode(new Response("Success", time(), $data));
@@ -804,9 +804,6 @@ public function setUserPref($reqbody)
                 return;
             }
         }
-        session_start();
-        $_SESSION["user_id"] = $user_id;
-        $_SESSION["email"] = $email;
     }
 
     public function setWatchHistory($request_body)
