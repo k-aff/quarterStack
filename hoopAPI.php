@@ -20,7 +20,7 @@ class Hoop
             die("Connection failed: " . $this->con->connect_error);
         } else {
             $this->con = $this->con;
-            // echo "Connected!";
+            //echo "Connected!";
         }
 
         return $this->con;
@@ -250,6 +250,7 @@ class Hoop
         echo json_encode(new Response("success", time(), "user added to database"));
         session_start();
         $_SESSION["user_id"] = $user_id;
+        $_SESSION["email"]= $email;
     }
 
     public function updateUser($jsonData)
@@ -368,8 +369,10 @@ class Hoop
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-        $email = $reqbody["email"];
-        $user_id = $hoop->getUserIdByEmail($email);
+        // $email = $reqbody["email"];
+        $email= $_SESSION["email"];
+        // $user_id = $hoop->getUserIdByEmail($email);
+        $user_id= $_SESSION["user_id"];
 
         if (!$user_id) {
             echo "Error: User not found";
@@ -398,8 +401,9 @@ public function setUserPref($reqbody)
     $hoop = Hoop::instance();
     //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-    $email = $reqbody["email"];
-    $user_id = $hoop->getUserIdByEmail($email);
+    $email= $_SESSION["email"];
+    // $user_id = $hoop->getUserIdByEmail($email);
+    $user_id= $_SESSION["user_id"];
 
     if (!$user_id) {
         //echo "Error: User not found";
@@ -448,9 +452,10 @@ public function setUserPref($reqbody)
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-        $email = $reqbody["email"];
-        $user_id = $hoop->getUserIdByEmail($email);
-        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id";
+        $email= $_SESSION["email"];
+        // $user_id = $hoop->getUserIdByEmail($email);
+        $user_id= $_SESSION["user_id"];
+        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
         $result = $this->con->query($sql);
         if ($result && $result->num_rows > 0)
         {
@@ -461,6 +466,7 @@ public function setUserPref($reqbody)
         {
             echo json_encode(new Response("failure", time(), "user not found"));
         }
+        //echo ($email);
     }
 
 
@@ -468,8 +474,9 @@ public function setUserPref($reqbody)
         {
             $hoop = Hoop::instance();
             //$reqbody = json_decode(file_get_contents('php://input'), true);
-            $email = $reqbody["email"];
-            $id = $hoop->getUserIdByEmail($email);
+            $email= $_SESSION["email"];
+            // $user_id = $hoop->getUserIdByEmail($email);
+            $id= $_SESSION["user_id"];
             $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
             $result = $this->con->query($sqlcheckpref);
          
@@ -498,31 +505,31 @@ public function setUserPref($reqbody)
             }
             
         }
-        public function getReview($reqbody)
-        {
-            $hoop = Hoop::instance();
-            //$reqbody = json_decode(file_get_contents('php://input'), true);
-            $title_id = $reqbody["title_id"];
-            // $id = $hoop->getUserIdByEmail($email);
-            $sqlcheckpref = "SELECT * FROM review WHERE title_id='$title_id'";
-            $result = $this->con->query($sqlcheckpref);
-            if ($result && $result->num_rows > 0) 
-            {
-                $pref = $result->fetch_assoc();
+        
+    public function getReview($reqbody)
+    {
+        $hoop = Hoop::instance();
+        $title_id = $reqbody["title_id"];
+        $sqlcheckpref = "SELECT * FROM review INNER JOIN title ON review.title_id=title.title_id WHERE review.title_id='$title_id'";
+        $result = $this->con->query($sqlcheckpref);
+        $reviews = array();
+        if ($result && $result->num_rows > 0) {
+            while ($pref = $result->fetch_assoc()) {
                 $user_rev = array(
                     "date" => $pref["date_time"],
                     "review" => $pref["review"],
                     "rating" => $pref["rating"],
-                    "user_id" => $pref["user_id"]
+                    "user_id" => $pref["user_id"],
+                    "image" => $pref["image"]
                 );
-                echo json_encode(new Response("success", time(), $user_rev));
+                $reviews[] = $user_rev;
             }
-            else
-            {
-                echo json_encode(new Response("failure", time(), "title has no reviews"));
-            }
-
+            echo json_encode(new Response("success", time(), $reviews));
+        } else {
+            echo json_encode(new Response("failure", time(), "title has no reviews"));
         }
+        //return 
+    }
         
         public function getMovies($reqbody)
         {
@@ -704,6 +711,7 @@ public function setUserPref($reqbody)
                 //start session
                 session_start();
                 $_SESSION["user_id"] = $userID;
+                $_SESSION["email"]= $email;
 
 
                 echo json_encode(new Response("Success", time(), $data));
