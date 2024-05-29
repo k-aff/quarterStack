@@ -18,7 +18,7 @@
                 <li><a class="active" href="homepage.html">Home</a></li>
                 <li><a  href="movies.html">Movies</a></li>
                 <li><a href="series.html">TV Shows</a></li>
-                <li><a href="watchlist.html">WatchList</a></li>
+                <li><a href="watchlist.html">Watch List</a></li>
                 <li><a href="watchHistory.html">Watch History</a></li>
             </ul>
             <div class="Logout_icon"><a href="welcomePage.html"><i class="fa fa-sign-out"></i></a>
@@ -28,7 +28,7 @@
     </header>
     <div class="search-container">
         <div class="search-bar">
-            <input type="text" placeholder="Search by title">
+            <input type="text" placeholder="Search by title" id="SearchText">
             <button class="search-button" id="Search">Search</button>
         </div>
           <!--Filter mechanism-->
@@ -54,8 +54,17 @@
     </div>
     </div>
   <main>
+        <section class="hidden" id="Search-Filter">
+            <h2 id="SearchFilterH2"></h2>
+            <div class="hidden" id="Search-Carousel">
+                <button class="carousel-btn left-btn">&lt;</button>
+                <div class="card-container" id="SearchContainer"></div>
+                <button class="carousel-btn right-btn">&gt;</button>
+            </div>
+        </section>
+
         <section class="category" id="tvshows">
-            <h2>Your preferences</h2>
+            <h2>Your Preferences</h2>
             <div class="carousel">
                 <button class="carousel-btn left-btn">&lt;</button>
                 <div class="card-container" id="PreferencesContainer"></div>
@@ -145,7 +154,6 @@
                 <button class="carousel-btn right-btn">&gt;</button>
             </div>
         </section>
-
     </main>
 
     <div id="modal" class="modal">

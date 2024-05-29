@@ -606,19 +606,43 @@ public function setUserPref($reqbody)
     public function search($jsonData)
     {
         //get all json data
-        //get phone from data
+        $page = $jsonData["page"];
         $searchText = $jsonData["text"];
 
-        $sql = "SELECT title, image FROM title WHERE title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+        if ($page === "home")
+            $sql = "SELECT * FROM title WHERE title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?) LIMIT 20";
+        else if ($page === "movie")
+            $sql = "SELECT * FROM title WHERE type ='M' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+        else if ($page === "series")
+            $sql = "SELECT * FROM title WHERE type ='S' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
+            echo json_encode(new Response("error", time(), "SQL query preparation error: " . $this->con->error));
             return;
         }
-        $stmt->bind_param("ss", $searchText, $searchText);
+        $search = '%' . $searchText . '%';
+        $stmt->bind_param("ss", $search, $search);
         $stmt->execute();
-
-        // echo 
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $data = [];
+            $validReturnValues = ['title_id', 'title', 'crew', 'age_cert', 'cast', 'release_date', 'plot_summary', 'language', 'review_id', 'genre_id', 'image', 'type'];
+            while ($row = $result->fetch_assoc()) 
+            {
+                $title = [];
+                foreach ($validReturnValues as $value) 
+                {
+                    $title[$value] = $row[$value];
+                }
+                $data[] = $title;
+            }
+            echo json_encode(new Response("success", time(), $data));
+        }
+        else {
+            $data = "No search results found for: '" . $searchText . "'"; 
+            echo json_encode(new Response("error", time(), $data));
+        }
     }
 
     public function logout()
@@ -627,12 +651,21 @@ public function setUserPref($reqbody)
             session_destroy();
     }
 
-    public function login($request_body) //by retha
+    public function login($request_body)
     {
+        // echo '<script>console.log("Your debug message here");</script>';
 
         $email = $request_body["email"];
         $password = $request_body["password"];
+        //isset as params
+        if ($email == " " && $password == " ") {
 
+            $data = [
+                "message" => "Email and Password not set",
+            ];
+            echo json_encode(new Response("Error", time(), $data));
+            return;
+        }
         //check if email exits in db
         $loginQuery = "SELECT user_id FROM user
         WHERE email = ?";
@@ -648,11 +681,16 @@ public function setUserPref($reqbody)
 
         // Fetch the result
         if ($statement->fetch()) {
-            echo 'User ID: ' . $user_id;
-        } else {
-            echo 'No user found with the given email.';
+            $user = $statement->fetch();
+        } else {          
+            $data = [
+                "message" => "No user found with the given email",
+            ];
+           
+            header("Content-Type: application/json");
+            echo json_encode(new Response("Error", time(), $data));
+            return;
         }
-        $user = $statement->fetch();
 
         $statement->close();
 
@@ -660,7 +698,9 @@ public function setUserPref($reqbody)
             $data = [
                 "message" => "User not found",
             ];
-            return json_encode(new Response("Error", time(), $data));
+            header("Content-Type: application/json");
+            echo json_encode(new Response("Error", time(), $data));
+            return;
         } else {
             //hash passed in password
             $hashpass = hash('sha256', $password);
@@ -705,18 +745,22 @@ public function setUserPref($reqbody)
                 session_start();
                 $_SESSION["user_id"] = $userID;
 
-
+                header("Content-Type: application/json");
                 echo json_encode(new Response("Success", time(), $data));
+                return;
             } else {
                 // Password is incorrect
                 $data = [
                     "message" => "Invalid credentials",
 
                 ];
-                return json_encode(new Response("Error", time(), $data));
+                header("Content-Type: application/json");
+                echo json_encode(new Response("Error", time(), $data));
+                return;
             }
         }
     }
+
     public function setWatchHistory($request_body)
     {
 

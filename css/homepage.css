@@ -199,7 +199,7 @@ main {
 
 
 section.category {
-    width: calc(100% + 50px);
+    width: calc(100% + 40px);
     padding: 0; 
     margin-left: -20px;
     margin-right: -20px;
