@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Series</title>
-    <link rel="stylesheet" href="css/homepage.css">
+    <title>HOOP - Series</title>
+    <link rel="stylesheet" href="css/series.css">
 </head>
 <body>
     <header>
@@ -15,8 +15,8 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="homepage.html">Home</a></li>
-                <li><a class="active" href="movies.html">Movies</a></li>
-                <li><a href="series.html">TV Shows</a></li>
+                <li><a  href="movies.html">Movies</a></li>
+                <li><a class="active" href="series.html">TV Shows</a></li>
                 <li><a href="watchlist.html">WatchList</a></li>
                 <li><a href="watchHistory.html">Watch History</a></li>
             </ul>
@@ -27,8 +27,9 @@
     </header>
     <div class="search-container">
         <div class="search-bar">
-            <button class="search-button" id="Search">Search</button>
             <input type="text" placeholder="Title or Genre">
+            <button class="search-button" id="Search">Search</button>
+           
         </div>
         <div class="filter-container">
             <select id="genre-filter">
@@ -44,63 +45,19 @@
                 <option value="reality">Reality</option>
                 <option value="romance">Romance</option>
                 <option value="sci-fi">Sci-Fi</option>
-                <!-- Add more genres as needed -->
+             
             </select>
             <button id="filter-button">Filter</button>
         </div>
     </div>
     <main>
-        <section class="category" id="action-shows">
-            <h2>Action Shows</h2>
-            <div class="carousel">
-                <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <!-- Add action series cards here -->
-                    <div class="card" data-title="Action Show 1" data-genre="Action" data-description="Description of Action Show 1">
-                        <img src="img/action-movie1.jpg" alt="Action Movie 1">
-                        <div class="overlay">Action Movie 1</div>
-                    </div>
-                    <!-- Repeat for more action Shows -->
-                </div>
-                <button class="carousel-btn right-btn">&gt;</button>
-            </div>
+        <h2>Shows</h2>
+        <section class="category" id="ourShows">
+         
+         
         </section>
 
-        <section class="category" id="comedy-shows">
-            <h2>Comedy Shows</h2>
-            <div class="carousel">
-                <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <!-- Add comedy movie cards here -->
-                    <div class="card" data-title="Comedy Movie 1" data-genre="Comedy" data-description="Description of Comedy Movie 1">
-                        <img src="img/comedy-movie1.jpg" alt="Comedy Movie 1">
-                        <div class="overlay">Comedy Movie 1</div>
-                    </div>
-                    <!-- Repeat for more comedy shows -->
-                </div>
-                <button class="carousel-btn right-btn">&gt;</button>
-            </div>
-        </section>
-
-        <!-- Repeat for other genres -->
-        <section class="category" id="drama-shows">
-            <h2>Drama Shows</h2>
-            <div class="carousel">
-                <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <!-- Add drama movie cards here -->
-                    <div class="card" data-title="Drama Movie 1" data-genre="Drama" data-description="Description of Drama Movie 1">
-                        <img src="img/drama-movie1.jpg" alt="Drama Movie 1">
-                        <div class="overlay">Drama Movie 1</div>
-                    </div>
-                    <!-- Repeat for more drama Shows -->
-                </div>
-                <button class="carousel-btn right-btn">&gt;</button>
-            </div>
-        </section>
-
-        <!-- Add more sections for other genres similarly -->
-    </main>
+      </main>
 
     <div id="modal" class="modal">
         <div class="modal-content">
@@ -111,11 +68,10 @@
                 <button class="modal-button" id="watch-now">Watch Now</button>
                 <button class="modal-button" id="add-watchlist">Add to Watchlist</button>
                 <button class="modal-button" id="add-review">Add Review</button>
-                <button class="modal-button" id="View">View</button>
             </div>
         </div>
     </div>
 
-    <script src="homepage.js"></script>
+<script src="js/series.js"></script>
 </body>
 </html>
