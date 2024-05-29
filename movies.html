@@ -20,15 +20,16 @@
                 <li><a href="watchlist.html">WatchList</a></li>
                 <li><a href="watchHistory.html">Watch History</a></li>
             </ul>
-            <div class="Logout_icon"><a href="welcomePage.html"><i class="fa fa-sign-out"></i></a>
+            <div class="Logout_icon">
+                <a href="welcomePage.html"><i class="fa fa-sign-out"></i></a>
                 <a href="Personal_info.html"><i class="fa fa-user"></i></a>   
             </div>
         </nav>
     </header>
     <div class="search-container">
         <div class="search-bar">
-            <button class="search-button" id="Search">Search</button>
             <input type="text" placeholder="Title or Genre">
+            <button class="search-button" id="Search">Search</button>
         </div>
         <div class="filter-container">
             <select id="genre-filter">
@@ -44,62 +45,17 @@
                 <option value="reality">Reality</option>
                 <option value="romance">Romance</option>
                 <option value="sci-fi">Sci-Fi</option>
-                <!-- Add more genres as needed -->
+               
             </select>
             <button id="filter-button">Filter</button>
         </div>
     </div>
     <main>
+        <h2> Movies</h2>
         <section class="category" id="action-movies">
-            <h2>Action Movies</h2>
-            <div class="carousel">
-                <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <!-- Add action movie cards here -->
-                    <div class="card" data-title="Action Movie 1" data-genre="Action" data-description="Description of Action Movie 1">
-                        <img src="img/action-movie1.jpg" alt="Action Movie 1">
-                        <div class="overlay">Action Movie 1</div>
-                    </div>
-                    <!-- Repeat for more action movies -->
-                </div>
-                <button class="carousel-btn right-btn">&gt;</button>
-            </div>
+       
+            
         </section>
-
-        <section class="category" id="comedy-movies">
-            <h2>Comedy Movies</h2>
-            <div class="carousel">
-                <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <!-- Add comedy movie cards here -->
-                    <div class="card" data-title="Comedy Movie 1" data-genre="Comedy" data-description="Description of Comedy Movie 1">
-                        <img src="img/comedy-movie1.jpg" alt="Comedy Movie 1">
-                        <div class="overlay">Comedy Movie 1</div>
-                    </div>
-                    <!-- Repeat for more comedy movies -->
-                </div>
-                <button class="carousel-btn right-btn">&gt;</button>
-            </div>
-        </section>
-
-        <!-- Repeat for other genres -->
-        <section class="category" id="drama-movies">
-            <h2>Drama Movies</h2>
-            <div class="carousel">
-                <button class="carousel-btn left-btn">&lt;</button>
-                <div class="card-container">
-                    <!-- Add drama movie cards here -->
-                    <div class="card" data-title="Drama Movie 1" data-genre="Drama" data-description="Description of Drama Movie 1">
-                        <img src="img/drama-movie1.jpg" alt="Drama Movie 1">
-                        <div class="overlay">Drama Movie 1</div>
-                    </div>
-                    <!-- Repeat for more drama movies -->
-                </div>
-                <button class="carousel-btn right-btn">&gt;</button>
-            </div>
-        </section>
-
-        <!-- Add more sections for other genres similarly -->
     </main>
 
     <div id="modal" class="modal">
@@ -111,11 +67,10 @@
                 <button class="modal-button" id="watch-now">Watch Now</button>
                 <button class="modal-button" id="add-watchlist">Add to Watchlist</button>
                 <button class="modal-button" id="add-review">Add Review</button>
-                <button class="modal-button" id="View">View</button>
             </div>
         </div>
     </div>
 
-    <script src="movies.js"></script>
+   <script src="js/movies.js"></script>
 </body>
 </html>
