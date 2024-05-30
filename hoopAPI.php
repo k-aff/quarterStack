@@ -670,9 +670,9 @@ public function setUserPref($reqbody)
         if ($page === "home")
             $sql = "SELECT * FROM title WHERE title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?) LIMIT 20";
         else if ($page === "movie")
-            $sql = "SELECT * FROM title WHERE type ='M' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+            $sql = "SELECT * FROM title WHERE type ='M' AND (title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?))";
         else if ($page === "series")
-            $sql = "SELECT * FROM title WHERE type ='S' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+            $sql = "SELECT * FROM title WHERE type ='S' AND (title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?))";
 
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
