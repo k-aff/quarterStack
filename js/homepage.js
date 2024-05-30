@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }    
         }
     }
-    req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true); 
+    req.open("POST", "hoopAPI.php", true); 
     req.setRequestHeader("Content-Type", "application/json");
 
     const request = 
@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
     req.send(JSON.stringify(request));   
   
   });
-  
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -124,8 +123,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const filter = document.getElementById('genre-filter').value;
       // console.log(filter);
-
-      if (filter === "Action") {
+      if (filter === "All") {
+        alert("Please select a genre to filter by.")
+        return; 
+      }
+      else if (filter === "Action") {
         document.getElementById('ActionH2').scrollIntoView({ behavior: 'smooth' });
       }
       else if (filter === "Animation") {
@@ -230,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }    
             }
         }
-        req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true); 
+        req.open("POST", "hoopAPI.php", true); 
         req.setRequestHeader("Content-Type", "application/json");
 
         const request = 
@@ -342,7 +344,7 @@ req.onerror = function() {
   console.error("Error loading API");
 };
 
-req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true);
+req.open("POST", "hoopAPI.php", true);
 req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 req.send(JSON.stringify(requestData));
 }
@@ -397,7 +399,7 @@ req.onerror = function() {
   console.error("Error loading API");
 };
 
-req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true);
+req.open("POST", "hoopAPI.php", true);
 req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 req.send(JSON.stringify(requestData));
 

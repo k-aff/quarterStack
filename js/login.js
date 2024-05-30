@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.location.replace('homepage.html');
         }
     }
-    req.open("POST", "http://localhost/quarterStack/hoopAPI.php", false); 
+    req.open("POST", "hoopAPI.php", false); 
     req.setRequestHeader("Content-Type", "application/json");
 
     const request = 
