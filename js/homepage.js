@@ -32,67 +32,65 @@ document.addEventListener("DOMContentLoaded", function () {
           let container = document.getElementById("SearchContainer");
           container.innerHTML = null;
 
-          for (let i = 0; i < titles.data.length; i++) {
-            const item = titles.data[i];
-            console.log(item);
-
-            var card = document.createElement("div");
-            card.classList.add("card");
-            card.setAttribute("data-title", item.title);
-            card.setAttribute("data-genre", item.type);
-            card.setAttribute("data-description", item.plot_summary);
-            card.setAttribute("data-url", item.url);
-
-            // Creating img element
-            var image = document.createElement("img");
-            image.src = item.image;
-            image.alt = item.title + " Cover photo";
-            image.style.height = "100%";
-            image.style.width = "100%";
-            image.style.objectFit = "cover";
-
-            // Creating overlay div
-            var overlay = document.createElement("div");
-            overlay.classList.add("overlay");
-            overlay.innerText = item.title;
-
-            card.appendChild(image);
-            card.appendChild(overlay);
-            container.appendChild(card);
-
-            card.addEventListener(
-              "click",
-              (function (item) {
-                return function () {
-                  showModal(item);
-                };
-              })(item)
-            );
-          }
-          carouselButtons = document.querySelectorAll(".carousel");
-          carouselButtons.forEach((carousel) => {
-            const leftBtn = carousel.querySelector(".left-btn");
-            const rightBtn = carousel.querySelector(".right-btn");
-            const cardContainer = carousel.querySelector(".card-container");
-
-            leftBtn.addEventListener("click", () => {
-              cardContainer.scrollBy({
-                left: -200,
-                behavior: "smooth",
+              for (let i = 0; i < titles.data.length; i++) {
+                const item = titles.data[i];
+                console.log(item); 
+        
+                var card = document.createElement("div");
+                card.classList.add("card");
+                card.setAttribute("data-title", item.title);
+                card.setAttribute("data-genre", item.type);
+                card.setAttribute("data-description", item.plot_summary);
+                card.setAttribute("data-url", item.url);
+                
+                // Creating img element
+                var image = document.createElement("img");
+                image.src = item.image;
+                image.alt = item.title + " Cover photo";
+                image.style.height = '100%';
+                image.style.width = '100%';
+                image.style.objectFit = 'cover'; 
+        
+                // Creating overlay div
+                var overlay = document.createElement("div");
+                overlay.classList.add("overlay");
+                overlay.innerText = item.title;
+        
+        
+                card.appendChild(image);
+                card.appendChild(overlay);
+                container.appendChild(card);
+        
+                card.addEventListener('click', (function(item) {
+                  return function() {
+                    showModal(item);
+                  };
+                })(item));
+              }
+              carouselButtons = document.querySelectorAll('.carousel');
+              carouselButtons.forEach(carousel => {
+                const leftBtn = carousel.querySelector('.left-btn');
+                const rightBtn = carousel.querySelector('.right-btn');
+                const cardContainer = carousel.querySelector('.card-container');
+          
+                leftBtn.addEventListener('click', () => {
+                    cardContainer.scrollBy({
+                        left: -200,
+                        behavior: 'smooth'
+                    });
+                });
+          
+                rightBtn.addEventListener('click', () => {
+                    cardContainer.scrollBy({
+                        left: 200,
+                        behavior: 'smooth'
+                    });
+                });
               });
-            });
-
-            rightBtn.addEventListener("click", () => {
-              cardContainer.scrollBy({
-                left: 200,
-                behavior: "smooth",
-              });
-            });
-          });
+            }    
         }
-      }
-    };
-    req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true);
+    }
+    req.open("POST", "hoopAPI.php", true); 
     req.setRequestHeader("Content-Type", "application/json");
 
     const request = {
@@ -117,41 +115,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const filter = document.getElementById("genre-filter").value;
       // console.log(filter);
-
-      if (filter === "Action") {
-        document
-          .getElementById("ActionH2")
-          .scrollIntoView({ behavior: "smooth" });
-      } else if (filter === "Animation") {
-        document
-          .getElementById("AnimationH2")
-          .scrollIntoView({ behavior: "smooth" });
-      } else if (filter === "Sci-Fi") {
-        document
-          .getElementById("SciFiH2")
-          .scrollIntoView({ behavior: "smooth" });
-      } else if (filter === "Horror") {
-        document
-          .getElementById("HorrorH2")
-          .scrollIntoView({ behavior: "smooth" });
-      } else if (filter === "Comedy") {
-        document
-          .getElementById("ComedyH2")
-          .scrollIntoView({ behavior: "smooth" });
-      } else if (filter === "Adventure") {
-        document
-          .getElementById("AdventureH2")
-          .scrollIntoView({ behavior: "smooth" });
-      } else if (filter === "Drama") {
-        document
-          .getElementById("DramaH2")
-          .scrollIntoView({ behavior: "smooth" });
-      } else {
-        var req = new XMLHttpRequest();
-        req.onreadystatechange = function () {
-          if (req.readyState == 4 && req.status == 200) {
-            var titles = JSON.parse(req.responseText);
-            console.log(titles);
+      if (filter === "All") {
+        alert("Please select a genre to filter by.")
+        return; 
+      }
+      else if (filter === "Action") {
+        document.getElementById('ActionH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Animation") {
+        document.getElementById('AnimationH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Sci-Fi") {
+        document.getElementById('SciFiH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Horror") {
+        document.getElementById('HorrorH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Comedy") {
+        document.getElementById('ComedyH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Adventure") {
+        document.getElementById('AdventureH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else if (filter === "Drama") {
+        document.getElementById('DramaH2').scrollIntoView({ behavior: 'smooth' });
+      }
+      else {
+        var req = new XMLHttpRequest();  
+        req.onreadystatechange = function()
+        {
+            if(req.readyState == 4 && req.status == 200)
+            {
+                var titles = JSON.parse(req.responseText);
+                console.log(titles);
 
             if (titles.status === "error") {
               heading.className = "category h2";
@@ -167,66 +163,64 @@ document.addEventListener("DOMContentLoaded", function () {
               let container = document.getElementById("SearchContainer");
               container.innerHTML = null;
 
-              for (let i = 0; i < titles.data.length; i++) {
-                const item = titles.data[i];
-
-                var card = document.createElement("div");
-                card.classList.add("card");
-                card.setAttribute("data-title", item.title);
-                card.setAttribute("data-genre", item.type);
-                card.setAttribute("data-description", item.plot_summary);
-                card.setAttribute("data-url", item.url);
-
-                // Creating img element
-                var image = document.createElement("img");
-                image.src = item.image;
-                image.alt = item.title + " Cover photo";
-                image.style.height = "100%";
-                image.style.width = "100%";
-                image.style.objectFit = "cover";
-
-                // Creating overlay div
-                var overlay = document.createElement("div");
-                overlay.classList.add("overlay");
-                overlay.innerText = item.title;
-
-                card.appendChild(image);
-                card.appendChild(overlay);
-                container.appendChild(card);
-
-                card.addEventListener(
-                  "click",
-                  (function (item) {
-                    return function () {
-                      showModal(item);
-                    };
-                  })(item)
-                );
-              }
-              carouselButtons = document.querySelectorAll(".carousel");
-              carouselButtons.forEach((carousel) => {
-                const leftBtn = carousel.querySelector(".left-btn");
-                const rightBtn = carousel.querySelector(".right-btn");
-                const cardContainer = carousel.querySelector(".card-container");
-
-                leftBtn.addEventListener("click", () => {
-                  cardContainer.scrollBy({
-                    left: -200,
-                    behavior: "smooth",
+                  for (let i = 0; i < titles.data.length; i++) {
+                    const item = titles.data[i];
+            
+                    var card = document.createElement("div");
+                    card.classList.add("card");
+                    card.setAttribute("data-title", item.title);
+                    card.setAttribute("data-genre", item.type);
+                    card.setAttribute("data-description", item.plot_summary);
+                    card.setAttribute("data-url", item.url);
+                    
+                    // Creating img element
+                    var image = document.createElement("img");
+                    image.src = item.image;
+                    image.alt = item.title + " Cover photo";
+                    image.style.height = '100%';
+                    image.style.width = '100%';
+                    image.style.objectFit = 'cover'; 
+            
+                    // Creating overlay div
+                    var overlay = document.createElement("div");
+                    overlay.classList.add("overlay");
+                    overlay.innerText = item.title;
+            
+            
+                    card.appendChild(image);
+                    card.appendChild(overlay);
+                    container.appendChild(card);
+            
+                    card.addEventListener('click', (function(item) {
+                      return function() {
+                        showModal(item);
+                      };
+                    })(item));
+                  }
+                  carouselButtons = document.querySelectorAll('.carousel');
+                  carouselButtons.forEach(carousel => {
+                    const leftBtn = carousel.querySelector('.left-btn');
+                    const rightBtn = carousel.querySelector('.right-btn');
+                    const cardContainer = carousel.querySelector('.card-container');
+              
+                    leftBtn.addEventListener('click', () => {
+                        cardContainer.scrollBy({
+                            left: -200,
+                            behavior: 'smooth'
+                        });
+                    });
+              
+                    rightBtn.addEventListener('click', () => {
+                        cardContainer.scrollBy({
+                            left: 200,
+                            behavior: 'smooth'
+                        });
+                    });
                   });
-                });
-
-                rightBtn.addEventListener("click", () => {
-                  cardContainer.scrollBy({
-                    left: 200,
-                    behavior: "smooth",
-                  });
-                });
-              });
+                }    
             }
-          }
-        };
-        req.open("POST", "hoopAPI.php", true);
+        }
+        req.open("POST", "hoopAPI.php", true); 
         req.setRequestHeader("Content-Type", "application/json");
 
         const request = {
@@ -240,19 +234,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  });
+document.addEventListener('DOMContentLoaded', () => {
 
-  carouselButtons = document.querySelectorAll(".carousel");
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 
-  carouselButtons.forEach((carousel) => {
-    const leftBtn = carousel.querySelector(".left-btn");
-    const rightBtn = carousel.querySelector(".right-btn");
-    const cardContainer = carousel.querySelector(".card-container");
+    const carousels = document.querySelectorAll('.carousel');
+
+    carousels.forEach(carousel => {
+        const leftBtn = carousel.querySelector('.left-btn');
+        const rightBtn = carousel.querySelector('.right-btn');
+        const cardContainer = carousel.querySelector('.card-container');
 
     leftBtn.addEventListener("click", () => {
       cardContainer.scrollBy({
@@ -270,13 +265,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
 function onLoad() {
   const req = new XMLHttpRequest();
   const requestData = {
-    type: "getAllTitles",
+    "type": "getAllTitles"
   };
 
-  req.onreadystatechange = function () {
+  req.onreadystatechange = function() {
     if (this.status === 200 && this.readyState == 4) {
       const hoopTitles = JSON.parse(req.responseText);
 
@@ -288,9 +284,9 @@ function onLoad() {
 
         if (itemsArray.length == 0) {
           var message = document.createElement("h4");
-          message.style.color = "#cb6ce6";
-          message.style.marginLeft = "20px";
-          message.innerHTML = "Nothing Available Yet";
+          message.style.color = '#cb6ce6';
+          message.style.marginLeft = '20px';
+          message.innerHTML = "Nothing Available yet";
           titles.appendChild(message);
         }
 
@@ -301,46 +297,41 @@ function onLoad() {
           card.classList.add("card");
           card.setAttribute("data-title", item.title);
           card.setAttribute("data-genre", item.type);
-          card.setAttribute("data-description", item.plot);
+          card.setAttribute("data-description", item.plot_summary);
           card.setAttribute("data-url", item.url);
-
+          
           // Creating img element
           var image = document.createElement("img");
           image.src = item.image;
           image.alt = item.title + " Cover photo";
-          image.style.height = "100%";
-          image.style.width = "100%";
-          image.style.objectFit = "cover";
 
           // Creating overlay div
           var overlay = document.createElement("div");
           overlay.classList.add("overlay");
           overlay.innerText = item.title;
 
+
           card.appendChild(image);
           card.appendChild(overlay);
           titles.appendChild(card);
 
-          card.addEventListener(
-            "click",
-            (function (item) {
-              return function () {
-                showModal(item);
-              };
-            })(item)
-          );
+          card.addEventListener('click', (function(item) {
+            return function() {
+              showModal(item);
+            };
+          })(item));
         }
       }
     }
   };
 
-  req.onerror = function () {
+  req.onerror = function() {
     console.error("Error loading API");
   };
 
-  req.open("POST", "hoopAPI.php", true);
-  req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  req.send(JSON.stringify(requestData));
+req.open("POST", "hoopAPI.php", true);
+req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+req.send(JSON.stringify(requestData));
 }
 
 function showModal(item) {
@@ -388,79 +379,23 @@ function showModal(item) {
   };
 }
 
-function logout() {
-  const req = new XMLHttpRequest();
+function logout(){
 
-  const requestData = {
-    type: "logout",
-  };
+const req = new XMLHttpRequest();
 
-  req.onreadystatechange = function () {
-    if (this.status === 200 && this.readyState == 4) {
-      const response = JSON.parse(req.responseText);
-      console.log(response);
-    }
-  };
-
-  req.onerror = function () {
-    console.error("Error loading API");
-  };
-
-  req.open("POST", "hoopAPI.php", true);
-  req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  req.send(JSON.stringify(requestData));
+const requestData ={
+  "type": "logout"
 }
 
-// const myQuery = window.location.search;
-// const Params = new URLSearchParams(myQuery);
-// const id = Params.get("titleId");
-
-function setWatchList(item) {
-  const api = "hoopAPI.php";
-
-  const requestData = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      type: "setWatchList",
-      title_id: item,
-    }),
-  };
-  console.log(requestData["body"]);
-  fetch(api, requestData)
-    .then((response) => console.log(response.json()))
-    .then((data) => {
-      console.log("Success:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      // Handle error
-    });
+req.onreadystatechange = function() {
+  if (this.status === 200 && this.readyState == 4) {
+    const response = JSON.parse(req.responseText);
+    console.log(response)
+  }
 }
 
-function setWatchHist(item) {
-  const api = "hoopAPI.php";
+req.open("POST", "hoopAPI.php", true);
+req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+req.send(JSON.stringify(requestData));
 
-  const requestData = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      type: "setWatchHistory",
-      title_id: item,
-    }),
-  };
-  console.log(requestData["body"]);
-  fetch(api, requestData)
-    .then((response) => console.log(response.json()))
-    .then((data) => {
-      console.log("Success:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      // Handle error
-    });
 }
