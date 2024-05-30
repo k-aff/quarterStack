@@ -412,7 +412,7 @@ class Hoop
     {
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
-
+        session_start();
         // $email = $reqbody["email"];
         $email = $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
@@ -444,9 +444,11 @@ class Hoop
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-        $email = $_SESSION["email"];
-        // $user_id = $hoop->getUserIdByEmail($email);
-        $user_id = $_SESSION["user_id"];
+    session_start();
+    $email= $_SESSION["email"];
+    // $user_id = $hoop->getUserIdByEmail($email);
+    $user_id= $_SESSION["user_id"];
+     
 
         if (!$user_id) {
             //echo "Error: User not found";
@@ -482,20 +484,12 @@ class Hoop
         }
     }
 
-    private function getUserIdByEmail($email)
-    {
-        $stmt = $this->con->prepare("SELECT user_id FROM user WHERE email=?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->num_rows > 0 ? $result->fetch_assoc()["user_id"] : null;
-    }
     public function getUser($reqbody)
     {
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
-
-        $email = $_SESSION["email"];
+        session_start();
+        $email= $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
         $user_id = $_SESSION["user_id"];
         $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
@@ -510,38 +504,43 @@ class Hoop
     }
 
 
-    public function getUserPref($reqbody)
-    {
-        $hoop = Hoop::instance();
-        //$reqbody = json_decode(file_get_contents('php://input'), true);
-        $email = $_SESSION["email"];
-        // $user_id = $hoop->getUserIdByEmail($email);
-        $id = $_SESSION["user_id"];
-        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
-        $result = $this->con->query($sqlcheckpref);
-
-        // if($result)
-        // {
-        //     $pref = $result->fetch_assoc();
-        //     $type = $pref["type"];
-        //     $genre1 = $pref["genre_id_1"];
-        //     $genre2 = $pref["genre_id_2"];
-        //     $genre3 = $pref["genre_id_3"];}
-        if ($result && $result->num_rows > 0) {
-            $pref = $result->fetch_assoc();
-            $user_pref = array(
-                "type" => $pref["type"],
-                "genre_id_1" => $pref["genre_id_1"],
-                "genre_id_2" => $pref["genre_id_2"],
-                "genre_id_3" => $pref["genre_id_3"]
-            );
-            //echo json_encode($user_pref);
-            echo json_encode(new Response("success", time(), $user_pref));
-        } else {
-            echo json_encode(new Response("success", time(), "user doesn't have preferences"));
+        public function getUserPref($reqbody)
+        {
+            $hoop = Hoop::instance();
+            session_start();
+            //$reqbody = json_decode(file_get_contents('php://input'), true);
+            $email= $_SESSION["email"];
+            // $user_id = $hoop->getUserIdByEmail($email);
+            $id= $_SESSION["user_id"];
+            $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
+            $result = $this->con->query($sqlcheckpref);
+         
+            // if($result)
+            // {
+            //     $pref = $result->fetch_assoc();
+            //     $type = $pref["type"];
+            //     $genre1 = $pref["genre_id_1"];
+            //     $genre2 = $pref["genre_id_2"];
+            //     $genre3 = $pref["genre_id_3"];}
+            if ($result && $result->num_rows > 0) 
+            {
+                $pref = $result->fetch_assoc();
+                $user_pref = array(
+                    "type" => $pref["type"],
+                    "genre_id_1" => $pref["genre_id_1"],
+                    "genre_id_2" => $pref["genre_id_2"],
+                    "genre_id_3" => $pref["genre_id_3"]
+                );
+                //echo json_encode($user_pref);
+                echo json_encode(new Response("success", time(), $user_pref));
+            }
+            else
+            {
+                echo json_encode(new Response("success", time(), "user doesn't have preferences"));
+            }
+            
         }
-    }
-
+        
     public function getReview($reqbody)
     {
         $hoop = Hoop::instance();
@@ -667,9 +666,9 @@ class Hoop
         if ($page === "home")
             $sql = "SELECT * FROM title WHERE title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?) LIMIT 20";
         else if ($page === "movie")
-            $sql = "SELECT * FROM title WHERE type ='M' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+            $sql = "SELECT * FROM title WHERE type ='M' AND (title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?))";
         else if ($page === "series")
-            $sql = "SELECT * FROM title WHERE type ='S' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+            $sql = "SELECT * FROM title WHERE type ='S' AND (title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?))";
 
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
@@ -699,6 +698,7 @@ class Hoop
 
     public function logout()
     {
+        session_start();
         if (isset($_SESSION["user_id"]))
             session_destroy();
     }
@@ -1040,13 +1040,15 @@ class Hoop
 
     public function getAllTitles($data)
     {
-        // $email = $_SESSION['email']; //use id instead?  $id = $_SESSION['id']
+        session_start();
+        $id = $_SESSION['user_id'];
 
-        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=20";
+        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
         $result = $this->con->query($sqlcheckpref);
+        $pref = $result->fetch_assoc();
 
-        if ($result) {
-            $pref = $result->fetch_assoc();
+        if($pref)
+        {
             $type = $pref["type"];
             $genre1 = $pref["genre_id_1"];
             $genre2 = $pref["genre_id_2"];
@@ -1071,14 +1073,15 @@ class Hoop
 
         foreach ($carousels as $carousel) {
 
-            if ($carousel === 'Movies')
-                $sqlReturnTitles = "SELECT * FROM title WHERE type='M' ORDER BY title ASC LIMIT 20";
-            else if ($carousel === 'Series')
-                $sqlReturnTitles = "SELECT * FROM title WHERE type='S' ORDER BY title ASC LIMIT 20";
-            else if (isset($pref) && $carousel === "Preferences") {
-                $sqlReturnTitles = "SELECT * FROM title" . $whereClause . " ORDER BY title ASC LIMIT 20";
-            } else
-                $sqlReturnTitles = "SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY RAND() LIMIT 20";
+            if($carousel === 'Movies')
+                $sqlReturnTitles ="SELECT * FROM title WHERE type='M' ORDER BY RAND() LIMIT 20";
+            else if($carousel === 'Series')
+                $sqlReturnTitles ="SELECT * FROM title WHERE type='S' ORDER BY RAND() LIMIT 20";
+            else if(isset($pref) && $carousel === "Preferences"){
+                $sqlReturnTitles ="SELECT * FROM title".$whereClause. " ORDER BY RAND() LIMIT 20" ;
+            }
+            else
+                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY RAND() LIMIT 20" ;
 
             // echo $sqlReturnTitles;
             $result = $this->con->query($sqlReturnTitles);

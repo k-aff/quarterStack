@@ -109,67 +109,102 @@ function onLoad() {
       var crewText = document.createElement("span");
       crewText.innerHTML = `: ${detailsArray.directors}`;
 
-      crew.appendChild(headingC);
-      crew.appendChild(crewText);
+        crew.appendChild(headingC);
+        crew.appendChild(crewText);
 
-      var reviews = document.createElement("button");
-      reviews.onclick = function () {
-        window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
-      };
-      reviews.innerHTML = "View Reviews";
-      reviews.classList.add("reviews-button");
-      reviews.style.textDecoration = "none";
+        var age = document.createElement("p")
+        var headingR = document.createElement("span")
 
-      var production = document.createElement("p");
-      if (detailsArray.type == "M") {
-        var production = document.createElement("p");
-        var headingP = document.createElement("span");
+        headingR.innerHTML = "Age certification "
+        headingR.style.fontSize = "18px"
+        headingR.style.fontWeight = "bold"
 
-        headingP.innerHTML = "Production ";
-        headingP.style.fontSize = "18px";
-        headingP.style.fontWeight = "bold";
+        var ageText = document.createElement("span")
+        ageText.innerHTML = `: ${detailsArray.age_cert}`
 
-        var productionText = document.createElement("span");
-        productionText.innerHTML = ": Movie";
+        age.appendChild(headingR);
+        age.appendChild(ageText);
 
-        production.appendChild(headingP);
-        production.appendChild(productionText);
-      } else {
-        var production = document.createElement("p");
-        var headingP = document.createElement("span");
+        
+        var date = document.createElement("p")
+        var headingD = document.createElement("span")
 
-        headingP.innerHTML = "Production ";
-        headingP.style.fontSize = "18px";
-        headingP.style.fontWeight = "bold";
+        headingD.innerHTML = "Release date "
+        headingD.style.fontSize = "18px"
+        headingD.style.fontWeight = "bold"
 
-        var productionText = document.createElement("span");
-        productionText.innerHTML = ": Series";
+        var dateText = document.createElement("span")
+        dateText.innerHTML = `: ${detailsArray['release date']}`
 
-        production.appendChild(headingP);
-        production.appendChild(productionText);
+        date.appendChild(headingD);
+        date.appendChild(dateText);
+
+        var reviews = document.createElement("button")
+        reviews.onclick = function() {
+          window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
+        };
+        reviews.innerHTML = "View or Post Reviews"
+        reviews.classList.add("reviews-button")
+        reviews.style.textDecoration = "none"
+
+        var production = document.createElement("p")
+        if(detailsArray.type=='M'){
+
+          var production = document.createElement("p")
+          var headingP = document.createElement("span")
+  
+          headingP.innerHTML = "Production "
+          headingP.style.fontSize = "18px"
+          headingP.style.fontWeight = "bold"
+  
+          var productionText = document.createElement("span")
+          productionText.innerHTML = ": Movie"
+  
+          production.appendChild(headingP);
+          production.appendChild(productionText);
+
+        }
+        else{
+          var production = document.createElement("p")
+          var headingP = document.createElement("span")
+  
+          headingP.innerHTML = "Production "
+          headingP.style.fontSize = "18px"
+          headingP.style.fontWeight = "bold"
+  
+          var productionText = document.createElement("span")
+          productionText.innerHTML = ": Series"
+  
+          production.appendChild(headingP);
+          production.appendChild(productionText);
+        }
+
+        details.appendChild(plot)
+        details.appendChild(duration)
+        details.appendChild(genre)
+        details.appendChild(actors)
+        details.appendChild(crew)
+        details.appendChild(production)
+        details.appendChild(age)
+        details.appendChild(date)
+        details.appendChild(reviews)
+       
+
+        detailsCont.insertBefore(details, detailsCont.firstChild)
+        detailsCont.insertBefore(title, detailsCont.firstChild)
+        detailsCont.insertBefore(image, detailsCont.firstChild)
+
       }
 
-      details.appendChild(plot);
-      details.appendChild(duration);
-      details.appendChild(genre);
-      details.appendChild(actors);
-      details.appendChild(crew);
-      details.appendChild(production);
-      details.appendChild(reviews);
-
-      detailsCont.insertBefore(details, detailsCont.firstChild);
-      detailsCont.insertBefore(title, detailsCont.firstChild);
-      detailsCont.insertBefore(image, detailsCont.firstChild);
     }
-  };
-
-  req.onerror = function () {
-    console.error("Error loading API");
-  };
-
-  if (requestData !== null) {
-    req.open("POST", "hoopAPI.php", true);
-    req.setRequestHeader("Content-Type", "application/json");
-    req.send(JSON.stringify(requestData));
-  }
+  
+    req.onerror = function() {
+      console.error("Error loading API");
+    };
+  
+    if(requestData!==null){
+      req.open("POST", "hoopAPI.php",true);
+      req.setRequestHeader("Content-Type", "application/json");
+      req.send(JSON.stringify(requestData));
+    }
 }

@@ -61,7 +61,7 @@ function submitReview(event) {
 function fetchMovieReviews() {
     //const tittle_id = '45';
     const requestBody = {
-      title_id: 27,
+      title_id: id,
       type: "getReview"
     };
   
