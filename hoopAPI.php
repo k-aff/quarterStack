@@ -294,6 +294,7 @@ class Hoop
         session_start();
         $_SESSION["user_id"] = $user_id;
         $_SESSION["email"] = $email;
+        
     }
 
     public function updateUser($jsonData)
