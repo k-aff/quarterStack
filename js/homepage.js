@@ -61,7 +61,7 @@ function onLoad() {
           card.classList.add("card");
           card.setAttribute("data-title", item.title);
           card.setAttribute("data-genre", item.type);
-          card.setAttribute("data-description", item.plot);
+          card.setAttribute("data-description", item.plot_summary);
           card.setAttribute("data-url", item.url);
           
           // Creating img element
@@ -93,7 +93,7 @@ function onLoad() {
     console.error("Error loading API");
   };
 
-  req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true);
+  req.open("POST", "hoopAPI.php", true);
   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   req.send(JSON.stringify(requestData));
 }
@@ -105,7 +105,7 @@ function showModal(item) {
   const closeButton = document.querySelector('.close-button');
 
   modalTitle.textContent = item.title;
-  modalDescription.textContent = item.plot;
+  modalDescription.textContent = item.plot_summary;
   modal.style.display = 'block';
 
   const closeModal = () => {
@@ -125,7 +125,7 @@ function showModal(item) {
 
   const view = document.getElementById('view');
   view.onclick = function() {
-    window.location.href = `view.html?titleId=${item.id}`;
+    window.location.href = `view.html?titleId=${item.title_id}`;
   };
 }
 
@@ -148,7 +148,7 @@ function logout(){
     console.error("Error loading API");
   };
 
-  req.open("POST", "http://localhost/quarterStack/hoopAPI.php", true);
+  req.open("POST", "hoopAPI.php", true);
   req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   req.send(JSON.stringify(requestData));
 

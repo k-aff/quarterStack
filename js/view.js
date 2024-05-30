@@ -118,6 +118,33 @@ function onLoad(){
         crew.appendChild(headingC);
         crew.appendChild(crewText);
 
+        var age = document.createElement("p")
+        var headingR = document.createElement("span")
+
+        headingR.innerHTML = "Age certification "
+        headingR.style.fontSize = "18px"
+        headingR.style.fontWeight = "bold"
+
+        var ageText = document.createElement("span")
+        ageText.innerHTML = `: ${detailsArray.age_cert}`
+
+        age.appendChild(headingR);
+        age.appendChild(ageText);
+
+        
+        var date = document.createElement("p")
+        var headingD = document.createElement("span")
+
+        headingD.innerHTML = "Release date "
+        headingD.style.fontSize = "18px"
+        headingD.style.fontWeight = "bold"
+
+        var dateText = document.createElement("span")
+        dateText.innerHTML = `: ${detailsArray['release date']}`
+
+        date.appendChild(headingD);
+        date.appendChild(dateText);
+
         var reviews = document.createElement("button")
         reviews.onclick = function() {
           window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
@@ -164,7 +191,10 @@ function onLoad(){
         details.appendChild(actors)
         details.appendChild(crew)
         details.appendChild(production)
+        details.appendChild(age)
+        details.appendChild(date)
         details.appendChild(reviews)
+       
 
         detailsCont.insertBefore(details, detailsCont.firstChild)
         detailsCont.insertBefore(title, detailsCont.firstChild)
