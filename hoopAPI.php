@@ -1048,7 +1048,7 @@ public function setUserPref($reqbody)
         session_start();
         $id = $_SESSION['user_id'];
 
-        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=36";
+        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
         $result = $this->con->query($sqlcheckpref);
         $pref = $result->fetch_assoc();
 
