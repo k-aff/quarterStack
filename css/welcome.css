@@ -1,15 +1,15 @@
-*{
-
+* {
     margin:0;
     padding:0;
     box-sizing: border-box;
 
 }
-html{
+
+html {
     height: 100%;
 }
 
-.navbar{
+.navbar {
     display: flex;
     justify-content: space-between;
     text-align: center;
@@ -18,18 +18,17 @@ html{
     padding: 10px;
    
 }
-.navlogo
-{
+
+.navlogo {
 color: rgb(0, 0, 0);
 font-size: 24px;
-
 }
-.buttonlog
-{
+
+.buttonlog {
     text-align: center;
 }
-.navlogov
-{
+
+.navlogov {
     font-size: 24px;
     color: rgb(0, 0, 0); 
     transform: rotate(270deg);
@@ -51,26 +50,24 @@ font-size: 24px;
 .login-button:hover {
     background-color: #a84fa8; 
 }
+
 body{
     background-image: url("../img/unnamed.png");
 
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     color: white;
-   display: flex;
+    display: flex;
     min-height:100px;
-   flex-direction: column;
+    flex-direction: column;
 
-   border: 2px solid rgba(97, 85, 85, 0.1);
-   backdrop-filter: blur(2px);
+    border: 2px solid rgba(97, 85, 85, 0.1);
+    backdrop-filter: blur(2px);
 }
-
 
 footer{
     margin-top: auto;
-background-color:#762971;
-margin-top:46%;
-
-
+    background-color:#762971;
+    margin-top:46%;
 }
 
 
@@ -82,27 +79,23 @@ margin-top:46%;
     
 }
 
-header {
-   font-family: sans-serif;
-   margin-top: -10px;
-   font-size: 100px;
+header h2 {
+    font-family: sans-serif;
+    margin-top: -10px;
+    font-size: 100px;
     color: rgba(255, 255, 255,0.9);
     text-align: center;
     padding: 20px 0;
 }
 
-
-.cta
-{
+.cta {
     background-color: rgba(0,0,0,0.9);
-    
-   
-  font-family: inherit;
-
-font-size: 20px;
+    font-family: inherit;
+    font-size: 20px;
+    text-align: center;
 }
 
-.features,.intro {
+.features, .intro {
     margin-bottom: 10px;
     margin-top:20px;
     padding: 30px 40px;
@@ -111,10 +104,15 @@ font-size: 20px;
   
     color:#fff;
     border-radius: 20px;
-   margin-left:30px;
-   margin-right: 35px;;
- 
+    margin-left:30px;
+    margin-right: 35px;
+    text-align: center;
 }
+
+.features ul {
+    list-style-type: none;
+}
+
 .content {
     margin-bottom: 10px;
     margin-top: -50px;
@@ -240,13 +238,9 @@ list-style-type: none;
     margin-bottom: -500px;
 }
 
-
-
-
-
 .toggleContainer {
     position: relative;
-    left:600px;
+    left:685px;
     text-align: center;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -255,10 +249,12 @@ list-style-type: none;
     border-radius: 20px;
     background: #3f3e3e;
     font-weight: bold;
-   color: white;
+    color: white;
     cursor: pointer;
-  }
-  .toggleContainer::before {
+
+}
+
+.toggleContainer::before {
     content: '';
     position: absolute;
     width: 50%;
