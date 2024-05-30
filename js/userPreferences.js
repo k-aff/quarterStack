@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         type: "getUserPref"
       };
       
-      fetch('http://localhost/Practical5_quarterStack/quarterStack-1/hoopAPI.php', {
+      fetch('/hoopAPI.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -93,14 +93,14 @@ document.addEventListener('DOMContentLoaded', function() {
       const requestBody = {
         //email: email,
         type: 'setUserPref',
-        titleType: type === 'Type1' ? 'M' : 'S', // Use titleType instead of type
+        titleType: type === 'Type1' ? 'M' : 'S', 
         genre1: genre1,
         genre2: genre2,
         genre3: genre3
       };
       
   
-      fetch('http://localhost/Practical5_quarterStack/quarterStack-1/hoopAPI.php', {
+      fetch('/hoopAPI.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
