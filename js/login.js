@@ -52,5 +52,5 @@ document.addEventListener("DOMContentLoaded", function() {
 //redirect to hompage when submitted
 function submitLogin(event) {
     event.preventDefault(); 
-    window.location.href = 'homepage.html';
+    window.location.href = 'intro.html';
 }
