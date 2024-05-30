@@ -55,14 +55,13 @@ function onLoad() {
         }
 
         for (let i = 0; i < itemsArray.length; i++) {
-
           const item = itemsArray[i];
 
           var card = document.createElement("div");
           card.classList.add("card");
           card.setAttribute("data-title", item.title);
           card.setAttribute("data-genre", item.type);
-          card.setAttribute("data-description", item.plot_summary);
+          card.setAttribute("data-description", item.plot);
           card.setAttribute("data-url", item.url);
           
           // Creating img element
@@ -106,7 +105,7 @@ function showModal(item) {
   const closeButton = document.querySelector('.close-button');
 
   modalTitle.textContent = item.title;
-  modalDescription.textContent = item.plot_summary;
+  modalDescription.textContent = item.plot;
   modal.style.display = 'block';
 
   const closeModal = () => {
@@ -126,7 +125,7 @@ function showModal(item) {
 
   const view = document.getElementById('view');
   view.onclick = function() {
-    window.location.href = `view.html?titleId=${item.title_id}`;
+    window.location.href = `view.html?titleId=${item.id}`;
   };
 }
 

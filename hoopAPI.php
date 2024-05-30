@@ -83,10 +83,53 @@ class Hoop
                 $this->setReview($reqbody);
             } else if ($type === "logout") { 
                 $this->logout($reqbody);
+            } else if ($type === "filter") { 
+                $this->filter($reqbody);
             }
         }
     }
 
+    public function filter($jsonData)
+    {
+        //get all json data
+        $page = $jsonData["page"];
+        $filter = $jsonData["genre"];
+
+        if ($page === "home")
+            $sql = "SELECT * FROM title WHERE genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?) LIMIT 20";
+        else if ($page === "movie")
+            $sql = "SELECT * FROM title WHERE type ='M' AND genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+        else if ($page === "series")
+            $sql = "SELECT * FROM title WHERE type ='S' AND genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+
+        $stmt = $this->con->prepare($sql);
+        if (!$stmt) {
+            echo json_encode(new Response("error", time(), "SQL query preparation error: " . $this->con->error));
+            return;
+        }
+        $search = '%' . $filter . '%';
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $data = [];
+            $validReturnValues = ['title_id', 'title', 'crew', 'age_cert', 'cast', 'release_date', 'plot_summary', 'language', 'review_id', 'genre_id', 'image', 'type'];
+            while ($row = $result->fetch_assoc()) 
+            {
+                $title = [];
+                foreach ($validReturnValues as $value) 
+                {
+                    $title[$value] = $row[$value];
+                }
+                $data[] = $title;
+            }
+            echo json_encode(new Response("success", time(), $data));
+        }
+        else {
+            $data = "No results found for genre: '" . $filter . "'"; 
+            echo json_encode(new Response("error", time(), $data));
+        }
+    }
 
     public function signUp($jsonData)
     {
@@ -250,7 +293,7 @@ class Hoop
         echo json_encode(new Response("success", time(), "user added to database"));
         session_start();
         $_SESSION["user_id"] = $user_id;
-        $_SESSION["email"]= $email;
+        $_SESSION["email"] = $email;
     }
 
     public function updateUser($jsonData)
@@ -396,6 +439,7 @@ class Hoop
 
         
     }
+
 public function setUserPref($reqbody)
 {
     $hoop = Hoop::instance();
@@ -510,9 +554,10 @@ public function setUserPref($reqbody)
     {
         $hoop = Hoop::instance();
         $title_id = $reqbody["title_id"];
-        $sqlcheckpref = "SELECT * FROM review INNER JOIN title ON review.title_id=title.title_id WHERE review.title_id='$title_id'";
+        $sqlcheckpref = "SELECT * FROM review INNER JOIN title ON review.title_id=title.title_id INNER JOIN user ON review.user_id=user.user_id WHERE review.title_id='$title_id'";
         $result = $this->con->query($sqlcheckpref);
         $reviews = array();
+        
         if ($result && $result->num_rows > 0) {
             while ($pref = $result->fetch_assoc()) {
                 $user_rev = array(
@@ -520,13 +565,24 @@ public function setUserPref($reqbody)
                     "review" => $pref["review"],
                     "rating" => $pref["rating"],
                     "user_id" => $pref["user_id"],
-                    "image" => $pref["image"]
+                    "image" => $pref["image"],
+                    "title" => $pref["title"],
+                    "name" => $pref["fname"]
                 );
                 $reviews[] = $user_rev;
             }
             echo json_encode(new Response("success", time(), $reviews));
         } else {
-            echo json_encode(new Response("failure", time(), "title has no reviews"));
+            $sql="SELECT title,image FROM title WHERE title.title_id='$title_id' ";
+            $res=$this->con->query($sql);
+            while ($pref = $res->fetch_assoc()) {
+                $user_rev = array(
+                    "image" => $pref["image"],
+                    "title" => $pref["title"]
+                );
+                $reviews[] = $user_rev;
+            }
+            echo json_encode(new Response("failure", time(), $reviews));
         }
         //return 
     }
@@ -613,19 +669,43 @@ public function setUserPref($reqbody)
     public function search($jsonData)
     {
         //get all json data
-        //get phone from data
+        $page = $jsonData["page"];
         $searchText = $jsonData["text"];
 
-        $sql = "SELECT title, image FROM title WHERE title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+        if ($page === "home")
+            $sql = "SELECT * FROM title WHERE title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?) LIMIT 20";
+        else if ($page === "movie")
+            $sql = "SELECT * FROM title WHERE type ='M' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+        else if ($page === "series")
+            $sql = "SELECT * FROM title WHERE type ='S' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
+            echo json_encode(new Response("error", time(), "SQL query preparation error: " . $this->con->error));
             return;
         }
-        $stmt->bind_param("ss", $searchText, $searchText);
+        $search = '%' . $searchText . '%';
+        $stmt->bind_param("ss", $search, $search);
         $stmt->execute();
-
-        // echo 
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $data = [];
+            $validReturnValues = ['title_id', 'title', 'crew', 'age_cert', 'cast', 'release_date', 'plot_summary', 'language', 'review_id', 'genre_id', 'image', 'type'];
+            while ($row = $result->fetch_assoc()) 
+            {
+                $title = [];
+                foreach ($validReturnValues as $value) 
+                {
+                    $title[$value] = $row[$value];
+                }
+                $data[] = $title;
+            }
+            echo json_encode(new Response("success", time(), $data));
+        }
+        else {
+            $data = "No search results found for: '" . $searchText . "'"; 
+            echo json_encode(new Response("error", time(), $data));
+        }
     }
 
     public function logout()
@@ -634,12 +714,21 @@ public function setUserPref($reqbody)
             session_destroy();
     }
 
-    public function login($request_body) //by retha
+    public function login($request_body)
     {
+        // echo '<script>console.log("Your debug message here");</script>';
 
         $email = $request_body["email"];
         $password = $request_body["password"];
+        //isset as params
+        if ($email == " " && $password == " ") {
 
+            $data = [
+                "message" => "Email and Password are empty",
+            ];
+            echo json_encode(new Response("Error", time(), $data));
+            return;
+        }
         //check if email exits in db
         $loginQuery = "SELECT user_id FROM user
         WHERE email = ?";
@@ -655,11 +744,16 @@ public function setUserPref($reqbody)
 
         // Fetch the result
         if ($statement->fetch()) {
-            echo 'User ID: ' . $user_id;
-        } else {
-            echo 'No user found with the given email.';
+            $user = $statement->fetch();
+        } else {          
+            $data = [
+                "message" => "No user found with the given email",
+            ];
+           
+            header("Content-Type: application/json");
+            echo json_encode(new Response("Error", time(), $data));
+            return;
         }
-        $user = $statement->fetch();
 
         $statement->close();
 
@@ -667,14 +761,15 @@ public function setUserPref($reqbody)
             $data = [
                 "message" => "User not found",
             ];
-            return json_encode(new Response("Error", time(), $data));
+            header("Content-Type: application/json");
+            echo json_encode(new Response("Error", time(), $data));
+            return;
         } else {
             //hash passed in password
             $hashpass = hash('sha256', $password);
             //verify the password if email exsists
 
-            $loginQuery = "SELECT password FROM user
-        WHERE password = ?";
+            $loginQuery = "SELECT password FROM user WHERE password = ?";
 
             if (!$statement = $this->con->prepare($loginQuery)) {
                 die('Prepair failed');
@@ -710,21 +805,25 @@ public function setUserPref($reqbody)
 
                 //start session
                 session_start();
-                $_SESSION["user_id"] = $userID;
-                $_SESSION["email"]= $email;
+                $_SESSION["user_id"] = $user_id;
+                $_SESSION["email"] = $email;
 
-
+                header("Content-Type: application/json");
                 echo json_encode(new Response("Success", time(), $data));
+                return;
             } else {
                 // Password is incorrect
                 $data = [
                     "message" => "Invalid credentials",
 
                 ];
-                return json_encode(new Response("Error", time(), $data));
+                header("Content-Type: application/json");
+                echo json_encode(new Response("Error", time(), $data));
+                return;
             }
         }
     }
+
     public function setWatchHistory($request_body)
     {
 

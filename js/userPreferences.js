@@ -1,11 +1,16 @@
+const skipButton = document.getElementById('skipButton');
+skipButton.addEventListener('click', function() {
+    if (skipButton.textContent === "Skip") {
+        window.location.replace('homepage.html');
+    } else {
+        window.location.href = 'personalInfo.html';
+    }
+});
 
-// document.getElementById('skipButton').addEventListener('click', function() {
-//     window.location.href = 'personalInfo.html';
-// });
 document.addEventListener('DOMContentLoaded', function() {
-    const skipButton = document.getElementById('skipButton');
-    skipButton.addEventListener('click', function() {
-        window.location.href = 'personalInfo.html'});
+    // const skipButton = document.getElementById('skipButton');
+    // skipButton.addEventListener('click', function() {
+    //     window.location.href = 'personalInfo.html'});
   
     // Fetch user preferences from the server
     fetchUserPreferences();

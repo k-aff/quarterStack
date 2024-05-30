@@ -22,7 +22,7 @@ function submitReview(event) {
   const formData = new FormData(event.target);
   const reqbody = {
     type: "setReview",
-    email: formData.get("username"),
+    //email: formData.get("username"),
     review: formData.get("reviewText"),
     rating: formData.get("rating"),
     title_id: id // Replace with the actual movie ID!!!!!!!!
@@ -61,7 +61,7 @@ function submitReview(event) {
 function fetchMovieReviews() {
     //const tittle_id = '45';
     const requestBody = {
-      title_id: id,
+      title_id: 27,
       type: "getReview"
     };
   
@@ -81,6 +81,8 @@ function fetchMovieReviews() {
           const reviewsContainer = document.querySelector(".reviews-container");
           reviewsContainer.innerHTML = "";
           //console.log(data.data);
+          const movietitle = document.querySelector(".movie-title");
+          movietitle.textContent=data.data[0].title;
           const movieImage = document.querySelector(".movie-image");
           movieImage.src = data.data[0].image;
           // Use a for loop instead of forEach
@@ -89,7 +91,7 @@ function fetchMovieReviews() {
             const reviewElement = document.createElement("div");
             reviewElement.classList.add("review");
             reviewElement.innerHTML = `
-              <h3>${review.user_id}</h3>
+              <h3>${review.name}</h3>
               <p class="review-text">${review.review}</p>
               <div class="rating">
                 ${Array.from({ length: review.rating }, (_, i) => `<span class="fa fa-star checked"></span>`).join("")}
@@ -98,8 +100,26 @@ function fetchMovieReviews() {
             `;
             reviewsContainer.appendChild(reviewElement);
           }
+          // if(data.status==="failure")
+          // {
+          //   const movietitle = document.querySelector(".movie-title");
+          //   movietitle.textContent=data.data[0].title;
+          //   const movieImage = document.querySelector(".movie-image");
+          //   movieImage.src = data.data[0].image;
+          //   const reviewElement = document.createElement("div");
+          //   reviewElement.textContent="No reviews";
+          // }
+
         } else {
-          console.error(data.message);
+          const reviewsContainer = document.querySelector(".reviews-container");
+            const movietitle = document.querySelector(".movie-title");
+            movietitle.textContent=data.data[0].title;
+            const movieImage = document.querySelector(".movie-image");
+            movieImage.src = data.data[0].image;
+            const reviewElement = document.createElement("div");
+            reviewElement.classList.add("review");
+            reviewElement.innerHTML="<h3> No  Reviews </h3>";
+            reviewsContainer.appendChild(reviewElement);
         }
       })
      .catch(error => {

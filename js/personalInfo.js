@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function fetchUserDetails() {
   // Retrieve email from local storage
   //const email = localStorage.getItem("email");
-  const email="beverly@gmail.com";
+  //const email="beverly@gmail.com";
 
-  if (email) {
+  // if (email) {
     const requestBody = {
-      email: email,
+      //email: email,
       type: "getUser"
     };
 
@@ -36,10 +36,7 @@ function fetchUserDetails() {
       console.error("Error fetching user details:", error);
       // Handle error appropriately (e.g., show an error message to the user)
     });
-  } else {
-    // Handle case where email is not available (e.g., redirect to login)
-    console.error("User email not found in local storage.");
-  }
+  // 
 }
 
 function populateForm(user) {

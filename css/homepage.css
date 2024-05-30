@@ -1,3 +1,9 @@
+*{
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -12,6 +18,10 @@ body, html {
 
 *, *::before, *::after {
     box-sizing: inherit;
+}
+
+.hidden {
+    display: none;
 }
 
 header {
@@ -39,7 +49,7 @@ header {
     width: 100px;
     padding: 5px;
     border-radius: 10px;
-    cursor: pointer;
+    cursor: pointer;  
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
@@ -77,7 +87,7 @@ header {
     border: 2px solid #cb6ce6;
     color: #fff;
     border-radius: 10px;
-    width: 80px;
+    width: 80px; 
     cursor: pointer;
 }
 
@@ -85,6 +95,7 @@ header {
     background-color: #a52ba5;
 }
 
+/*USER ICON*/
 .dropdown {
     position: relative;
 }
@@ -161,6 +172,8 @@ nav {
     font-weight: bold;
 }
 
+/**/
+
 main {
     padding: 20px;
     width: 100%;
@@ -176,6 +189,13 @@ main {
     font-size: 24px;
     line-height: 1.2;
     padding: 5px 0;
+}
+
+section.category {
+    width: calc(100% + 40px);
+    padding: 0; 
+    margin-left: -20px;
+    margin-right: -20px;
 }
 
 .carousel {
