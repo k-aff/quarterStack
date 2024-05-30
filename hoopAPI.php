@@ -302,7 +302,7 @@ class Hoop
         //get phone from data
         $phone = $jsonData["phone"];
         //get email from data
-        $email = $jsonData["email"];
+        // $email = $jsonData["email"];
         //get country_id from data
         $country_id = $jsonData["country_id"];
         //get card_no from data
@@ -316,32 +316,32 @@ class Hoop
             exit();
         }
 
-        //check if email is valid
-        $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
-        if (!preg_match($pattern, $email)) {
-            echo json_encode(new Response("error", time(), "invalid email address"));
-            exit();
-        }
+        // //check if email is valid
+        // $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+        // if (!preg_match($pattern, $email)) {
+        //     echo json_encode(new Response("error", time(), "invalid email address"));
+        //     exit();
+        // }
 
         //check if email is unique
-        $sql = "SELECT user_id, COUNT(*) FROM user WHERE email = ?";
-        $stmt = $this->con->prepare($sql);
-        if (!$stmt) {
-            echo "Error: " . $this->con->error;
-            return;
-        }
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $count = $result->fetch_assoc()['COUNT(*)'];
-        $id = $result->fetch_assoc()['user_id'];
-        if ($count > 0) {
-            session_start();
-            if ($id != $_SESSION["user_id"]) {
-                echo json_encode(new Response("error", time(), "email already in use"));
-                exit();
-            }
-        }
+        // $sql = "SELECT user_id, COUNT(*) FROM user WHERE email = ?";
+        // $stmt = $this->con->prepare($sql);
+        // if (!$stmt) {
+        //     echo json_encode(new Response("error", time(), $this->con->error));
+        //     exit();
+        // }
+        // $stmt->bind_param("s", $email);
+        // $stmt->execute();
+        // $result = $stmt->get_result();
+        // $count = $result->fetch_assoc()['COUNT(*)'];
+        // if ($count > 0) {
+        //     $id = $result->fetch_assoc()['user_id'];
+        //     session_start();
+        //     if ($id !== $_SESSION["user_id"]) {
+        //         echo json_encode(new Response("error", time(), "email already in use"));
+        //         exit();
+        //     }
+        // }
 
         //check if country_id in 0-259
         if (!is_numeric($country_id) || $country_id < 0 || $country_id > 259) {
@@ -366,14 +366,14 @@ class Hoop
         }
 
         //update user info and billing info 
-        $sqlUser = "UPDATE user SET phone=?, email=?, country_id=? WHERE user_id=?";
+        $sqlUser = "UPDATE user SET phone=?, country_id=? WHERE user_id=?";
         $stmt = $this->con->prepare($sqlUser);
         if (!$stmt) {
             echo "Error: " . $this->con->error;
             return;
         }
         session_start();
-        $stmt->bind_param("ssii", $phone, $email, $country_id, $_SESSION["user_id"]);
+        $stmt->bind_param("sii", $phone, $country_id, $_SESSION["user_id"]);
         $stmt->execute();
 
         $sqlBilling = "UPDATE billing SET card_no=?, expiry_date=? WHERE user_id=?";
@@ -391,7 +391,8 @@ class Hoop
 
     public function deleteUser($jsonData)
     {
-        $sql = "DELETE FROM user WHERE id = ?";
+        session_start();
+        $sql = "DELETE FROM user WHERE user_id = ?";
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
             echo "Error: " . $this->con->error;
@@ -493,7 +494,7 @@ public function setUserPref($reqbody)
         $email= $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
         $user_id= $_SESSION["user_id"];
-        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
+        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id WHERE user.user_id = '$user_id' ";
         $result = $this->con->query($sql);
         if ($result && $result->num_rows > 0)
         {
@@ -585,7 +586,7 @@ public function setUserPref($reqbody)
         public function getMovies($reqbody)
         {
             //$hoop = Hoop::instance();
-            $sql = "SELECT title,image  FROM movie INNER JOIN title ON movie.title_id = title.title_id";
+            $sql = "SELECT * FROM movie INNER JOIN title ON movie.title_id = title.title_id ORDER BY RAND()";
             $result = $this->con->query($sql);
 
             if ($result && $result->num_rows > 0) {
@@ -602,7 +603,7 @@ public function setUserPref($reqbody)
         public function getSeries($reqbody)
         {
             //$hoop = Hoop::instance();
-            $sql = "SELECT title,image FROM tv_series INNER JOIN title ON tv_series.title_id = title.title_id";
+            $sql = "SELECT * FROM tv_series INNER JOIN title ON tv_series.title_id = title.title_id ORDER BY RAND()";
             $result = $this->con->query($sql);
 
             if ($result && $result->num_rows > 0) {
@@ -628,8 +629,8 @@ public function setUserPref($reqbody)
         $sqlOldPassword = "SELECT password FROM user WHERE user_id = ?";
         $stmt = $this->con->prepare($sqlOldPassword);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
-            return;
+            echo json_encode(new Response("error", time(), $this->con->error));
+            exit();
         }
         session_start();
         $stmt->bind_param("s", $_SESSION["user_id"]);
@@ -637,12 +638,12 @@ public function setUserPref($reqbody)
         $result = $stmt->get_result();
         $password = $result->fetch_assoc()['password'];
         if ($hashedOldPassword != $password) {
-            echo json_encode(new Response("error", time(), "old password is incorrect"));
+            echo json_encode(new Response("error", time(), "Old password is incorrect"));
         }
 
         //check if new password is valid
         if (!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{8,}$/", $newPassword)) {
-            echo json_encode(new Response("error", time(), "new password is invalid"));
+            echo json_encode(new Response("error", time(), "New password is invalid"));
             exit();
         }
         $hashedNewPassword = hash('sha256', $newPassword);
@@ -651,14 +652,14 @@ public function setUserPref($reqbody)
         $sql = "UPDATE user SET password=? WHERE user_id=?";
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
-            return;
+            echo json_encode(new Response("error", time(), $this->con->error));
+            exit();
         }
         session_start();
         $stmt->bind_param("si", $hashedNewPassword, $_SESSION["user_id"]);
         $stmt->execute();
 
-        echo json_encode(new Response("success", time(), "user password updated"));
+        echo json_encode(new Response("success", time(), "User password updated"));
     }
 
     public function search($jsonData)
@@ -726,8 +727,7 @@ public function setUserPref($reqbody)
             return;
         }
         //check if email exits in db
-        $loginQuery = "SELECT user_id FROM user
-        WHERE email = ?";
+        $loginQuery = "SELECT user_id FROM user WHERE email = ?";
 
         if (!$statement = $this->con->prepare($loginQuery)) {
             die('Prepare failed');
@@ -786,18 +786,17 @@ public function setUserPref($reqbody)
                 ];
 
                 //if password && email update status to true and start session
-                $update = "UPDATE user SET active = ? WHERE user_id = ?";
-                $stmt = $this->con->prepare($update);
-                if (!$stmt) {
-                    echo $this->con->error;
-                }
-                $act = 1;
-                $userID = $user_id;
+                // $update = "UPDATE user SET active = ? WHERE user_id = ?";
+                // $stmt = $this->con->prepare($update);
+                // if (!$stmt) {
+                //     echo $this->con->error;
+                // }
+                // $act = 1;
+                // $userID = $user_id;
 
-                $stmt->bind_param('ii', $act, $userID);
-                $stmt->execute();
-                $stmt->close();
-
+                // $stmt->bind_param('ii', $act, $userID);
+                // $stmt->execute();
+                // $stmt->close();
 
                 //start session
                 session_start();
@@ -823,8 +822,9 @@ public function setUserPref($reqbody)
     public function setWatchHistory($request_body)
     {
 
+        session_start();
         $titleID = $request_body["title_id"];
-        $user_id = $request_body["user_id"];
+        $user_id = $_SESSION["user_id"];
         //check if the title is already in the watch hist table
         $historyQuery = "SELECT title_id FROM watch_history
         WHERE user_id = ? AND title_id =?";
@@ -870,9 +870,13 @@ public function setUserPref($reqbody)
 
     public function getWatchHistory($request_body)
     {
-        $user_id = $request_body["user_id"];
+
+        session_start();
+
+        $user_id = $_SESSION["user_id"];
+
         //join
-        $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
+        $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title,t.release_date
 
                   FROM watch_history wh
                   JOIN title t ON wh.title_id = t.title_id
@@ -884,7 +888,7 @@ public function setUserPref($reqbody)
 
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title, $release_date);
 
         $watch_hist = [];
         while ($statement->fetch()) {
@@ -895,8 +899,8 @@ public function setUserPref($reqbody)
                 "title_id" => $title_id,
                 "image" => $image,
                 "genre_id" => $genre_id,
-                "age_cert" => $age_cert
-
+                "age_cert" => $age_cert,
+                "release_date" => $release_date
             ];
         }
 
@@ -919,23 +923,26 @@ public function setUserPref($reqbody)
 
 
             //update response body
-            $watch_list2[] = [
+            $watch_hist2[] = [
                 "title" => $item['title'],
                 "title_id" => $item['title_id'],
                 "image" => $item['image'],
                 "genre" => $genreString,
-                "age_cert" => $item['age_cert']
+                "age_cert" => $item['age_cert'],
+                "release_date" => $item["release_date"]
 
             ];
         }
 
         echo json_encode(new Response("Success", time(), $watch_hist2));
+        return;
     }
 
-    public function setWatchList($request_body)
+     public function setWatchList($request_body)
     {
+        session_start();
         $titleID = $request_body["title_id"];
-        $user_id = $request_body["user_id"];
+        $user_id = $_SESSION["user_id"];
         //check if the title is already in the watch list table
         $listQuery = "SELECT title_id FROM watch_list
         WHERE user_id = ? AND title_id = ?";
@@ -981,9 +988,10 @@ public function setUserPref($reqbody)
 
     public function getWatchList($request_body)
     {
-        $user_id = $request_body["user_id"];
+        session_start();
+        $user_id = $_SESSION["user_id"];
         //join
-        $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
+        $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title,t.release_date
 
                   FROM watch_list wl
                   JOIN title t ON wl.title_id = t.title_id
@@ -995,7 +1003,7 @@ public function setUserPref($reqbody)
 
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title, $release_date);
 
         $watch_list = [];
         while ($statement->fetch()) {
@@ -1006,7 +1014,8 @@ public function setUserPref($reqbody)
                 "title_id" => $title_id,
                 "image" => $image,
                 "genre_id" => $genre_id,
-                "age_cert" => $age_cert
+                "age_cert" => $age_cert,
+                "release_date" => $release_date
 
             ];
         }
@@ -1034,15 +1043,14 @@ public function setUserPref($reqbody)
                 "title_id" => $item['title_id'],
                 "image" => $item['image'],
                 "genre" => $genreString,
-                "age_cert" => $item['age_cert']
+                "age_cert" => $item['age_cert'],
+                "release_date" => $item['release_date']
 
             ];
         }
 
         echo json_encode(new Response("Success", time(), $watch_list2));
     }
-
-
     public function getAllTitles($data)
     {
         session_start();

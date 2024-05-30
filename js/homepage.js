@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (searchText === "")
     {
-      alert("Please enter a title to search for.")
+      alert("Please enter a title to search for.");
       return; 
     }
 
@@ -27,12 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
               heading.innerHTML = titles.data; 
               section.className = 'carousel';
               carousel.className = 'hidden'; 
-
             } 
             else
             {
               section.className = 'category';
-              heading.innerText = searchText;
+              heading.innerText = "Search Results For: '" + searchText + "'";
               heading.className = 'category h2';
               carousel.className = 'carousel';
 
@@ -124,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const filter = document.getElementById('genre-filter').value;
       // console.log(filter);
       if (filter === "All") {
-        alert("Please select a genre to filter by.")
+        onLoad();  
         return; 
       }
       else if (filter === "Action") {
@@ -376,6 +375,16 @@ function showModal(item) {
   view.onclick = function() {
     window.location.href = `view.html?titleId=${item.title_id}`;
   };
+
+  const list = document.getElementById("add-watchlist");
+  list.onclick = function () {
+    setWatchList(item.title_id);
+  };
+
+  const hist = document.getElementById("watch-now");
+  hist.onclick = function () {
+    setWatchHist(item.title_id);
+  };
 }
 
 function logout(){
@@ -397,4 +406,55 @@ req.open("POST", "hoopAPI.php", true);
 req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 req.send(JSON.stringify(requestData));
 
+}
+
+function setWatchList(item) {
+  const api = "hoopAPI.php";
+
+  const requestData = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      type: "setWatchList",
+      title_id: item,
+    }),
+  };
+ 
+
+  fetch(api, requestData)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle error
+    });
+}
+
+function setWatchHist(item) {
+  const api = "hoopAPI.php";
+
+  const requestData = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      type: "setWatchHistory",
+      title_id: item,
+    }),
+  };
+
+  fetch(api, requestData)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle error
+    });
 }

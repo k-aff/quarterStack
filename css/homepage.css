@@ -201,6 +201,12 @@ section.category {
 .carousel {
     display: flex;
     align-items: center;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    width: 100%; /* Ensure carousel takes full width */
+    position: relative;
+
 }
 
 .carousel-btn {
