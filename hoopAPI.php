@@ -585,7 +585,7 @@ public function setUserPref($reqbody)
         public function getMovies($reqbody)
         {
             //$hoop = Hoop::instance();
-            $sql = "SELECT title,image  FROM movie INNER JOIN title ON movie.title_id = title.title_id";
+            $sql = "SELECT * FROM movie INNER JOIN title ON movie.title_id = title.title_id ORDER BY RAND()";
             $result = $this->con->query($sql);
 
             if ($result && $result->num_rows > 0) {
@@ -602,7 +602,7 @@ public function setUserPref($reqbody)
         public function getSeries($reqbody)
         {
             //$hoop = Hoop::instance();
-            $sql = "SELECT title,image FROM tv_series INNER JOIN title ON tv_series.title_id = title.title_id";
+            $sql = "SELECT * FROM tv_series INNER JOIN title ON tv_series.title_id = title.title_id ORDER BY RAND()";
             $result = $this->con->query($sql);
 
             if ($result && $result->num_rows > 0) {
