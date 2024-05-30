@@ -787,7 +787,7 @@ public function setUserPref($reqbody)
                 ];
 
                 //if password && email update status to true and start session
-                $update = "UPDATE user SET active = ? WHERE user_id = ?";
+                $update = "UPDATE user SET active=? WHERE user_id=?";
                 $stmt = $this->con->prepare($update);
                 if (!$stmt) {
                     echo $this->con->error;
@@ -808,6 +808,7 @@ public function setUserPref($reqbody)
                 header("Content-Type: application/json");
                 echo json_encode(new Response("Success", time(), $data));
                 return;
+                
             } else {
                 // Password is incorrect
                 $data = [
@@ -1049,7 +1050,7 @@ public function setUserPref($reqbody)
         session_start();
         $id = $_SESSION['user_id'];
 
-        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
+        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=36";
         $result = $this->con->query($sqlcheckpref);
         $pref = $result->fetch_assoc();
 
@@ -1073,6 +1074,7 @@ public function setUserPref($reqbody)
             if($genre1!=null)
                 $whereClause = $whereClause. ")";
         }
+        
         
         $carousels = ["Movies", "Series", "Action", "Animation", "Sci-fi", "Horror", "Comedy", "Adventure", "Drama", "Preferences"];//add preferences;
         $returnObject = array();
