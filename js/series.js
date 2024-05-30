@@ -280,6 +280,37 @@ function showModal(item) {
     };
 }
 
+function showModal(item) {
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalDescription = document.getElementById('modal-description');
+  const closeButton = document.querySelector('.close-button');
+
+  modalTitle.textContent = item.title;
+  modalDescription.textContent = item.plot_summary;
+  modal.style.display = 'block';
+
+  const closeModal = () => {
+    modal.style.display = 'none';
+    closeButton.removeEventListener('click', closeModal);
+    window.removeEventListener('click', outsideClick);
+  };
+
+  const outsideClick = (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  };
+
+  closeButton.addEventListener('click', closeModal);
+  window.addEventListener('click', outsideClick);
+
+  const view = document.getElementById('view');
+  view.onclick = function() {
+    window.location.href = `view.html?titleId=${item.title_id}`;
+  };
+}
+
 function logout(){
 
     const req = new XMLHttpRequest();
