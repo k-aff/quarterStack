@@ -131,15 +131,4 @@ document.addEventListener('DOMContentLoaded', function() {
     
   }
   
-  //So that the intro page loads after this form is submitted
-function submitPreferences(event) {
-  event.preventDefault(); 
 
-  // Redirect to intro.html
-  window.location.href = 'intro.html';
-}
-
-//Skip button wil also redirect to intro.html
-document.getElementById('skipButton').addEventListener('click', function() {
-  window.location.href = 'intro.html';
-});
