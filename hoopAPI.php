@@ -370,7 +370,7 @@ class Hoop
         $sqlUser = "UPDATE user SET phone=?, email=?, country_id=? WHERE user_id=?";
         $stmt = $this->con->prepare($sqlUser);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
+            echo json_encode("Error: " . $this->con->error);
             return;
         }
         session_start();
@@ -380,7 +380,7 @@ class Hoop
         $sqlBilling = "UPDATE billing SET card_no=?, expiry_date=? WHERE user_id=?";
         $stmt = $this->con->prepare($sqlBilling);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
+            echo json_encode("Error: " . $this->con->error);
             return;
         }
         $stmt->bind_param("ssi", $card_no, $expiry_date, $_SESSION["user_id"]);
