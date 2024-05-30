@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  function fetchWL() {
+  function fetchWH() {
     const api = "hoopAPI.php";
 
     const requestData = {
@@ -16,24 +16,25 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
-        const carouselContainer = document.getElementById("carousel");
-        if (carouselContainer) {
-          carouselContainer.innerHTML = "";
-        }
+        const moviesContainer = document.getElementById("movies-container");
+        if (moviesContainer) {
+          moviesContainer.innerHTML = "";
+        } // Clear any existing content
+
         var array = data.data;
 
         for (var i = 0; i < array.length; i++) {
           const movie = array[i];
 
-          const carouselItem = document.createElement("div");
-          carouselItem.classList.add("carousel-item");
+          const movieDiv = document.createElement("div");
+          movieDiv.classList.add("movie-div");
 
-          const movieImg = document.createElement("img");
-          movieImg.src = movie.image;
-          movieImg.alt = movie.title;
+          const moviePoster = document.createElement("img");
+          moviePoster.src = movie.image;
+          moviePoster.alt = "Movie Poster";
+          moviePoster.classList.add("movie-poster-small");
 
-          const movieInfo = document.createElement("div");
-          movieInfo.classList.add("info");
+          const movieInfoDiv = document.createElement("div");
 
           const movieTitle = document.createElement("h2");
           movieTitle.textContent = movie.title;
@@ -42,48 +43,29 @@ document.addEventListener("DOMContentLoaded", function () {
           movieGenre.textContent = "Genre: " + movie.genre;
 
           const movieReleaseYear = document.createElement("p");
-          movieReleaseYear.textContent = "Release Date: " + movie.release_date;
+          movieReleaseYear.textContent = "Release Year: " + movie.release_date;
 
-          movieInfo.appendChild(movieTitle);
-          movieInfo.appendChild(movieGenre);
-          // movieInfo.appendChild(movieDirector);
-          movieInfo.appendChild(movieReleaseYear);
+          const movieAgeCertification = document.createElement("p");
+          movieAgeCertification.textContent =
+            "Age certification: " + movie.age_cert;
 
-          carouselItem.appendChild(movieImg);
-          carouselItem.appendChild(movieInfo);
+          movieInfoDiv.appendChild(movieTitle);
+          movieInfoDiv.appendChild(movieGenre);
+          movieInfoDiv.appendChild(movieReleaseYear);
+          movieInfoDiv.appendChild(movieAgeCertification);
 
-          carouselContainer.appendChild(carouselItem);
+          movieDiv.appendChild(moviePoster);
+          movieDiv.appendChild(movieInfoDiv);
+
+          moviesContainer.appendChild(movieDiv);
         }
-        const carousel = document.querySelector(".carousel");
-        const carouselItems = document.querySelectorAll(".carousel-item");
-        const leftButton = document.querySelector(".carousel-button.left");
-        const rightButton = document.querySelector(".carousel-button.right");
-
-        let currentIndex = 0;
-
-        function updateCarousel() {
-          carousel.style.transform = `translateX(-${
-            currentIndex * (carouselItems[0].offsetWidth + 20)
-          }px)`;
-        }
-
-        leftButton.addEventListener("click", () => {
-          currentIndex = Math.max(currentIndex - 1, 0);
-          updateCarousel();
-        });
-
-        rightButton.addEventListener("click", () => {
-          currentIndex = Math.min(currentIndex + 1, carouselItems.length - 1);
-          updateCarousel();
-        });
-
-        updateCarousel();
       })
-
       .catch((error) => {
         console.error("Error:", error);
         // Handle error
       });
   }
-  fetchWL();
+
+  // Call fetchWH to populate the movies container
+  fetchWH();
 });
