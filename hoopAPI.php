@@ -637,12 +637,12 @@ public function setUserPref($reqbody)
         $result = $stmt->get_result();
         $password = $result->fetch_assoc()['password'];
         if ($hashedOldPassword != $password) {
-            echo json_encode(new Response("error", time(), "old password is incorrect"));
+            echo json_encode(new Response("error", time(), "Old password is incorrect"));
         }
 
         //check if new password is valid
         if (!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{8,}$/", $newPassword)) {
-            echo json_encode(new Response("error", time(), "new password is invalid"));
+            echo json_encode(new Response("error", time(), "New password is invalid"));
             exit();
         }
         $hashedNewPassword = hash('sha256', $newPassword);
@@ -658,7 +658,7 @@ public function setUserPref($reqbody)
         $stmt->bind_param("si", $hashedNewPassword, $_SESSION["user_id"]);
         $stmt->execute();
 
-        echo json_encode(new Response("success", time(), "user password updated"));
+        echo json_encode(new Response("success", time(), "User password updated"));
     }
 
     public function search($jsonData)
