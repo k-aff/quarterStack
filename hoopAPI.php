@@ -334,10 +334,10 @@ class Hoop
         $stmt->execute();
         $result = $stmt->get_result();
         $count = $result->fetch_assoc()['COUNT(*)'];
-        $id = $result->fetch_assoc()['user_id'];
         if ($count > 0) {
+            $id = $result->fetch_assoc()['user_id'];
             session_start();
-            if ($id != $_SESSION["user_id"]) {
+            if ($id !== $_SESSION["user_id"]) {
                 echo json_encode(new Response("error", time(), "email already in use"));
                 exit();
             }
