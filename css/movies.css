@@ -76,34 +76,9 @@ nav ul li a.active, nav ul li a:hover {
     display: block;
 }
 
-.search-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
+.clear-search-button {
+    display: none;
 }
-
-
-.search-bar input {
-    
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 300px;
-}
-
-.filter-container {
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-}
-
-#genre-filter {
-   
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 
 .category {
     margin: 20px;
@@ -200,35 +175,39 @@ header {
 .search-container {
     width: 100%;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
     padding: 20px 0;
 }
 
-.search-button{
+.search-button {
     width: 100px;
     padding: 5px;
-    border-radius: 30px;
+    border-radius: 10px;
     cursor: pointer;  
-    margin-left: 0px;
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
     font-size: 20px;
-    
+    margin-right: 10px;
 }
 
 .search-bar input {
     width: 400px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid #cb6ce6;
     background-color: #390e39;
     color: #fff;
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: 20px;
 }
 
+.filter-container {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
 
 #genre-filter {
     margin-right: 10px;
@@ -237,7 +216,10 @@ header {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
 }
+
 #filter-button {
     margin-right: 10px;
     padding: 5px;
@@ -245,9 +227,14 @@ header {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    width: 80px; 
+    cursor: pointer;
 }
 
-
+#filter-button:hover, .search-button:hover {
+    background-color: #a52ba5;
+}
 
 .dropdown {
     position: relative;

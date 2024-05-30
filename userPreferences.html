@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Preferences</title>
+    <title>HOOP - User Preferences</title>
     <link rel="stylesheet" href="css/userPreferences.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-    <script src="js/userPreferences.js"></script>
-   
 </head>
 <header>
     <div class="logo">
@@ -36,119 +32,116 @@
         <h1>Preferences</h1>
         <form id="preferencesForm" onsubmit="submitPreferences(event)">
             <select id="type1" name="type1" required>
-                <option value="" disabled selected>Select</option>
-                <option value="Type1">Movie</option>
-                <option value="Type2">Tv series</option>
-                <option value="Type3">Both Movie and Tv series</option>
+                <option value="" disabled selected>Select Type</option>
+                <option value="Type1">Movies</option>
+                <option value="Type2">Series</option>
+                <option value="Type3">Both Movies & Series</option>
             </select>
     <div class="genreForm">
         <h1>Choose Your Top 3 Genres</h1>
-        <form id="preferencesForm" onsubmit="submitPreferences(event)">
+        <!-- <form id="preferencesForm" onsubmit="submitPreferences(event)"> -->
             <select id="genre1" name="genre1" required>
                 <option value="" disabled selected>Select Genre 1</option>
-                <option value="Genre1">Action</option>
-                <option value="Genre2">Action & Adventure</option>
-                <option value="Genre3">Adventure</option>
-                <option value="Genre4">Animation</option>
-                <option value="Genre5">Anime</option>
-                <option value="Genre6">Comedy</option>
-                <option value="Genre7">Crime</option>
-                <option value="Genre8">Documentary</option>
-                <option value="Genre9">Drama</option>
-                <option value="Genre10">Family</option>
-                <option value="Genre11">Fantasy</option>
-                <option value="Genre12">Horror</option>
-                <option value="Genre13">Kids</option>
-                <option value="Genre14"> Musical</option>
-                <option value="Genre15">Mystery</option>
-                <option value="Genre16">News</option>
-                <option value="Genre17">Reality</option>
-                <option value="Genre18">Romance</option>
-                <option value="Genre19">Romantic Comedy</option>
-                <option value="Genre20">Sci-Fi</option>
-                <option value="Genre21">Sci-Fi & Fantasy</option>
-                <option value="Genre22">Soap</option>
-                <option value="Genre23">Talk</option>
-                <option value="Genre24">Thriller</option>
-                <option value="Genre25">War</option>
-                <option value="Genre26">War & Politics</option>
-                <option value="Genre27">Western</option>
+                <option value="1">Action</option>
+                <option value="2">Action & Adventure</option>
+                <option value="3">Adventure</option>
+                <option value="4">Animation</option>
+                <option value="5">Anime</option>
+                <option value="6">Comedy</option>
+                <option value="7">Crime</option>
+                <option value="8">Documentary</option>
+                <option value="9">Drama</option>
+                <option value="10">Family</option>
+                <option value="11">Fantasy</option>
+                <option value="12">Horror</option>
+                <option value="13">Kids</option>
+                <option value="14">Musical</option>
+                <option value="15">Mystery</option>
+                <option value="16">News</option>
+                <option value="17">Reality</option>
+                <option value="18">Romance</option>
+                <option value="19">Romantic Comedy</option>
+                <option value="20">Sci-Fi</option>
+                <option value="21">Sci-Fi & Fantasy</option>
+                <option value="22">Soap</option>
+                <option value="23">Talk</option>
+                <option value="24">Thriller</option>
+                <option value="25">War</option>
+                <option value="26">War & Politics</option>
+                <option value="27">Western</option>
             </select>
             <select id="genre2" name="genre2" required>
                 <option value="" disabled selected>Select Genre 2</option>
-                <option value="Genre1">Action</option>
-                <option value="Genre2">Action & Adventure</option>
-                <option value="Genre3">Adventure</option>
-                <option value="Genre4">Animation</option>
-                <option value="Genre5">Anime</option>
-                <option value="Genre6">Comedy</option>
-                <option value="Genre7">Crime</option>
-                <option value="Genre8">Documentary</option>
-                <option value="Genre9">Drama</option>
-                <option value="Genre10">Family</option>
-                <option value="Genre11">Fantasy</option>
-                <option value="Genre12">Horror</option>
-                <option value="Genre13">Kids</option>
-                <option value="Genre14"> Musical</option>
-                <option value="Genre15">Mystery</option>
-                <option value="Genre16">News</option>
-                <option value="Genre17">Reality</option>
-                <option value="Genre18">Romance</option>
-                <option value="Genre19">Romantic Comedy</option>
-                <option value="Genre20">Sci-Fi & Fantasy</option>
-                <option value="Genre21">Science Fiction</option>
-                <option value="Genre22">Soap</option>
-                <option value="Genre23">Talk</option>
-                <option value="Genre24">Thriller</option>
-                <option value="Genre25">War</option>
-                <option value="Genre26">War & Politics</option>
-                <option value="Genre27">Western</option>
+                <option value="1">Action</option>
+                <option value="2">Action & Adventure</option>
+                <option value="3">Adventure</option>
+                <option value="4">Animation</option>
+                <option value="5">Anime</option>
+                <option value="6">Comedy</option>
+                <option value="7">Crime</option>
+                <option value="8">Documentary</option>
+                <option value="9">Drama</option>
+                <option value="10">Family</option>
+                <option value="11">Fantasy</option>
+                <option value="12">Horror</option>
+                <option value="13">Kids</option>
+                <option value="14">Musical</option>
+                <option value="15">Mystery</option>
+                <option value="16">News</option>
+                <option value="17">Reality</option>
+                <option value="18">Romance</option>
+                <option value="19">Romantic Comedy</option>
+                <option value="20">Sci-Fi</option>
+                <option value="21">Sci-Fi & Fantasy</option>
+                <option value="22">Soap</option>
+                <option value="23">Talk</option>
+                <option value="24">Thriller</option>
+                <option value="25">War</option>
+                <option value="26">War & Politics</option>
+                <option value="27">Western</option>
             </select>
             <select id="genre3" name="genre3" required>
                 <option value="" disabled selected>Select Genre 3</option>
-                <option value="Genre1">Action</option>
-                <option value="Genre2">Action & Adventure</option>
-                <option value="Genre3">Adventure</option>
-                <option value="Genre4">Animation</option>
-                <option value="Genre5">Anime</option>
-                <option value="Genre6">Comedy</option>
-                <option value="Genre7">Crime</option>
-                <option value="Genre8">Documentary</option>
-                <option value="Genre9">Drama</option>
-                <option value="Genre10">Family</option>
-                <option value="Genre11">Fantasy</option>
-                <option value="Genre12">Horror</option>
-                <option value="Genre13">Kids</option>
-                <option value="Genre14"> Musical</option>
-                <option value="Genre15">Mystery</option>
-                <option value="Genre16">News</option>
-                <option value="Genre17">Reality</option>
-                <option value="Genre18">Romance</option>
-                <option value="Genre19">Romantic Comedy</option>
-                <option value="Genre20">Sci-Fi & Fantasy</option>
-                <option value="Genre21">Science Fiction</option>
-                <option value="Genre22">Soap</option>
-                <option value="Genre23">Talk</option>
-                <option value="Genre24">Thriller</option>
-                <option value="Genre25">War</option>
-                <option value="Genre26">War & Politics</option>
-                <option value="Genre27">Western</option>
+                <option value="1">Action</option>
+                <option value="2">Action & Adventure</option>
+                <option value="3">Adventure</option>
+                <option value="4">Animation</option>
+                <option value="5">Anime</option>
+                <option value="6">Comedy</option>
+                <option value="7">Crime</option>
+                <option value="8">Documentary</option>
+                <option value="9">Drama</option>
+                <option value="10">Family</option>
+                <option value="11">Fantasy</option>
+                <option value="12">Horror</option>
+                <option value="13">Kids</option>
+                <option value="14">Musical</option>
+                <option value="15">Mystery</option>
+                <option value="16">News</option>
+                <option value="17">Reality</option>
+                <option value="18">Romance</option>
+                <option value="19">Romantic Comedy</option>
+                <option value="20">Sci-Fi</option>
+                <option value="21">Sci-Fi & Fantasy</option>
+                <option value="22">Soap</option>
+                <option value="23">Talk</option>
+                <option value="24">Thriller</option>
+                <option value="25">War</option>
+                <option value="26">War & Politics</option>
+                <option value="27">Western</option>
             </select>
-            <br>
             <br>
             <br>
             <br>
             <button type="submit">Submit</button>
             <br>
             <br>
+            <br>
             <button id="skipButton" type="button">Skip</button>
-
-           
         </form>
     </div>
 <br>
 <br>
-<br>
-  
+<script src="js/userPreferences.js"></script>
     </body>
     </html>

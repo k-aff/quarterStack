@@ -1,5 +1,5 @@
 body {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
     background-color: black;
@@ -11,7 +11,7 @@ h1{
 }
 
 header{
-    background-color:#530553;
+    background-color:#290029;
    
     color: #fff;
     padding: 10px 20px;
@@ -19,6 +19,8 @@ header{
     justify-content: space-between;
     align-items: center;
 }
+
+/*NAVIGATION BAR*/
 nav {
 display: flex;
 justify-content: space-between;
@@ -66,8 +68,8 @@ font-size: 30px;
 margin-top:auto;
 margin-right:15px;
 }
-.Logout_icon i {
 
+.Logout_icon i {
 color:#cb6ce6;
 margin:20px;
 text-decoration: none;
@@ -81,15 +83,10 @@ color:#a52ba5;
 opacity:1;
 }
 
-.nav-links li a.active{
-color:#de91f3;
-font-weight: bold;
-border-radius: 20%;
-
+.nav-links li a.active {
+    color: #cb6ce6;
+    font-weight: bold;
 }
-
-
-
 
 /* .logo img {
     width: 100px;
