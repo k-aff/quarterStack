@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (login.status == "Error")
                 alert('Invalid credentials'); 
             else 
-                window.location.replace('homepage.html');
+                window.location.replace('intro.html');
         }
     }
     req.open("POST", "hoopAPI.php", false); 

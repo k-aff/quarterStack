@@ -726,8 +726,7 @@ public function setUserPref($reqbody)
             return;
         }
         //check if email exits in db
-        $loginQuery = "SELECT user_id FROM user
-        WHERE email = ?";
+        $loginQuery = "SELECT user_id FROM user WHERE email = ?";
 
         if (!$statement = $this->con->prepare($loginQuery)) {
             die('Prepare failed');
@@ -786,18 +785,17 @@ public function setUserPref($reqbody)
                 ];
 
                 //if password && email update status to true and start session
-                $update = "UPDATE user SET active = ? WHERE user_id = ?";
-                $stmt = $this->con->prepare($update);
-                if (!$stmt) {
-                    echo $this->con->error;
-                }
-                $act = 1;
-                $userID = $user_id;
+                // $update = "UPDATE user SET active = ? WHERE user_id = ?";
+                // $stmt = $this->con->prepare($update);
+                // if (!$stmt) {
+                //     echo $this->con->error;
+                // }
+                // $act = 1;
+                // $userID = $user_id;
 
-                $stmt->bind_param('ii', $act, $userID);
-                $stmt->execute();
-                $stmt->close();
-
+                // $stmt->bind_param('ii', $act, $userID);
+                // $stmt->execute();
+                // $stmt->close();
 
                 //start session
                 session_start();
@@ -1047,6 +1045,7 @@ public function setUserPref($reqbody)
     {
         session_start();
         $id = $_SESSION['user_id'];
+        echo $id; 
 
         $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
         $result = $this->con->query($sqlcheckpref);

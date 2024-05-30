@@ -286,6 +286,7 @@ const requestData = {
 req.onreadystatechange = function() {
   if (this.status === 200 && this.readyState == 4) {
     const hoopTitles = JSON.parse(req.responseText);
+    console.log(hoopTitles);
 
     for (const category in hoopTitles.data) {
       let titles = document.getElementById(`${category}Container`);
