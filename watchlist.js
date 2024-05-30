@@ -1,3 +1,7 @@
+const myQuery = window.location.search;
+const Params = new URLSearchParams(myQuery);
+const id = Params.get("titleId");
+console.log(id);
 document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.querySelector(".carousel");
   const carouselItems = document.querySelectorAll(".carousel-item");
@@ -27,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function getWatchList() {
   //get session id
-  
+
   const api = "hoopAPI.php";
 
   const requestData = {
@@ -52,6 +56,3 @@ function getWatchList() {
     });
 }
 getWatchList();
-
-
-

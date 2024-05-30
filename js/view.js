@@ -1,187 +1,175 @@
 const myQuery = window.location.search;
 const Params = new URLSearchParams(myQuery);
-const id = Params.get('titleId');
+const id = Params.get("titleId");
 
-function onLoad(){
+function onLoad() {
+  const req = new XMLHttpRequest();
+  const requestData = {
+    type: "setViewPage",
+    titleId: id,
+  };
 
-    const req = new XMLHttpRequest();
-    const requestData = {
-      "type": "setViewPage",
-      "titleId": id
-    }
-  
-    console.log(requestData);
-  
-    req.onreadystatechange = function() {
-    
-      if (this.status === 200 && this.readyState==4) {
-  
-        const titleDetails = JSON.parse(req.responseText);
-        console.log(titleDetails);
+  console.log(requestData);
 
-        const detailsArray = titleDetails.data
+  req.onreadystatechange = function () {
+    if (this.status === 200 && this.readyState == 4) {
+      const titleDetails = JSON.parse(req.responseText);
+      console.log(titleDetails);
 
-        var detailsCont = document.getElementById("detailsContainer")
-        // detailsCont.innerHTML = null;
+      const detailsArray = titleDetails.data;
 
-        var image = document.createElement("img");
-        image.src = detailsArray.image;
-        image.alt = detailsArray.title + " Cover photo";
-        image.classList.add("movie-poster-small")
+      var detailsCont = document.getElementById("detailsContainer");
+      // detailsCont.innerHTML = null;
 
-        var title = document.createElement("h1");
-        title.innerHTML = detailsArray.title
+      var image = document.createElement("img");
+      image.src = detailsArray.image;
+      image.alt = detailsArray.title + " Cover photo";
+      image.classList.add("movie-poster-small");
 
-        var details = document.createElement("div")
-        details.classList.add("details-section")
+      var title = document.createElement("h1");
+      title.innerHTML = detailsArray.title;
 
-        var plot = document.createElement("p")
-        var headingP = document.createElement("span")
+      var details = document.createElement("div");
+      details.classList.add("details-section");
 
-        headingP.innerHTML = "Plot Summary"
-        headingP.style.fontSize = "18px"
-        headingP.style.fontWeight = "bold"
+      var plot = document.createElement("p");
+      var headingP = document.createElement("span");
 
-        var plotText = document.createElement("span")
-        plotText.innerHTML = `: ${detailsArray.plot}`
+      headingP.innerHTML = "Plot Summary";
+      headingP.style.fontSize = "18px";
+      headingP.style.fontWeight = "bold";
 
-        plot.appendChild(headingP);
-        plot.appendChild(plotText);
+      var plotText = document.createElement("span");
+      plotText.innerHTML = `: ${detailsArray.plot}`;
 
-        if(detailsArray.type=='M'){
+      plot.appendChild(headingP);
+      plot.appendChild(plotText);
 
-        var duration = document.createElement("p")
-        var headingD = document.createElement("span")
+      if (detailsArray.type == "M") {
+        var duration = document.createElement("p");
+        var headingD = document.createElement("span");
 
-        headingD.innerHTML = "Duration "
-        headingD.style.fontSize = "18px"
-        headingD.style.fontWeight = "bold"
+        headingD.innerHTML = "Duration ";
+        headingD.style.fontSize = "18px";
+        headingD.style.fontWeight = "bold";
 
-        var durationText = document.createElement("span")
-        durationText.innerHTML = `: ${detailsArray.runtime} minutes`
+        var durationText = document.createElement("span");
+        durationText.innerHTML = `: ${detailsArray.runtime} minutes`;
 
         duration.appendChild(headingD);
         duration.appendChild(durationText);
-        }
-        else
-        {
-          var duration = document.createElement("p")
-          var headingD = document.createElement("span")
+      } else {
+        var duration = document.createElement("p");
+        var headingD = document.createElement("span");
 
-          headingD.innerHTML = "Number of Seasons "
-          headingD.style.fontSize = "18px"
-          headingD.style.fontWeight = "bold"
+        headingD.innerHTML = "Number of Seasons ";
+        headingD.style.fontSize = "18px";
+        headingD.style.fontWeight = "bold";
 
-          var durationText = document.createElement("span")
-          durationText.innerHTML = `: ${detailsArray['number of seasons']}`
+        var durationText = document.createElement("span");
+        durationText.innerHTML = `: ${detailsArray["number of seasons"]}`;
 
-          duration.appendChild(headingD);
-          duration.appendChild(durationText);
-        }
-
-        var genre = document.createElement("p")
-        var headingG = document.createElement("span")
-
-        headingG.innerHTML = "Genre "
-        headingG.style.fontSize = "18px"
-        headingG.style.fontWeight = "bold"
-
-        var genreText = document.createElement("span")
-        genreText.innerHTML = `: ${detailsArray.genre}`
-
-        genre.appendChild(headingG);
-        genre.appendChild(genreText);
-
-        var actors = document.createElement("p")
-        var headingA = document.createElement("span")
-
-        headingA.innerHTML = "Cast "
-        headingA.style.fontSize = "18px"
-        headingA.style.fontWeight = "bold"
-
-        var actorsText = document.createElement("span")
-        actorsText.innerHTML = `: ${detailsArray.cast}`
-
-        actors.appendChild(headingA);
-        actors.appendChild(actorsText);
-
-        var crew = document.createElement("p")
-        var headingC = document.createElement("span")
-
-        headingC.innerHTML = "Crew "
-        headingC.style.fontSize = "18px"
-        headingC.style.fontWeight = "bold"
-
-        var crewText = document.createElement("span")
-        crewText.innerHTML = `: ${detailsArray.directors}`
-
-        crew.appendChild(headingC);
-        crew.appendChild(crewText);
-
-        var reviews = document.createElement("button")
-        reviews.onclick = function() {
-          window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
-        };
-        reviews.innerHTML = "View Reviews"
-        reviews.classList.add("reviews-button")
-        reviews.style.textDecoration = "none"
-
-        var production = document.createElement("p")
-        if(detailsArray.type=='M'){
-
-          var production = document.createElement("p")
-          var headingP = document.createElement("span")
-  
-          headingP.innerHTML = "Production "
-          headingP.style.fontSize = "18px"
-          headingP.style.fontWeight = "bold"
-  
-          var productionText = document.createElement("span")
-          productionText.innerHTML = ": Movie"
-  
-          production.appendChild(headingP);
-          production.appendChild(productionText);
-
-        }
-        else{
-          var production = document.createElement("p")
-          var headingP = document.createElement("span")
-  
-          headingP.innerHTML = "Production "
-          headingP.style.fontSize = "18px"
-          headingP.style.fontWeight = "bold"
-  
-          var productionText = document.createElement("span")
-          productionText.innerHTML = ": Series"
-  
-          production.appendChild(headingP);
-          production.appendChild(productionText);
-        }
-
-        details.appendChild(plot)
-        details.appendChild(duration)
-        details.appendChild(genre)
-        details.appendChild(actors)
-        details.appendChild(crew)
-        details.appendChild(production)
-        details.appendChild(reviews)
-
-        detailsCont.insertBefore(details, detailsCont.firstChild)
-        detailsCont.insertBefore(title, detailsCont.firstChild)
-        detailsCont.insertBefore(image, detailsCont.firstChild)
-
+        duration.appendChild(headingD);
+        duration.appendChild(durationText);
       }
 
+      var genre = document.createElement("p");
+      var headingG = document.createElement("span");
+
+      headingG.innerHTML = "Genre ";
+      headingG.style.fontSize = "18px";
+      headingG.style.fontWeight = "bold";
+
+      var genreText = document.createElement("span");
+      genreText.innerHTML = `: ${detailsArray.genre}`;
+
+      genre.appendChild(headingG);
+      genre.appendChild(genreText);
+
+      var actors = document.createElement("p");
+      var headingA = document.createElement("span");
+
+      headingA.innerHTML = "Cast ";
+      headingA.style.fontSize = "18px";
+      headingA.style.fontWeight = "bold";
+
+      var actorsText = document.createElement("span");
+      actorsText.innerHTML = `: ${detailsArray.cast}`;
+
+      actors.appendChild(headingA);
+      actors.appendChild(actorsText);
+
+      var crew = document.createElement("p");
+      var headingC = document.createElement("span");
+
+      headingC.innerHTML = "Crew ";
+      headingC.style.fontSize = "18px";
+      headingC.style.fontWeight = "bold";
+
+      var crewText = document.createElement("span");
+      crewText.innerHTML = `: ${detailsArray.directors}`;
+
+      crew.appendChild(headingC);
+      crew.appendChild(crewText);
+
+      var reviews = document.createElement("button");
+      reviews.onclick = function () {
+        window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
+      };
+      reviews.innerHTML = "View Reviews";
+      reviews.classList.add("reviews-button");
+      reviews.style.textDecoration = "none";
+
+      var production = document.createElement("p");
+      if (detailsArray.type == "M") {
+        var production = document.createElement("p");
+        var headingP = document.createElement("span");
+
+        headingP.innerHTML = "Production ";
+        headingP.style.fontSize = "18px";
+        headingP.style.fontWeight = "bold";
+
+        var productionText = document.createElement("span");
+        productionText.innerHTML = ": Movie";
+
+        production.appendChild(headingP);
+        production.appendChild(productionText);
+      } else {
+        var production = document.createElement("p");
+        var headingP = document.createElement("span");
+
+        headingP.innerHTML = "Production ";
+        headingP.style.fontSize = "18px";
+        headingP.style.fontWeight = "bold";
+
+        var productionText = document.createElement("span");
+        productionText.innerHTML = ": Series";
+
+        production.appendChild(headingP);
+        production.appendChild(productionText);
+      }
+
+      details.appendChild(plot);
+      details.appendChild(duration);
+      details.appendChild(genre);
+      details.appendChild(actors);
+      details.appendChild(crew);
+      details.appendChild(production);
+      details.appendChild(reviews);
+
+      detailsCont.insertBefore(details, detailsCont.firstChild);
+      detailsCont.insertBefore(title, detailsCont.firstChild);
+      detailsCont.insertBefore(image, detailsCont.firstChild);
     }
-  
-    req.onerror = function() {
-      console.error("Error loading API");
-    };
-  
-    if(requestData!==null){
-      req.open("POST", "http://localhost/quarterStack/hoopAPI.php",true);
-      req.setRequestHeader("Content-Type", "application/json");
-      req.send(JSON.stringify(requestData));
-    }
+  };
+
+  req.onerror = function () {
+    console.error("Error loading API");
+  };
+
+  if (requestData !== null) {
+    req.open("POST", "hoopAPI.php", true);
+    req.setRequestHeader("Content-Type", "application/json");
+    req.send(JSON.stringify(requestData));
+  }
 }
-  
