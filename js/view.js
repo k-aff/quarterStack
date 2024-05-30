@@ -149,7 +149,7 @@ function onLoad(){
         reviews.onclick = function() {
           window.location.href = `Reviews.html?titleId=${detailsArray.id}`;
         };
-        reviews.innerHTML = "View Reviews"
+        reviews.innerHTML = "View or Post Reviews"
         reviews.classList.add("reviews-button")
         reviews.style.textDecoration = "none"
 
