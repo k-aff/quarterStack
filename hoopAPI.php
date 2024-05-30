@@ -444,11 +444,11 @@ class Hoop
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
 
-    session_start();
-    $email= $_SESSION["email"];
-    // $user_id = $hoop->getUserIdByEmail($email);
-    $user_id= $_SESSION["user_id"];
-     
+        session_start();
+        $email = $_SESSION["email"];
+        // $user_id = $hoop->getUserIdByEmail($email);
+        $user_id = $_SESSION["user_id"];
+
 
         if (!$user_id) {
             //echo "Error: User not found";
@@ -489,7 +489,7 @@ class Hoop
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
         session_start();
-        $email= $_SESSION["email"];
+        $email = $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
         $user_id = $_SESSION["user_id"];
         $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
@@ -504,43 +504,39 @@ class Hoop
     }
 
 
-        public function getUserPref($reqbody)
-        {
-            $hoop = Hoop::instance();
-            session_start();
-            //$reqbody = json_decode(file_get_contents('php://input'), true);
-            $email= $_SESSION["email"];
-            // $user_id = $hoop->getUserIdByEmail($email);
-            $id= $_SESSION["user_id"];
-            $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
-            $result = $this->con->query($sqlcheckpref);
-         
-            // if($result)
-            // {
-            //     $pref = $result->fetch_assoc();
-            //     $type = $pref["type"];
-            //     $genre1 = $pref["genre_id_1"];
-            //     $genre2 = $pref["genre_id_2"];
-            //     $genre3 = $pref["genre_id_3"];}
-            if ($result && $result->num_rows > 0) 
-            {
-                $pref = $result->fetch_assoc();
-                $user_pref = array(
-                    "type" => $pref["type"],
-                    "genre_id_1" => $pref["genre_id_1"],
-                    "genre_id_2" => $pref["genre_id_2"],
-                    "genre_id_3" => $pref["genre_id_3"]
-                );
-                //echo json_encode($user_pref);
-                echo json_encode(new Response("success", time(), $user_pref));
-            }
-            else
-            {
-                echo json_encode(new Response("success", time(), "user doesn't have preferences"));
-            }
-            
+    public function getUserPref($reqbody)
+    {
+        $hoop = Hoop::instance();
+        session_start();
+        //$reqbody = json_decode(file_get_contents('php://input'), true);
+        $email = $_SESSION["email"];
+        // $user_id = $hoop->getUserIdByEmail($email);
+        $id = $_SESSION["user_id"];
+        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
+        $result = $this->con->query($sqlcheckpref);
+
+        // if($result)
+        // {
+        //     $pref = $result->fetch_assoc();
+        //     $type = $pref["type"];
+        //     $genre1 = $pref["genre_id_1"];
+        //     $genre2 = $pref["genre_id_2"];
+        //     $genre3 = $pref["genre_id_3"];}
+        if ($result && $result->num_rows > 0) {
+            $pref = $result->fetch_assoc();
+            $user_pref = array(
+                "type" => $pref["type"],
+                "genre_id_1" => $pref["genre_id_1"],
+                "genre_id_2" => $pref["genre_id_2"],
+                "genre_id_3" => $pref["genre_id_3"]
+            );
+            //echo json_encode($user_pref);
+            echo json_encode(new Response("success", time(), $user_pref));
+        } else {
+            echo json_encode(new Response("success", time(), "user doesn't have preferences"));
         }
-        
+    }
+
     public function getReview($reqbody)
     {
         $hoop = Hoop::instance();
@@ -864,9 +860,13 @@ class Hoop
 
     public function getWatchHistory($request_body)
     {
-        $user_id = $request_body["user_id"];
+
+        session_start();
+
+        $user_id = $_SESSION["user_id"];
+
         //join
-        $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
+        $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title,t.release_date
 
                   FROM watch_history wh
                   JOIN title t ON wh.title_id = t.title_id
@@ -878,7 +878,7 @@ class Hoop
 
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title, $release_date);
 
         $watch_hist = [];
         while ($statement->fetch()) {
@@ -889,8 +889,8 @@ class Hoop
                 "title_id" => $title_id,
                 "image" => $image,
                 "genre_id" => $genre_id,
-                "age_cert" => $age_cert
-
+                "age_cert" => $age_cert,
+                "release_date" => $release_date
             ];
         }
 
@@ -913,17 +913,19 @@ class Hoop
 
 
             //update response body
-            $watch_list2[] = [
+            $watch_hist2[] = [
                 "title" => $item['title'],
                 "title_id" => $item['title_id'],
                 "image" => $item['image'],
                 "genre" => $genreString,
-                "age_cert" => $item['age_cert']
+                "age_cert" => $item['age_cert'],
+                "release_date" => $item["release_date"]
 
             ];
         }
 
         echo json_encode(new Response("Success", time(), $watch_hist2));
+        return;
     }
 
     public function setWatchList($request_body)
@@ -976,9 +978,10 @@ class Hoop
 
     public function getWatchList($request_body)
     {
-        $user_id = $request_body["user_id"];
+        session_start();
+        $user_id = $_SESSION["user_id"];
         //join
-        $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
+        $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title,t.release_date
 
                   FROM watch_list wl
                   JOIN title t ON wl.title_id = t.title_id
@@ -990,7 +993,7 @@ class Hoop
 
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title, $release_date);
 
         $watch_list = [];
         while ($statement->fetch()) {
@@ -1001,7 +1004,8 @@ class Hoop
                 "title_id" => $title_id,
                 "image" => $image,
                 "genre_id" => $genre_id,
-                "age_cert" => $age_cert
+                "age_cert" => $age_cert,
+                "release_date" => $release_date
 
             ];
         }
@@ -1029,7 +1033,8 @@ class Hoop
                 "title_id" => $item['title_id'],
                 "image" => $item['image'],
                 "genre" => $genreString,
-                "age_cert" => $item['age_cert']
+                "age_cert" => $item['age_cert'],
+                "release_date" => $item['release_date']
 
             ];
         }
@@ -1047,8 +1052,7 @@ class Hoop
         $result = $this->con->query($sqlcheckpref);
         $pref = $result->fetch_assoc();
 
-        if($pref)
-        {
+        if ($pref) {
             $type = $pref["type"];
             $genre1 = $pref["genre_id_1"];
             $genre2 = $pref["genre_id_2"];
@@ -1073,15 +1077,14 @@ class Hoop
 
         foreach ($carousels as $carousel) {
 
-            if($carousel === 'Movies')
-                $sqlReturnTitles ="SELECT * FROM title WHERE type='M' ORDER BY RAND() LIMIT 20";
-            else if($carousel === 'Series')
-                $sqlReturnTitles ="SELECT * FROM title WHERE type='S' ORDER BY RAND() LIMIT 20";
-            else if(isset($pref) && $carousel === "Preferences"){
-                $sqlReturnTitles ="SELECT * FROM title".$whereClause. " ORDER BY RAND() LIMIT 20" ;
-            }
-            else
-                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY RAND() LIMIT 20" ;
+            if ($carousel === 'Movies')
+                $sqlReturnTitles = "SELECT * FROM title WHERE type='M' ORDER BY RAND() LIMIT 20";
+            else if ($carousel === 'Series')
+                $sqlReturnTitles = "SELECT * FROM title WHERE type='S' ORDER BY RAND() LIMIT 20";
+            else if (isset($pref) && $carousel === "Preferences") {
+                $sqlReturnTitles = "SELECT * FROM title" . $whereClause . " ORDER BY RAND() LIMIT 20";
+            } else
+                $sqlReturnTitles = "SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY RAND() LIMIT 20";
 
             // echo $sqlReturnTitles;
             $result = $this->con->query($sqlReturnTitles);
