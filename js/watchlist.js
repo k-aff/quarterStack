@@ -87,3 +87,24 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   fetchWL();
 });
+
+function logout(){
+
+  const req = new XMLHttpRequest();
+  
+  const requestData ={
+    "type": "logout"
+  }
+
+  req.onreadystatechange = function() {
+    if (this.status === 200 && this.readyState == 4) {
+      const response = JSON.parse(req.responseText);
+      console.log(response)
+    }
+  }
+
+req.open("POST", "hoopAPI.php", true);
+req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+req.send(JSON.stringify(requestData));
+
+}
