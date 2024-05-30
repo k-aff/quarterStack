@@ -47,4 +47,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     req.send(JSON.stringify(request));       
 }); 
+
 });
+//redirect to hompage when submitted
+function submitLogin(event) {
+    event.preventDefault(); 
+    window.location.href = 'homepage.html';
+}
