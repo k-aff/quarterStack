@@ -66,7 +66,7 @@ ul {
 
 .watch-button, .add-button {
     padding: 10px 20px;
-    background-color: #007bff; /* Blue */
+    background-color:  purple; /* Blue */
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -81,6 +81,12 @@ ul {
 
 .add-button i {
     margin-left: 5px;
+    right: 50;
+}
+
+
+.add-button {
+    margin-left: 28px;
 }
 
 .user{
@@ -92,7 +98,7 @@ ul {
 }
 
 .watch-button:hover {
-    background-color: #0056b3; /* Darker blue */
+    background-color: purple; /* Darker blue */
 }
 
 .reviews-button{
@@ -100,7 +106,7 @@ ul {
     height: 40px;
     width: 200px;
     margin-left: 10 px;
-    background: #007bff;
+    background: purple;
     color: white;
     border: none; 
     border-radius: 5px;
@@ -179,3 +185,5 @@ font-weight: bold;
 border-radius: 20%;
 
 }
+
+
