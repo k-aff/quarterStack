@@ -376,6 +376,10 @@ function showModal(item) {
   view.onclick = function() {
     window.location.href = `view.html?titleId=${item.title_id}`;
   };
+  const rev = document.getElementById('review');
+  rev.onclick = function() {
+    window.location.href = `Reviews.html?titleId=${item.title_id}`;
+  };
 }
 
 function logout(){

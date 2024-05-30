@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
             "card_no": cardNumber,
             "expiry_date": expiry
         };
-
+        console.log(request)
         req.send(JSON.stringify(request));        
 
     });
