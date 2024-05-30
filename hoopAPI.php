@@ -822,8 +822,9 @@ public function setUserPref($reqbody)
     public function setWatchHistory($request_body)
     {
 
+        session_start();
         $titleID = $request_body["title_id"];
-        $user_id = $request_body["user_id"];
+        $user_id = $_SESSION["user_id"];
         //check if the title is already in the watch hist table
         $historyQuery = "SELECT title_id FROM watch_history
         WHERE user_id = ? AND title_id =?";
@@ -869,9 +870,13 @@ public function setUserPref($reqbody)
 
     public function getWatchHistory($request_body)
     {
-        $user_id = $request_body["user_id"];
+
+        session_start();
+
+        $user_id = $_SESSION["user_id"];
+
         //join
-        $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
+        $histQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title,t.release_date
 
                   FROM watch_history wh
                   JOIN title t ON wh.title_id = t.title_id
@@ -883,7 +888,7 @@ public function setUserPref($reqbody)
 
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title, $release_date);
 
         $watch_hist = [];
         while ($statement->fetch()) {
@@ -894,8 +899,8 @@ public function setUserPref($reqbody)
                 "title_id" => $title_id,
                 "image" => $image,
                 "genre_id" => $genre_id,
-                "age_cert" => $age_cert
-
+                "age_cert" => $age_cert,
+                "release_date" => $release_date
             ];
         }
 
@@ -918,23 +923,26 @@ public function setUserPref($reqbody)
 
 
             //update response body
-            $watch_list2[] = [
+            $watch_hist2[] = [
                 "title" => $item['title'],
                 "title_id" => $item['title_id'],
                 "image" => $item['image'],
                 "genre" => $genreString,
-                "age_cert" => $item['age_cert']
+                "age_cert" => $item['age_cert'],
+                "release_date" => $item["release_date"]
 
             ];
         }
 
         echo json_encode(new Response("Success", time(), $watch_hist2));
+        return;
     }
 
-    public function setWatchList($request_body)
+     public function setWatchList($request_body)
     {
+        session_start();
         $titleID = $request_body["title_id"];
-        $user_id = $request_body["user_id"];
+        $user_id = $_SESSION["user_id"];
         //check if the title is already in the watch list table
         $listQuery = "SELECT title_id FROM watch_list
         WHERE user_id = ? AND title_id = ?";
@@ -980,9 +988,10 @@ public function setUserPref($reqbody)
 
     public function getWatchList($request_body)
     {
-        $user_id = $request_body["user_id"];
+        session_start();
+        $user_id = $_SESSION["user_id"];
         //join
-        $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title
+        $listQuery = "SELECT t.title_id, t.image, t.genre_id,t.age_cert,t.title,t.release_date
 
                   FROM watch_list wl
                   JOIN title t ON wl.title_id = t.title_id
@@ -994,7 +1003,7 @@ public function setUserPref($reqbody)
 
         $statement->bind_param('s', $user_id);
         $statement->execute();
-        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title);
+        $statement->bind_result($title_id, $image, $genre_id, $age_cert, $title, $release_date);
 
         $watch_list = [];
         while ($statement->fetch()) {
@@ -1005,7 +1014,8 @@ public function setUserPref($reqbody)
                 "title_id" => $title_id,
                 "image" => $image,
                 "genre_id" => $genre_id,
-                "age_cert" => $age_cert
+                "age_cert" => $age_cert,
+                "release_date" => $release_date
 
             ];
         }
@@ -1033,15 +1043,14 @@ public function setUserPref($reqbody)
                 "title_id" => $item['title_id'],
                 "image" => $item['image'],
                 "genre" => $genreString,
-                "age_cert" => $item['age_cert']
+                "age_cert" => $item['age_cert'],
+                "release_date" => $item['release_date']
 
             ];
         }
 
         echo json_encode(new Response("Success", time(), $watch_list2));
     }
-
-
     public function getAllTitles($data)
     {
         session_start();
