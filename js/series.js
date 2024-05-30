@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.appendChild(image);
                     card.appendChild(overlay);
                     seriesContainer.appendChild(card); 
-                    });
-
                     card.addEventListener('click', (function(series) {
                         return function() {
                         showModal(series);
                         };
                     })(series));
+
+                });
               }    
           }
       }
