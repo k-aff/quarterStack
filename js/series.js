@@ -46,11 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.classList.add("card", "dynamic-movie-card");
                     card.setAttribute("data-title", series.title);
                     card.setAttribute("data-genre", "Series"); 
-                    card.setAttribute("data-description", series.description);
-
-                    card.addEventListener('dblclick', () => {
-                        window.location.href = `series-details.html?seriesID=${series.id}`;
-                    });
+                    card.setAttribute("data-description", series.plot_summary);
 
                     const image = document.createElement("img");
                     image.src = series.image;
@@ -64,6 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.appendChild(overlay);
                     seriesContainer.appendChild(card); 
                     });
+
+                    card.addEventListener('click', (function(series) {
+                        return function() {
+                        showModal(series);
+                        };
+                    })(series));
               }    
           }
       }
@@ -120,11 +122,7 @@ function fetchSeries() {
                     card.classList.add("card", "dynamic-movie-card");
                     card.setAttribute("data-title", series.title);
                     card.setAttribute("data-genre", "Series"); 
-                    card.setAttribute("data-description", series.description);
-
-                    card.addEventListener('dblclick', () => {
-                        window.location.href = `series-details.html?seriesID=${series.id}`;
-                    });
+                    card.setAttribute("data-description", series.plot_summary);
 
                     const image = document.createElement("img");
                     image.src = series.image;
@@ -137,6 +135,13 @@ function fetchSeries() {
                     card.appendChild(image);
                     card.appendChild(overlay);
                     seriesContainer.appendChild(card); 
+
+                    card.addEventListener('click', (function(series) {
+                        return function() {
+                        showModal(series);
+                        };
+                    })(series));
+
                 });
             } else {
                 console.error("Error: API response status is not 'success'");
@@ -199,11 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   card.classList.add("card", "dynamic-movie-card");
                   card.setAttribute("data-title", series.title);
                   card.setAttribute("data-genre", "Series"); 
-                  card.setAttribute("data-description", series.description);
-
-                  card.addEventListener('dblclick', () => {
-                      window.location.href = `series-details.html?seriesID=${series.id}`;
-                  });
+                  card.setAttribute("data-description", series.plot_summary);
 
                   const image = document.createElement("img");
                   image.src = series.image;
@@ -247,3 +248,34 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchSeries();
     });
 });
+
+function showModal(item) {
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const closeButton = document.querySelector('.close-button');
+  
+    modalTitle.textContent = item.title;
+    modalDescription.textContent = item.plot_summary;
+    modal.style.display = 'block';
+  
+    const closeModal = () => {
+      modal.style.display = 'none';
+      closeButton.removeEventListener('click', closeModal);
+      window.removeEventListener('click', outsideClick);
+    };
+  
+    const outsideClick = (event) => {
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+  
+    closeButton.addEventListener('click', closeModal);
+    window.addEventListener('click', outsideClick);
+  
+    const view = document.getElementById('view');
+    view.onclick = function() {
+      window.location.href = `view.html?titleId=${item.title_id}`;
+    };
+}

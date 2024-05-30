@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
     fetchMovies();
 });
 
@@ -43,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const moviesContainer = document.getElementById('action-movies');
 
                     moviesData.forEach(movie => {
+
                         const cardContainer = document.createElement("div");
                         cardContainer.classList.add("card-container", "dynamic-movie-card"); 
                         moviesContainer.appendChild(cardContainer);
@@ -51,11 +59,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         card.classList.add("card");
                         card.setAttribute("data-title", movie.title);
                         card.setAttribute("data-genre", "Movie"); 
-                        card.setAttribute("data-description", movie.description);
+                        card.setAttribute("data-description", movie.plot_summary);
 
-                        card.addEventListener('dblclick', () => {
-                            window.location.href = `movie-details.html?movieId=${movie.id}`;
-                        });
+                        
+                        card.addEventListener('click', (function(movie) {
+                            return function() {
+                            showModal(movie);
+                            };
+                        })(movie));
 
                         const image = document.createElement("img");
                         image.src = movie.image;
@@ -68,6 +79,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         card.appendChild(image);
                         card.appendChild(overlay);
                         cardContainer.appendChild(card); 
+
+                        card.addEventListener('click', (function(movie) {
+                            return function() {
+                            showModal(movie);
+                            };
+                        })(movie));
+                        
                     });
               }    
           }
@@ -86,7 +104,38 @@ document.addEventListener('DOMContentLoaded', function() {
     
     });
     
-  });
+});
+
+function showModal(item) {
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const closeButton = document.querySelector('.close-button');
+  
+    modalTitle.textContent = item.title;
+    modalDescription.textContent = item.plot_summary;
+    modal.style.display = 'block';
+  
+    const closeModal = () => {
+      modal.style.display = 'none';
+      closeButton.removeEventListener('click', closeModal);
+      window.removeEventListener('click', outsideClick);
+    };
+  
+    const outsideClick = (event) => {
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+  
+    closeButton.addEventListener('click', closeModal);
+    window.addEventListener('click', outsideClick);
+  
+    const view = document.getElementById('view');
+    view.onclick = function() {
+      window.location.href = `view.html?titleId=${item.title_id}`;
+    };
+  }
 
 function removeMovies() {
     const dynamicElements = document.querySelectorAll('.dynamic-movie-card');
@@ -118,7 +167,9 @@ function fetchMovies() {
 
     req.onreadystatechange = function() {
         if (this.status === 200 && this.readyState == 4) {
+
             const responseData = JSON.parse(req.responseText);
+
             console.log(responseData);
 
             if (responseData.status === 'success') {
@@ -126,6 +177,7 @@ function fetchMovies() {
                 const moviesContainer = document.getElementById('action-movies');
 
                 moviesData.forEach(movie => {
+
                     const cardContainer = document.createElement("div");
                     cardContainer.classList.add("card-container", "dynamic-movie-card"); 
                     moviesContainer.appendChild(cardContainer);
@@ -134,11 +186,7 @@ function fetchMovies() {
                     card.classList.add("card");
                     card.setAttribute("data-title", movie.title);
                     card.setAttribute("data-genre", "Movie"); 
-                    card.setAttribute("data-description", movie.description);
-
-                    card.addEventListener('dblclick', () => {
-                        window.location.href = `movie-details.html?movieId=${movie.id}`;
-                    });
+                    card.setAttribute("data-description", movie.plot_summary);
 
                     const image = document.createElement("img");
                     image.src = movie.image;
@@ -151,6 +199,13 @@ function fetchMovies() {
                     card.appendChild(image);
                     card.appendChild(overlay);
                     cardContainer.appendChild(card); 
+                         
+                    card.addEventListener('click', (function(movie) {
+                        return function() {
+                        showModal(movie);
+                        };
+                    })(movie));
+
                 });
             } else {
                 console.error("Error: API response status is not 'success'");
@@ -218,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         card.classList.add("card");
                         card.setAttribute("data-title", movie.title);
                         card.setAttribute("data-genre", "Movie"); 
-                        card.setAttribute("data-description", movie.description);
+                        card.setAttribute("data-description", movie.plot_summary);
 
                         card.addEventListener('dblclick', () => {
                             window.location.href = `movie-details.html?movieId=${movie.id}`;
@@ -235,6 +290,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         card.appendChild(image);
                         card.appendChild(overlay);
                         cardContainer.appendChild(card); 
+
+                        card.addEventListener('click', (function(movie) {
+                            return function() {
+                            showModal(movie);
+                            };
+                        })(movie));
+
                     });
               }    
           }
