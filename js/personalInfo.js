@@ -100,6 +100,7 @@ window.onclick = function(event) {
 
 function updateDetails(event) {
   event.preventDefault();
+
     let phone = document.getElementById('phone').value;
     let email = document.getElementById('email').value;
     let country_id = document.getElementById('country').value;
@@ -137,31 +138,58 @@ function updateDetails(event) {
     req.send(JSON.stringify(request));     
 }
 
-// function changePassword(event) {
-//   event.preventDefault();
-//   const form = document.getElementById('passwordChangeForm');
-//   const formData = new FormData(form);
-//   const data = {};
-//   formData.forEach((value, key) => {
-//       data[key] = value;
-//   });
+function deleteUser() {
+  var req = new XMLHttpRequest();  
+    req.onreadystatechange = function()
+    {
+        if(req.readyState == 4 && req.status == 200)
+        {
+            var updated = JSON.parse(req.responseText);
+            console.log(updated);
 
-//   fetch('/api/change-password', {
-//       method: 'POST',
-//       headers: {
-//           'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(data)
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//       console.log('Password changed successfully:', data);
-//       closePasswordModel();
-//   })
-//   .catch((error) => {
-//       console.error('Error:', error);
-//   });
-// }
+            logout();
+            window.location.replace("welcome.html");
+        }
+    }
+    req.open("POST", "hoopAPI.php", false); 
+    req.setRequestHeader("Content-Type", "application/json");
+
+    const request = 
+    {
+            "type": "deleteUser",
+    }
+    req.send(JSON.stringify(request));     
+}
+
+function changePassword(event) {
+  event.preventDefault();
+
+  let oldPass = document.getElementById('oldPassword').value;
+  let newPass = document.getElementById('newPassword').value;
+
+  var req = new XMLHttpRequest();  
+    req.onreadystatechange = function()
+    {
+        if(req.readyState == 4 && req.status == 200)
+        {
+            var updated = JSON.parse(req.responseText);
+            console.log(updated);
+
+            alert(updated.data); 
+        }
+    }
+    req.open("POST", "hoopAPI.php", false); 
+    req.setRequestHeader("Content-Type", "application/json");
+
+    const request = 
+    {
+            "type": "updatePassword",
+            "oldPassword": oldPass,
+            "newPassword": newPass
+    }
+
+    req.send(JSON.stringify(request));    
+}
 
 window.onclick = function(event) {
   const changing = document.getElementById('changePassword');
@@ -169,3 +197,28 @@ window.onclick = function(event) {
       changing.style.display = "none";
   }
 }
+
+function logout(){
+
+  const req = new XMLHttpRequest();
+  
+  const requestData ={
+    "type": "logout"
+  }
+  
+  req.onreadystatechange = function() {
+    if (this.status === 200 && this.readyState == 4) {
+      const response = JSON.parse(req.responseText);
+      console.log(response)
+    }
+  }
+  
+  req.onerror = function() {
+    console.error("Error loading API");
+  };
+  
+  req.open("POST", "hoopAPI.php", true);
+  req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  req.send(JSON.stringify(requestData));
+  
+  }

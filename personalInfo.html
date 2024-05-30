@@ -23,8 +23,8 @@
             <li><a href="watchHistory.html">WatchHistory</a></li>
         </ul>
         <div class="Logout_icon">
-            <a href="welcome.html"><i class="fa fa-sign-out"></i></a>
-            <a class="active" href="personalInfo.html"><i class="fa fa-user"></i></a>
+            <a href="welcome.html" onclick="logout()"><i class="fa fa-sign-out"></i></a>
+            <a href="personalInfo.html"><i class="fa fa-user"></i></a>  
         </div>
     </nav>
 </div>
@@ -351,8 +351,8 @@
 <div id="deleteConfirmationModel" class="model" style="display: none;">
     <div class="model-content">
         <h2 id="deleteAccH2">Are you sure you want to delete your account?</h2>
-        <button id="confirmDeleteButton">Yes</button>
-        <button id="cancelDeleteButton"onclick="closeDeleteConfirmationModel()">Cancel</button>
+        <button id="confirmDeleteButton" onclick="deleteUser()">Yes</button>
+        <button id="cancelDeleteButton" onclick="closeDeleteConfirmationModel()">Cancel</button>
     </div>
 </div>
 
