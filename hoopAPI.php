@@ -302,7 +302,7 @@ class Hoop
         //get phone from data
         $phone = $jsonData["phone"];
         //get email from data
-        $email = $jsonData["email"];
+        // $email = $jsonData["email"];
         //get country_id from data
         $country_id = $jsonData["country_id"];
         //get card_no from data
@@ -316,32 +316,32 @@ class Hoop
             exit();
         }
 
-        //check if email is valid
-        $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
-        if (!preg_match($pattern, $email)) {
-            echo json_encode(new Response("error", time(), "invalid email address"));
-            exit();
-        }
+        // //check if email is valid
+        // $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+        // if (!preg_match($pattern, $email)) {
+        //     echo json_encode(new Response("error", time(), "invalid email address"));
+        //     exit();
+        // }
 
         //check if email is unique
-        $sql = "SELECT user_id, COUNT(*) FROM user WHERE email = ?";
-        $stmt = $this->con->prepare($sql);
-        if (!$stmt) {
-            echo json_encode(new Response("error", time(), $this->con->error));
-            exit();
-        }
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $count = $result->fetch_assoc()['COUNT(*)'];
-        if ($count > 0) {
-            $id = $result->fetch_assoc()['user_id'];
-            session_start();
-            if ($id !== $_SESSION["user_id"]) {
-                echo json_encode(new Response("error", time(), "email already in use"));
-                exit();
-            }
-        }
+        // $sql = "SELECT user_id, COUNT(*) FROM user WHERE email = ?";
+        // $stmt = $this->con->prepare($sql);
+        // if (!$stmt) {
+        //     echo json_encode(new Response("error", time(), $this->con->error));
+        //     exit();
+        // }
+        // $stmt->bind_param("s", $email);
+        // $stmt->execute();
+        // $result = $stmt->get_result();
+        // $count = $result->fetch_assoc()['COUNT(*)'];
+        // if ($count > 0) {
+        //     $id = $result->fetch_assoc()['user_id'];
+        //     session_start();
+        //     if ($id !== $_SESSION["user_id"]) {
+        //         echo json_encode(new Response("error", time(), "email already in use"));
+        //         exit();
+        //     }
+        // }
 
         //check if country_id in 0-259
         if (!is_numeric($country_id) || $country_id < 0 || $country_id > 259) {
@@ -366,14 +366,14 @@ class Hoop
         }
 
         //update user info and billing info 
-        $sqlUser = "UPDATE user SET phone=?, email=?, country_id=? WHERE user_id=?";
+        $sqlUser = "UPDATE user SET phone=?, country_id=? WHERE user_id=?";
         $stmt = $this->con->prepare($sqlUser);
         if (!$stmt) {
             echo "Error: " . $this->con->error;
             return;
         }
         session_start();
-        $stmt->bind_param("ssii", $phone, $email, $country_id, $_SESSION["user_id"]);
+        $stmt->bind_param("sii", $phone, $country_id, $_SESSION["user_id"]);
         $stmt->execute();
 
         $sqlBilling = "UPDATE billing SET card_no=?, expiry_date=? WHERE user_id=?";
@@ -629,8 +629,8 @@ public function setUserPref($reqbody)
         $sqlOldPassword = "SELECT password FROM user WHERE user_id = ?";
         $stmt = $this->con->prepare($sqlOldPassword);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
-            return;
+            echo json_encode(new Response("error", time(), $this->con->error));
+            exit();
         }
         session_start();
         $stmt->bind_param("s", $_SESSION["user_id"]);
@@ -652,8 +652,8 @@ public function setUserPref($reqbody)
         $sql = "UPDATE user SET password=? WHERE user_id=?";
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
-            return;
+            echo json_encode(new Response("error", time(), $this->con->error));
+            exit();
         }
         session_start();
         $stmt->bind_param("si", $hashedNewPassword, $_SESSION["user_id"]);

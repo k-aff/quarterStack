@@ -121,11 +121,11 @@ function updateDetails(event) {
             var updated = JSON.parse(req.responseText);
             console.log(updated);
 
-            // if (updated.status == "error")
-            //   alert(updated.data); 
-            // else 
-            //   fetchUserDetails();
-            //   alert("User details updated");
+            if (updated.status == "error")
+              alert(updated.data); 
+            else 
+              fetchUserDetails();
+              alert("User details updated");
         }
     }
     req.open("POST", "hoopAPI.php", true); 
