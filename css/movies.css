@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -70,36 +76,10 @@ nav ul li a.active, nav ul li a:hover {
     display: block;
 }
 
-.search-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
+.clear-search-button {
+    display: none;
 }
 
-
-.search-bar input {
-    
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 300px;
-}
-
-.filter-container {
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-}
-
-#genre-filter {
-   
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-
-/* Carousel and cards */
 .category {
     margin: 20px;
 }
@@ -108,23 +88,59 @@ nav ul li a.active, nav ul li a:hover {
     display: flex;
     align-items: center;
 }
+#action-movies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; 
+    justify-content: center; 
+    max-width: 100%;
+    padding: 16px;
+    box-sizing: border-box; 
+}
+
 
 .card-container {
-    display: flex;
-    overflow-x: auto;
-    width: 100%;
+    flex: 1 1 calc(16.66% - 16px);
+    max-width: calc(16.66% - 16px);
+    box-sizing: border-box; 
 }
 
 .card {
+  
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
     position: relative;
-    margin: 0 10px;
-    width: 200px;
 }
 
 .card img {
     width: 100%;
-    border-radius: 8px;
+    display: block;
+    border-radius: 10px;
 }
+
+.card .overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.1);
+}
+
+.card:hover .overlay {
+    opacity: 1;
+}
+
 
 .overlay {
     position: absolute;
@@ -159,36 +175,40 @@ header {
 .search-container {
     width: 100%;
     display: flex;
-    justify-content: center; /* Centers the search bar horizontally */
+    justify-content: center;
     align-items: center;
-    padding: 20px 0; /* Adds some padding to position it nicely */
+    padding: 20px 0;
 }
 
-.search-button{
+.search-button {
     width: 100px;
     padding: 5px;
-    border-radius: 30px;
+    border-radius: 10px;
     cursor: pointer;  
-    margin-left: 0px;
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
     font-size: 20px;
-    
+    margin-right: 10px;
 }
 
 .search-bar input {
     width: 400px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid #cb6ce6;
     background-color: #390e39;
     color: #fff;
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: 20px;
 }
 
-/* Style for the genre filter dropdown */
+.filter-container {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
 #genre-filter {
     margin-right: 10px;
     padding: 5px;
@@ -196,7 +216,10 @@ header {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
 }
+
 #filter-button {
     margin-right: 10px;
     padding: 5px;
@@ -204,11 +227,15 @@ header {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    width: 80px; 
+    cursor: pointer;
 }
 
+#filter-button:hover, .search-button:hover {
+    background-color: #a52ba5;
+}
 
-
-/*USER ICON*/
 .dropdown {
     position: relative;
 }
@@ -308,6 +335,9 @@ main {
 .category {
     margin-bottom: 40px;
 }
+h2{
+    color: #cb6ce6; 
+}
 
 .category h2 {
     color: #cb6ce6;
@@ -336,7 +366,7 @@ main {
     display: flex;
     gap: 20px;
     overflow: hidden;
-    width: calc(100% - 80px); /* Adjust width to account for button sizes */
+    width: calc(100% - 80px); 
 }
 
 .card {

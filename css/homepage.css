@@ -1,3 +1,9 @@
+*{
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -6,7 +12,16 @@ body, html {
     color: #fff;
     display: flex;
     flex-direction: column;
-    
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+.hidden {
+    display: none;
 }
 
 header {
@@ -25,44 +40,45 @@ header {
 .search-container {
     width: 100%;
     display: flex;
-    justify-content: center; /* Centers the search bar horizontally */
+    justify-content: center;
     align-items: center;
-    padding: 20px 0; /* Adds some padding to position it nicely */
+    padding: 20px 0;
 }
 
-.search-button{
+.search-button {
     width: 100px;
     padding: 5px;
-    border-radius: 30px;
+    border-radius: 10px;
     cursor: pointer;  
-    margin-left: 0px;
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
     font-size: 20px;
-    
+    margin-right: 20px;
 }
 
 .search-bar input {
     width: 400px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid #cb6ce6;
     background-color: #390e39;
     color: #fff;
-    margin-right: 10px;
+    margin-right: 5px;
     font-size: 20px;
 }
 
-/* Style for the genre filter dropdown */
 #genre-filter {
-    margin-right: 10px;
+    margin-right: 5px;
     padding: 5px;
     font-size: 20px;
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
 }
+
 #filter-button {
     margin-right: 10px;
     padding: 5px;
@@ -70,6 +86,13 @@ header {
     background-color: #390e39;
     border: 2px solid #cb6ce6;
     color: #fff;
+    border-radius: 10px;
+    width: 80px; 
+    cursor: pointer;
+}
+
+#filter-button:hover, .search-button:hover {
+    background-color: #a52ba5;
 }
 
 /*USER ICON*/
@@ -108,31 +131,18 @@ header {
     font-size: 30px;
     text-decoration: none;
     cursor: pointer;
-    margin-left: 10px
+    margin-left: 10px;
 }
 
 .user-icon:hover {
     color: #a52ba5;
 }
 
-
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
-
-.logo img {
-    height: 70px;
-    opacity: 0.8;
 }
 
 .nav-links {
@@ -157,12 +167,12 @@ nav {
     color: #a52ba5;
 }
 
-.nav-links li a.active{
-    color:#cb6ce6;
+.nav-links li a.active {
+    color: #cb6ce6;
     font-weight: bold;
-    border-radius: 20%;
-   
 }
+
+/**/
 
 main {
     padding: 20px;
@@ -176,6 +186,16 @@ main {
 .category h2 {
     color: #cb6ce6;
     margin-bottom: 10px;
+    font-size: 24px;
+    line-height: 1.2;
+    padding: 5px 0;
+}
+
+section.category {
+    width: calc(100% + 40px);
+    padding: 0; 
+    margin-left: -20px;
+    margin-right: -20px;
 }
 
 .carousel {
@@ -200,7 +220,7 @@ main {
     display: flex;
     gap: 20px;
     overflow: hidden;
-    width: calc(100% - 80px); /* Adjust width to account for button sizes */
+    width: calc(100% - 80px);
 }
 
 .card {
@@ -226,7 +246,7 @@ main {
     color: #fff;
     width: 100%;
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     box-sizing: border-box;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -238,6 +258,13 @@ main {
 
 .card:hover .overlay {
     opacity: 1;
+}
+
+.card-title {
+    margin: 0;
+    padding: 5px 0;
+    font-size: 16px;
+    line-height: 1.2;
 }
 
 .modal {
@@ -292,23 +319,23 @@ main {
     background-color: #cb6ce6;
 }
 
-.Logout_icon{
+.Logout_icon {
     font-size: 30px;
     color: rgba(56, 19, 19, 0.9);
-    margin-top:auto;
-    margin-right:15px;
+    margin-top: auto;
+    margin-right: 15px;
 }
 
 .Logout_icon i {
-    color:#cb6ce6;
-    margin:20px;
+    color: #cb6ce6;
+    margin: 20px;
     text-decoration: none;
     font-size: 1.3em;
     opacity: 0.7;
     transition: 0.5s;
 }
-    
-.Logout_icon i:hover{
-    color:#a52ba5;
-    opacity:1;
+
+.Logout_icon i:hover {
+    color: #a52ba5;
+    opacity: 1;
 }

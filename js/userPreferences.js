@@ -1,11 +1,16 @@
+const skipButton = document.getElementById('skipButton');
+skipButton.addEventListener('click', function() {
+    if (skipButton.textContent === "Skip") {
+        window.location.replace('homepage.html');
+    } else {
+        window.location.href = 'personalInfo.html';
+    }
+});
 
-// document.getElementById('skipButton').addEventListener('click', function() {
-//     window.location.href = 'personalInfo.html';
-// });
 document.addEventListener('DOMContentLoaded', function() {
-    const skipButton = document.getElementById('skipButton');
-    skipButton.addEventListener('click', function() {
-        window.location.href = 'personalInfo.html'});
+    // const skipButton = document.getElementById('skipButton');
+    // skipButton.addEventListener('click', function() {
+    //     window.location.href = 'personalInfo.html'});
   
     // Fetch user preferences from the server
     fetchUserPreferences();
@@ -21,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         type: "getUserPref"
       };
       
-      fetch('/hoopAPI.php', {
+      fetch('hoopAPI.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -35,12 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
           // Populate the form with existing preferences
           populateForm(data.data);
         } else {
-          console.error("Error fetching preferences:", data.data);
+          // console.error("Error fetching preferences:", data.data);
           // Handle error appropriately (e.g., show an error message to the user)
         }
       })
       .catch(error => {
-        console.error("Error fetching preferences:", error);
+        // console.error("Error fetching preferences:", error);
         // Handle error appropriately (e.g., show an error message to the user)
       });
   //   } else {
@@ -79,13 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var genre2 = document.getElementById('genre2').value;
     var genre3 = document.getElementById('genre3').value;
     console.log(type);
-    // genre1= getGenre(genre1);
-    // genre2= getGenre(genre2);
-    // genre3= getGenre(genre3);
-    console.log(genre1);
-    console.log(genre2);
 
-  
     //const email = localStorage.getItem("email"); // Retrieve email from local storage
     //const email="beverly@gmail.com";
   
@@ -100,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
       };
       
   
-      fetch('/hoopAPI.php', {
+      fetch('hoopAPI.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -114,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
           // Preferences saved successfully
           // Redirect or display a success message
           console.log("Preferences saved successfully:", data.data);
-          //window.location.href = "homepage.html"; // Redirect to homepage
+          window.location.replace('homepage.html');
         } else {
           // Handle error appropriately (e.g., show an error message to the user)
           console.error("Error saving preferences:", data.data);
@@ -124,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error("Error saving preferences:", error);
         // Handle error appropriately (e.g., show an error message to the user)
       });
+
     // } else {
     //   // Handle case where email is not available (e.g., redirect to login)
     //   console.error("User email not found in local storage.");
@@ -131,3 +131,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
   }
   
+  //So that the intro page loads after this form is submitted
+function submitPreferences(event) {
+  event.preventDefault(); 
+
+  // Redirect to intro.html
+  window.location.href = 'intro.html';
+}
+
+//Skip button wil also redirect to intro.html
+document.getElementById('skipButton').addEventListener('click', function() {
+  window.location.href = 'intro.html';
+});

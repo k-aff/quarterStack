@@ -30,7 +30,7 @@ function submitReview(event) {
   
   
   // Send a POST request to the API to submit the review
-  fetch("http://localhost/Practical5_quarterStack/quarterStack-1/hoopAPI.php", {
+  fetch("http://localhost/quarterStack/hoopAPI.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -61,12 +61,12 @@ function submitReview(event) {
 function fetchMovieReviews() {
     //const tittle_id = '45';
     const requestBody = {
-      title_id: 27,
+      title_id: id,
       type: "getReview"
     };
   
     // Send a GET request to the API to fetch the movie reviews
-    fetch("http://localhost/Practical5_quarterStack/quarterStack-1/hoopAPI.php", {
+    fetch("http://localhost/quarterStack/hoopAPI.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

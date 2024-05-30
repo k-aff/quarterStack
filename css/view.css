@@ -5,12 +5,9 @@ body {
 }
 
 .movie-background {
-    background-size: cover;
-    position:fixed;;
-    height: 130vh;
+    background-size:auto;
+    height: 200vh;
     position: relative;
-   
-
 }
 
 
@@ -24,9 +21,7 @@ body {
     border-radius: 20px;
     left:200px;
  
-   
-   bottom:-10px;
-  
+    bottom:-10px;
     box-sizing: border-box;
     margin-bottom:10px;
     margin-top: -200px;
@@ -43,14 +38,10 @@ body {
     z-index: index 1px;;
 }
 
-
-
-
-
 .movie-details img{
 
     width:250px;
-    height:300px;
+    height:350px;
 
 }
 .plot-summary{
@@ -73,9 +64,9 @@ ul {
     padding: 0;
 }
 
-.watch-button {
+.watch-button, .add-button {
     padding: 10px 20px;
-    background-color: #007bff; /* Blue */
+    background-color:  purple; /* Blue */
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -87,6 +78,17 @@ ul {
     margin-right: 5px;
 }
 
+
+.add-button i {
+    margin-left: 5px;
+    right: 50;
+}
+
+
+.add-button {
+    margin-left: 28px;
+}
+
 .user{
     border-radius:10px;
     border:none;
@@ -96,27 +98,25 @@ ul {
 }
 
 .watch-button:hover {
-    background-color: #0056b3; /* Darker blue */
+    background-color: purple; /* Darker blue */
 }
-.reviews-link {
-    display: inline-block;
-    margin-top: -11px;
-    margin-left: -20px;
-    padding: 10px 20px;
-    background:transparent; /* Green background */
-    color: white; /* White text color */
-    text-decoration: underline;
+
+.reviews-button{
+
+    height: 40px;
+    width: 200px;
+    margin-left: 10 px;
+    background: purple;
+    color: white;
+    border: none; 
     border-radius: 5px;
+    cursor: pointer;
 }
-
-.reviews-link:hover {
-    color: #a52ba5; /* Darker green on hover */
-}
-
 
 header{
     background-color:#530553;
 }
+
 nav {
 display: flex;
 justify-content: space-between;
@@ -187,99 +187,3 @@ border-radius: 20%;
 }
 
 
-
-/*footer css*/
-
-footer{
-    margin-top: -20px;
-background-color:#762971;
-
-
-
-}
-.social-icons {
-    display:flex;
-    justify-content: center;
-  }
-  .social-icons  a{
-    text-decoration: none;
-    padding:5px;
-    background-color:white ;
-    margin:10px;
-    border-radius:50% ;
-  }
-  .social-icons  a i{
-    font-size: 20px;
-    color:black;
-    opacity: 0.9;}
-
-    .social-icons  a:hover {
-        background-color: #111;
-        transition: 0.5s;}
-
-        .social-icons a:hover::after {
-            /* Display the title attribute as content */
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
-            color:purple; /* White text color */
-            padding: 5px;
-            border-radius: 5px;
-            font-size: 14px;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-           
-        }
-    
-
-    .social-icons  a:hover i{
-        color: white;
-        transition: 0.5s;
-    }
-
-    .footernav
-    {
-
-    margin: 30px 0;
-    margin-bottom: 2px;
-    }
-
-  .footernav ul {
-display:flex;
-justify-content: center;
-list-style-type: none;
-
-  }
-  .footernav ul li a{
-
-    color:white;
-    margin:20px;
-    text-decoration: none;
-    font-size: 1.3em;
-    opacity: 0.7;
-    transition: 0.5s;
-  }
-
-  .footernav ul li a:hover{
-    color:rgb(253, 232, 253);
-    opacity:1;
-}
-
-.footerContainer p{
-    text-align: center;
-    font-size: large;
-}
-
-    .footerBottom
-    {
-        margin-top: 10px;
-     
-        background-color: black;
-        padding: 20px;
-        text-align: center;
-    }
-
-    .footerBottom p{
-        color:white;
-
-    }
