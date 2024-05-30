@@ -493,7 +493,7 @@ public function setUserPref($reqbody)
         $email= $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
         $user_id= $_SESSION["user_id"];
-        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
+        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id WHERE user.user_id = '$user_id' ";
         $result = $this->con->query($sql);
         if ($result && $result->num_rows > 0)
         {

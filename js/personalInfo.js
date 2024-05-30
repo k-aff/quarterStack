@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Fetch user details from the server
   fetchUserDetails();
 });
+
 function fetchUserDetails() {
   // Retrieve email from local storage
   //const email = localStorage.getItem("email");
@@ -13,7 +14,7 @@ function fetchUserDetails() {
       type: "getUser"
     };
 
-    fetch('http://localhost/quarterStack/hoopAPI.php', {
+    fetch('hoopAPI.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -53,11 +54,118 @@ function populateForm(user) {
   fullNameInput.value = user.fname;
   surnameInput.value = user.surname;
   dobInput.value = user.dob;
-  genderSelect.value = user.gender;
   phoneInput.value = user.phone;
   emailInput.value = user.email;
-  countrySelect.value = user.name;
+  countrySelect.value = user.country_id;
   cardNumberInput.value = user.card_no;
   expiryInput.value = user.expiry_date;
+
+  if (user.gender == 'F')
+    genderSelect.value = "Female";
+  else if (user.gender == 'M')
+    genderSelect.value = "Male";
+  else if (user.gender == 'O')
+    genderSelect.value = "Other";
+  else if (user.gender == 'P')
+    genderSelect.value = "Prefer not to say";
+}
+
+//CODE FROM THENDO'S BRANCH
+function openDiv() {
+  document.getElementById('changePassword').style.display = 'block';
+  document.getElementById('userInfo').style.display = 'none';
+}
+
+function closeDiv() {
+  document.getElementById('changePassword').style.display = 'none';
+  document.getElementById('userInfo').style.display = 'block';
+}
+
+function openDeleteConfirmationModel() {
+  document.getElementById('deleteConfirmationModel').style.display = 'flex';
+}
+
+function closeDeleteConfirmationModel() {
+  document.getElementById('deleteConfirmationModel').style.display = 'none';
+}
+
+window.onclick = function(event) {
+  const model = document.getElementById('deleteConfirmationModel');
+  if (event.target == model) {
+      closeDeleteConfirmationModel();
+  }
+}
+
+// functions for API requests 
+
+function updateDetails(event) {
+  event.preventDefault();
+    let phone = document.getElementById('phone').value;
+    let email = document.getElementById('email').value;
+    let country_id = document.getElementById('country').value;
+    let card_no =  document.getElementById('accountNumber').value;
+    let expiry_date = document.getElementById('expiry_').value ;
   
+    var req = new XMLHttpRequest();  
+    req.onreadystatechange = function()
+    {
+        if(req.readyState == 4 && req.status == 200)
+        {
+            var updated = JSON.parse(req.responseText);
+            console.log(updated);
+
+            if (updated.status == "error")
+              alert(updated.data); 
+            else 
+              fetchUserDetails();
+              alert("User details updated");
+        }
+    }
+    req.open("POST", "hoopAPI.php", false); 
+    req.setRequestHeader("Content-Type", "application/json");
+
+    const request = 
+    {
+            "type": "updateUser",
+            "phone" : phone,
+            "email":  email,     
+            "country_id": country_id,
+            "card_no": card_no,
+            "expiry_date": expiry_date
+    }
+
+    req.send(JSON.stringify(request));     
+}
+
+// function changePassword(event) {
+//   event.preventDefault();
+//   const form = document.getElementById('passwordChangeForm');
+//   const formData = new FormData(form);
+//   const data = {};
+//   formData.forEach((value, key) => {
+//       data[key] = value;
+//   });
+
+//   fetch('/api/change-password', {
+//       method: 'POST',
+//       headers: {
+//           'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//       console.log('Password changed successfully:', data);
+//       closePasswordModel();
+//   })
+//   .catch((error) => {
+//       console.error('Error:', error);
+//   });
+// }
+
+window.onclick = function(event) {
+  const changing = document.getElementById('changePassword');
+  if (event.target == changing) {
+      changing.style.display = "none";
+  }
 }
