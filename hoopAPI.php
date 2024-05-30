@@ -411,7 +411,7 @@ class Hoop
     {
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
-
+        session_start();
         // $email = $reqbody["email"];
         $email= $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
@@ -445,9 +445,11 @@ public function setUserPref($reqbody)
     $hoop = Hoop::instance();
     //$reqbody = json_decode(file_get_contents('php://input'), true);
 
+    session_start();
     $email= $_SESSION["email"];
     // $user_id = $hoop->getUserIdByEmail($email);
     $user_id= $_SESSION["user_id"];
+     
 
     if (!$user_id) {
         //echo "Error: User not found";
@@ -483,19 +485,11 @@ public function setUserPref($reqbody)
     }
 }
 
-    private function getUserIdByEmail($email)
-    {
-        $stmt = $this->con->prepare("SELECT user_id FROM user WHERE email=?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->num_rows > 0 ? $result->fetch_assoc()["user_id"] : null;
-    }
     public function getUser($reqbody)
     {
         $hoop = Hoop::instance();
         //$reqbody = json_decode(file_get_contents('php://input'), true);
-
+        session_start();
         $email= $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
         $user_id= $_SESSION["user_id"];
@@ -517,6 +511,7 @@ public function setUserPref($reqbody)
         public function getUserPref($reqbody)
         {
             $hoop = Hoop::instance();
+            session_start();
             //$reqbody = json_decode(file_get_contents('php://input'), true);
             $email= $_SESSION["email"];
             // $user_id = $hoop->getUserIdByEmail($email);
@@ -675,9 +670,9 @@ public function setUserPref($reqbody)
         if ($page === "home")
             $sql = "SELECT * FROM title WHERE title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?) LIMIT 20";
         else if ($page === "movie")
-            $sql = "SELECT * FROM title WHERE type ='M' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+            $sql = "SELECT * FROM title WHERE type ='M' AND (title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?))";
         else if ($page === "series")
-            $sql = "SELECT * FROM title WHERE type ='S' AND title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?)";
+            $sql = "SELECT * FROM title WHERE type ='S' AND (title LIKE ? OR genre_id IN (SELECT genre_id from genre WHERE genre LIKE ?))";
 
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
@@ -710,6 +705,7 @@ public function setUserPref($reqbody)
 
     public function logout()
     {
+        session_start();
         if (isset($_SESSION["user_id"]))
             session_destroy();
     }
@@ -1049,14 +1045,15 @@ public function setUserPref($reqbody)
 
     public function getAllTitles($data)
     {
-        // $email = $_SESSION['email']; //use id instead?  $id = $_SESSION['id']
+        session_start();
+        $id = $_SESSION['user_id'];
 
-        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id=20";
+        $sqlcheckpref = "SELECT * FROM user_preference WHERE user_id='$id'";
         $result = $this->con->query($sqlcheckpref);
+        $pref = $result->fetch_assoc();
 
-        if($result)
+        if($pref)
         {
-            $pref = $result->fetch_assoc();
             $type = $pref["type"];
             $genre1 = $pref["genre_id_1"];
             $genre2 = $pref["genre_id_2"];
