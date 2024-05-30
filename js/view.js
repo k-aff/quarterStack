@@ -179,7 +179,7 @@ function onLoad(){
     };
   
     if(requestData!==null){
-      req.open("POST", "http://localhost/quarterStack/hoopAPI.php",true);
+      req.open("POST", "hoopAPI.php",true);
       req.setRequestHeader("Content-Type", "application/json");
       req.send(JSON.stringify(requestData));
     }

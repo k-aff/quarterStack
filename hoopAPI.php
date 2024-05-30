@@ -983,14 +983,14 @@ public function setUserPref($reqbody)
         foreach($carousels as $carousel){
 
             if($carousel === 'Movies')
-                $sqlReturnTitles ="SELECT * FROM title WHERE type='M' ORDER BY title ASC LIMIT 20";
+                $sqlReturnTitles ="SELECT * FROM title WHERE type='M' ORDER BY RAND() LIMIT 20";
             else if($carousel === 'Series')
-                $sqlReturnTitles ="SELECT * FROM title WHERE type='S' ORDER BY title ASC LIMIT 20";
+                $sqlReturnTitles ="SELECT * FROM title WHERE type='S' ORDER BY RAND() LIMIT 20";
             else if(isset($pref) && $carousel === "Preferences"){
-                $sqlReturnTitles ="SELECT * FROM title".$whereClause. " ORDER BY title ASC LIMIT 20" ;
+                $sqlReturnTitles ="SELECT * FROM title".$whereClause. " ORDER BY RAND() LIMIT 20" ;
             }
             else
-                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY title ASC LIMIT 20" ;
+                $sqlReturnTitles ="SELECT * FROM title WHERE genre_id IN(SELECT genre_id from genre WHERE genre ='$carousel') ORDER BY RAND() LIMIT 20" ;
 
             // echo $sqlReturnTitles;
             $result = $this->con->query($sqlReturnTitles);
@@ -1004,11 +1004,11 @@ public function setUserPref($reqbody)
                 while($title = $result->fetch_assoc()){
 
                     $data = array();
-                    $data['id'] = $title["title_id"];
+                    $data['title_id'] = $title["title_id"];
                     $data['title'] = $title["title"];
                     $data['image'] = $title["image"];
                     $data['type'] = $title["type"];
-                    $data['plot'] = $title["plot_summary"];
+                    $data['plot_summary'] = $title["plot_summary"];
 
                     //obtaining additonal movie or series data 
 

@@ -6,8 +6,7 @@ body {
 
 .movie-background {
     background-size:auto;
-    position:fixed;;
-    height: 130vh;
+    height: 200vh;
     position: relative;
 }
 
@@ -180,3 +179,5 @@ font-weight: bold;
 border-radius: 20%;
 
 }
+
+

@@ -13,7 +13,7 @@ function fetchUserDetails() {
       type: "getUser"
     };
 
-    fetch('http://localhost/quarterStack/hoopAPI.php', {
+    fetch('/hoopAPI.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
