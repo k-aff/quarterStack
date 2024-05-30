@@ -327,8 +327,8 @@ class Hoop
         $sql = "SELECT user_id, COUNT(*) FROM user WHERE email = ?";
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
-            echo "Error: " . $this->con->error;
-            return;
+            echo json_encode(new Response("error", time(), $this->con->error));
+            exit();
         }
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -391,7 +391,8 @@ class Hoop
 
     public function deleteUser($jsonData)
     {
-        $sql = "DELETE FROM user WHERE id = ?";
+        session_start();
+        $sql = "DELETE FROM user WHERE user_id = ?";
         $stmt = $this->con->prepare($sql);
         if (!$stmt) {
             echo "Error: " . $this->con->error;

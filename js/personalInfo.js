@@ -106,6 +106,12 @@ function updateDetails(event) {
     let country_id = document.getElementById('country').value;
     let card_no =  document.getElementById('accountNumber').value;
     let expiry_date = document.getElementById('expiry_').value ;
+
+    console.log(phone);
+    console.log(email);
+    console.log(country_id);
+    console.log(card_no);
+    console.log(expiry_date);
   
     var req = new XMLHttpRequest();  
     req.onreadystatechange = function()
@@ -115,14 +121,14 @@ function updateDetails(event) {
             var updated = JSON.parse(req.responseText);
             console.log(updated);
 
-            if (updated.status == "error")
-              alert(updated.data); 
-            else 
-              fetchUserDetails();
-              alert("User details updated");
+            // if (updated.status == "error")
+            //   alert(updated.data); 
+            // else 
+            //   fetchUserDetails();
+            //   alert("User details updated");
         }
     }
-    req.open("POST", "hoopAPI.php", false); 
+    req.open("POST", "hoopAPI.php", true); 
     req.setRequestHeader("Content-Type", "application/json");
 
     const request = 
@@ -156,7 +162,7 @@ function deleteUser() {
 
     const request = 
     {
-            "type": "deleteUser",
+      "type": "deleteUser",
     }
     req.send(JSON.stringify(request));     
 }
@@ -178,7 +184,7 @@ function changePassword(event) {
             alert(updated.data); 
         }
     }
-    req.open("POST", "hoopAPI.php", false); 
+    req.open("POST", "hoopAPI.php", true); 
     req.setRequestHeader("Content-Type", "application/json");
 
     const request = 
