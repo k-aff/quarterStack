@@ -98,7 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
         genre3: genre3
       };
       
-  
+      console.log(requestBody); 
+
       fetch('hoopAPI.php', {
         method: 'POST',
         headers: {
@@ -113,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
           // Preferences saved successfully
           // Redirect or display a success message
           console.log("Preferences saved successfully:", data.data);
-          window.location.replace('homepage.html');
+          window.location.replace('intro.html');
         } else {
           // Handle error appropriately (e.g., show an error message to the user)
           console.error("Error saving preferences:", data.data);
@@ -131,15 +132,4 @@ document.addEventListener('DOMContentLoaded', function() {
     
   }
   
-  //So that the intro page loads after this form is submitted
-function submitPreferences(event) {
-  event.preventDefault(); 
 
-  // Redirect to intro.html
-  window.location.href = 'intro.html';
-}
-
-//Skip button wil also redirect to intro.html
-document.getElementById('skipButton').addEventListener('click', function() {
-  window.location.href = 'intro.html';
-});

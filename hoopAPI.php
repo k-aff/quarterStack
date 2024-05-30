@@ -494,7 +494,7 @@ public function setUserPref($reqbody)
         $email= $_SESSION["email"];
         // $user_id = $hoop->getUserIdByEmail($email);
         $user_id= $_SESSION["user_id"];
-        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id INNER JOIN country ON user.country_id= country.country_id ";
+        $sql = "SELECT * FROM user INNER JOIN billing ON user.user_id= billing.user_id WHERE user.user_id = '$user_id' ";
         $result = $this->con->query($sql);
         if ($result && $result->num_rows > 0)
         {
@@ -727,8 +727,7 @@ public function setUserPref($reqbody)
             return;
         }
         //check if email exits in db
-        $loginQuery = "SELECT user_id FROM user
-        WHERE email = ?";
+        $loginQuery = "SELECT user_id FROM user WHERE email = ?";
 
         if (!$statement = $this->con->prepare($loginQuery)) {
             die('Prepare failed');
@@ -787,18 +786,17 @@ public function setUserPref($reqbody)
                 ];
 
                 //if password && email update status to true and start session
-                $update = "UPDATE user SET active=? WHERE user_id=?";
-                $stmt = $this->con->prepare($update);
-                if (!$stmt) {
-                    echo $this->con->error;
-                }
-                $act = 1;
-                $userID = $user_id;
+                // $update = "UPDATE user SET active = ? WHERE user_id = ?";
+                // $stmt = $this->con->prepare($update);
+                // if (!$stmt) {
+                //     echo $this->con->error;
+                // }
+                // $act = 1;
+                // $userID = $user_id;
 
-                $stmt->bind_param('ii', $act, $userID);
-                $stmt->execute();
-                $stmt->close();
-
+                // $stmt->bind_param('ii', $act, $userID);
+                // $stmt->execute();
+                // $stmt->close();
 
                 //start session
                 session_start();

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (searchText === "")
     {
-      alert("Please enter a title to search for.")
+      alert("Please enter a title to search for.");
       return; 
     }
 
@@ -27,12 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
               heading.innerHTML = titles.data; 
               section.className = 'carousel';
               carousel.className = 'hidden'; 
-
             } 
             else
             {
               section.className = 'category';
-              heading.innerText = searchText;
+              heading.innerText = "Search Results For: '" + searchText + "'";
               heading.className = 'category h2';
               carousel.className = 'carousel';
 
@@ -124,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const filter = document.getElementById('genre-filter').value;
       // console.log(filter);
       if (filter === "All") {
-        alert("Please select a genre to filter by.")
+        onLoad();  
         return; 
       }
       else if (filter === "Action") {
