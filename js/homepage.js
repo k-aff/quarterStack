@@ -393,8 +393,8 @@ function logout(){
     }
   }
 
-    req.open("POST", "hoopAPI.php", true);
-    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    req.send(JSON.stringify(requestData));
+req.open("POST", "hoopAPI.php", true);
+req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+req.send(JSON.stringify(requestData));
 
 }
