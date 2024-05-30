@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   
     // Set the genre selections
-    
     genre1Select.value = preferences.genre_id_1;
     genre2Select.value = preferences.genre_id_2;
     genre3Select.value = preferences.genre_id_3;
