@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (login.status == "Error")
                 alert('Invalid credentials'); 
             else 
-                window.location.replace('homepage.html');
+                window.location.replace('intro.html');
         }
     }
     req.open("POST", "hoopAPI.php", false); 
@@ -46,11 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     req.send(JSON.stringify(request));       
-}); 
+    }); 
 
 });
-//redirect to hompage when submitted
-function submitLogin(event) {
-    event.preventDefault(); 
-    window.location.href = 'homepage.html';
-}
+
