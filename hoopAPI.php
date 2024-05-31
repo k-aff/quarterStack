@@ -639,6 +639,7 @@ public function setUserPref($reqbody)
         $password = $result->fetch_assoc()['password'];
         if ($hashedOldPassword != $password) {
             echo json_encode(new Response("error", time(), "Old password is incorrect"));
+            exit();
         }
 
         //check if new password is valid
