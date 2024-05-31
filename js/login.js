@@ -49,12 +49,3 @@ document.addEventListener("DOMContentLoaded", function() {
     }); 
 
 });
-<<<<<<< HEAD
-//redirect to hompage when submitted
-function submitLogin(event) {
-    event.preventDefault(); 
-    window.location.href = 'intro.html';
-}
-=======
-
->>>>>>> 3aeec313424898318a66ace369d8db4ee950b13d
